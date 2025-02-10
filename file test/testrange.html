@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Range with Solid Color Sections</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ddd;
+        }
+
+        /* Container for the range */
+        .range-container {
+            position: relative;
+            width: 60px;
+            height: 300px;
+            border-radius: 10px;
+        }
+
+        /* Solid color sections for each temperature range */
+        .range-section {
+            position: absolute;
+            left: 0;
+            width: 100%;
+        }
+
+        .section-0-15 { background-color: #0000ff; top: 70%; height: 30%; }  /* Blue for 0-15°C */
+        .section-15-20 { background-color: #00bfff; top: 60%; height: 10%; } /* Light blue for 15-20°C */
+        .section-20-27 { background-color: #00ff00; top: 46%; height: 14%; } /* Green for 20-27°C */
+        .section-27-50 { background-color: #ff0000; top: 0; height: 46%; }   /* Red for 27-50°C */
+
+        /* Temperature Labels */
+        .label {
+            position: absolute;
+            left: 100%;
+            padding-left: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .label-50 { top: 0; }
+        .label-30 { top: 40%; }
+        .label-25 { top: 60%; }
+        .label-15 { top: 70%; }
+        .label-below-0 { bottom: 0; }
+
+    </style>
+</head>
+<body>
+
+<div class="range-container" id="range">
+    <!-- Solid color sections for each temperature range -->
+    <div class="range-section section-0-15"></div>
+    <div class="range-section section-15-20"></div>
+    <div class="range-section section-20-27"></div>
+    <div class="range-section section-27-50"></div>
+
+    <!-- Labels -->
+    <div class="label label-50">50°C</div>
+    <div class="label label-30">30°C</div>
+    <div class="label label-25">25°C</div>
+    <div class="label label-15">15°C</div>
+    <div class="label label-below-0">0°C</div>
+</div>
+
+<script>
+    // Function to set the marker position and fill with the color corresponding to the current temperature
+    function setTemperatureMarker(temp) {
+        const rangeHeight = 300; // Height of the range bar in pixels
+        const minTemp = 0; // Minimum temperature on the scale
+        const maxTemp = 50; // Maximum temperature on the scale
+
+        // Define temperature ranges and their corresponding colors
+        const tempColors = [
+            { max: 15, color: '#0000ff' },   // Blue for 0-15°C
+            { max: 20, color: '#00bfff' },   // Light blue for 15-20°C
+            { max: 27, color: '#00ff00' },   // Green for 20-27°C
+            { max: 50, color: '#ff0000' }    // Red for 27-50°C
+        ];
+
+        // Determine the color based on the current temperature
+        let currentColor = '#000'; // Default color
+        for (let i = 0; i < tempColors.length; i++) {
+            if (temp <= tempColors[i].max) {
+                currentColor = tempColors[i].color;
+                break;
+            }
+        }
+
+        // Calculate percentage of the range for the given temperature
+        const percentage = (temp - minTemp) / (maxTemp - minTemp);
+
+        // Calculate the position in pixels for the pointer
+        const pointerPosition = rangeHeight - (percentage * rangeHeight);
+
+        // Set the pointer position
+        const pointer = document.getElementById('pointer');
+        pointer.style.top = `${pointerPosition}px`;
+
+        // Set the text and adjust its position
+        const pointerText = document.getElementById('pointer-text');
+        pointerText.innerHTML = `${temp}°C`;
+        pointerText.style.top = `${pointerPosition - 10}px`; // Offset the text slightly above the pointer
+        pointerText.style.left = `70px`; // Position the text to the right of the bar
+
+        // Adjust the filled section height and color based on temperature
+        const filled = document.getElementById('filled');
+        filled.style.height = `${percentage * rangeHeight}px`; // Fill according to temperature
+        filled.style.backgroundColor = currentColor; // Set the solid color based on the temperature
+        filled.style.opacity = 1; // Make the filled section fully opaque
+    }
+
+    // Example: Set current temperature marker to 20°C
+    setTemperatureMarker(20);
+</script>
+
+</body>
+</html>

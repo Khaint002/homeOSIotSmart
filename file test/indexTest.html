@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- <link rel="stylesheet" href="/bootstrap.min.css"> -->
+    <style>
+        /* *, ::after, ::before {
+            box-sizing: content-box !important;
+        } */
+        .btn-chart {
+        width: 50%;
+        height: 35px;
+        border: none;
+        margin: 0;
+        padding: 0;
+        background-color: #313030;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        }
+
+        .btn-chart.btn-chart-on {
+        border-radius: 50px 0 0 50px;
+        }
+
+        .btn-chart.btn-chart-off {
+        border-radius: 0 50px 50px 0;
+        }
+
+        .btn-chart:hover {
+        background-color: #000000;
+        }
+
+        .btn-chart-on.active {
+        background-color: #15e011;
+        color: #fff;
+        }
+
+        .btn-chart-off.active {
+        background-color: #d30d0d;
+        color: #fff;
+        }
+
+        .button-list {
+        border: solid 1px rgb(0, 0, 0);
+        border-radius: 100px;
+        width: 100px;
+        height: 36px;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        }
+
+        #menu-setting.hide {
+        width: 0px;
+        max-width: 0 !important;
+        overflow: hidden;
+        display: none;
+        transition: max-width 0.5s ease-out !important;
+        }
+
+        #content-setting.hide {
+        max-width: 0 !important;
+        overflow: hidden;
+        transition: max-width 1s !important;
+        }
+        .nav-item:hover{
+        border: solid 1px #cff4fc;
+        }
+
+        .bs-icon {
+  --bs-icon-size: .75rem;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--bs-icon-size);
+  width: calc(var(--bs-icon-size) * 2);
+  height: calc(var(--bs-icon-size) * 2);
+  color: var(--bs-primary);
+}
+
+.bs-icon-xs {
+  --bs-icon-size: 1rem;
+  width: calc(var(--bs-icon-size) * 1.5);
+  height: calc(var(--bs-icon-size) * 1.5);
+}
+
+.bs-icon-sm {
+  --bs-icon-size: 1rem;
+}
+
+.bs-icon-md {
+  --bs-icon-size: 1.5rem;
+}
+
+.bs-icon-lg {
+  --bs-icon-size: 2rem;
+}
+
+.bs-icon-xl {
+  --bs-icon-size: 2.5rem;
+}
+
+.bs-icon.bs-icon-primary {
+  color: var(--bs-white);
+  background: var(--bs-primary);
+}
+
+.bs-icon.bs-icon-primary-light {
+  color: var(--bs-primary);
+  background: rgba(var(--bs-primary-rgb), .2);
+}
+
+.bs-icon.bs-icon-semi-white {
+  color: var(--bs-primary);
+  background: rgba(255, 255, 255, .5);
+}
+
+.bs-icon.bs-icon-rounded {
+  border-radius: .5rem;
+}
+
+.bs-icon.bs-icon-circle {
+  border-radius: 50%;
+}
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns%3D%22http://www.w3.org/2000/svg%22 width%3D%2230%22 height%3D%2230%22 viewBox%3D%220 0 30 30%22%3E%3Cpath stroke%3D%22rgba%28255,%20255,%20255,%200.75%29%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-miterlimit%3D%2210%22 d%3D%22M4%207h22M4%2015h22M4%2023h22%22/%3E%3C/svg%3E');
+}
+#menu-setting {
+    max-width: 100%;
+    transition: max-width 0.5s ease-in; 
+    background-color: #343a40;
+    --bs-gutter-x: 0.1rem;
+    color: #c2c7d0;
+    padding-top: 10px;
+    min-height: 95vh;
+}
+#content-setting{
+    min-height: 95vh;
+    max-width: 100%;
+    transition: max-width 0.5s ease-in; 
+    background-color: #454d55;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    /* color: #343a40;
+    background-color: rgba(255, 255, 255, .9); */
+    background-color: #007bff;
+    color: #fff;
+}
+.nav-pills .nav-link{
+    color: #c2c7d0;
+}
+.nav-item{
+    padding: 0 10px 0 10px;
+    margin: 2px 0 2px 0;
+}
+.nav-item:hover{
+    border: none;
+}
+.nav-item:hover .nav-link{
+    border: none;
+    color: white;
+    background-color: #454d55;
+}
+.nav-item:hover .nav-link.active{
+    border: none;
+    color: #fff;
+    background-color: #007bff;
+}
+.tab-pane .row{
+    --bs-gutter-x: 0;
+}
+.titleMenu{
+    padding: 10px 15px 15px 15px;
+    color: white;
+}
+.form-total{
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    margin-bottom: 1rem;
+}
+.header-form{
+    background-color: #3f6791;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+    border-radius: 4px 4px 0 0;
+    height: 46px;
+    padding: 12px 20px;
+}
+.header-form h3{
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: white;
+}
+.content-form {
+    padding: 1.5rem;
+    color: white; 
+    background-color: #343a40;
+}
+.content-form-help{
+    border-radius: 0 0 4px 4px;
+}
+.content-form .content-detail{
+    margin-bottom: 1rem;
+}
+.content-form .content-detail .content-label{
+    font-weight: 700;
+}
+.content-form .content-detail .content-input{
+    background-color: #343a40;
+    border-color: #6c757d;
+    color: #fff;
+}
+.content-form .content-detail .content-input::placeholder {
+    color: #6c757d;
+}
+.footer-form{
+    padding: .75rem 1.25rem;
+    background-color: #282d31;
+    border-top: 0 solid rgba(0, 0, 0, .125);
+    border-radius: 0 0 4px 4px;
+}
+.footer-form button{
+    color: #fff;
+    background-color: #335476;
+    border-color: #304e6d;
+}
+.text-wrap {
+    display: inline-block;  
+    word-wrap: break-word;  
+    word-break: break-all;  
+    white-space: normal;    
+    max-width: 100%;        
+}
+    </style>
+</head>
+
+<body style="background-color: #ffffff;color: #000000; height: 100%">
+    <div style="min-height: 100vh;">
+        <div style="background-color: #b15959;">
+            <nav class="navbar navbar-expand-md py-3" style="background-color: #282d31;">
+                <div class="container" style="max-width: 100% !important;"><a
+                        class="navbar-brand d-flex justify-content-around" href="#"><span
+                            class="bs-icon-sm bs-icon-rounded d-flex justify-content-center align-items-center me-2 bs-icon">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAA21BMVEVHcEzR7/mGqsR6pcHd8PaqzuCDrcdHfKMVYJEBWYw1cZz+///39fOMsMhUhqkeZZQ4cZwoaZYNXY9+psFThaphjq+b0Onu8O9kj7E8dJ1Crd/2+vv96eGN0u81r+QznMuw3/Isa5jb7/U7r+MfqeFOueecu9AsrOJuxOtXh6pKteVvw+mBzO1ZvOd8y+xcveit4PTw8e0VpeAyruP4rJT3p5D5vKjxWSnycEv2noX7w7H1k3j5wbD0gmLxXTD0hWb3qJH0iWr2lXnyb0vwUh/yZj7zc1DyZDn0gWEEvxu3AAAASXRSTlMAHXaZJxhRw/7/3gEJP6X3y/H/XZB8LQ+b2M0FGF7x6z7nMtv/zXP6lbLWdFOpgb5RPf/pX3Uo/9ZiNYtOm/iwSXdd0P/lve/Hl/YjrQAAAZ1JREFUeAFskAMSxAAMAFPbtnn2/192rptBsDGMBEExHNaFICmaYVGCWyJeECVaphSV0og5w3VWZQ3T0ihaEYUpIylVsgUegDMNR2X10WgOdxmKtH6OJ9i0Kmt+T4MwQrpEDryYYhKth2mWF6n327nU3kY5ghC7eVWbH2zZdCN44CPjbessbzfvCK/JamKYI2TGHGx3YV6/azlBT97ref22QbtHwAqKA/9xLbJR3Xi0beUGHpjHf/4pCoMeWsfwXO36y49FnqU9fBfsL+eqRj52fMjzw+hF19sd4t0lLwLC3Id5tud5a4CPV5vEkMBADJzitrnWto2Jsf7/i2o3HJuyUm2+GvVX0/5unAcu5DPao0JtLMnMBqPmYk7qjur9q/J1PwgjxWvF+TxD/Bi1OD6ZvAtHkYT0QM6wSsJU1t4Cis5kbhCjzSEJL4jkT6aMQio9kAEiapWHutHslaeMEQ2H0iFW0quftQP7PpWOIj1HUaoRazA5xwZvy+MqwtjVrx8j8LE8KJ1VdBxg9ErjnV/fU52ciwH/V13y0ht6AueMOFH8ctIWAAAAAElFTkSuQmCC" alt="">
+                        </span><span style="color: rgba(255, 255, 255, .75);;" >HOMEOS VIỆT NAM</span></a>
+                            <button class="navbar-toggler" style="border: none;"
+                        data-bs-toggle="collapse" onclick="clickMenu()"><span class="visually-hidden">Toggle
+                            navigation</span><span class="navbar-toggler-icon Light">
+                        </span></button>
+                        </div>
+            </nav>
+        </div>
+        <div>
+            <div class="row w-100" style="--bs-gutter-x: 0;">
+                <ul class="nav nav-pills flex-column col-12 col-md-2" role="tablist" id="menu-setting" aria-orientation="vertical" onclick="clickTab()">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="pill"
+                            href="#tab-1">Cài đặt chung</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="pill"
+                            href="#tab-2">Cài đặt WiFi</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="pill"
+                            href="#tab-3">Cài đặt điểm truy cập</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="pill"
+                            href="#tab-8">Cài đặt RS232</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="pill"
+                            href="#tab-7">Cài đặt Barcode Reader</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="pill"
+                            href="#tab-6">Cấu hình IP tĩnh</a></li>
+                </ul>
+                <div class="tab-content col-12 col-md-10" id="content-setting">
+                    <div class="tab-pane active" role="tabpanel" id="tab-1">
+                        <div class="titleMenu">
+                            <h4>Cài đặt chung</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: white; padding-top: 5px;" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                                            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                                        </svg> -->
+                                        <h3 style="margin: 0; padding-left: 2px;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form">
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="device_name">Tên thiết bị:</label>
+                                            <input type="text" id="device_name" style="color: white;" class="form-control content-input" placeholder="Tên thiết bị...">
+                                        </div>
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="net_interface">
+                                                Chế độ hoạt động (4G - 0, WiFi - 1, Ethernet - 2):
+                                            </label>
+                                            <!-- <input type="text" id="net_interface" class="form-control"> -->
+                                            <div class="form-group">
+                                                <input type="radio" value="0" name="net_interface" id="net_interface_1">
+                                                <label class="form-label" for="net_interface_1"></label>
+                                                    <span>4G</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="radio" value="1" name="net_interface" id="net_interface_2">
+                                                <label class="form-label" for="net_interface_2"></label>
+                                                    <span>Wifi</span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="radio" value="2" name="net_interface" id="net_interface_3">
+                                                <label class="form-label" for="net_interface_3"></label>
+                                                    <span>Ethernet</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label">Tên thiết bị: </label>
+                                            <span class="text-wrap">....</span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-2">
+                        <div class="titleMenu">
+                            <h4>Cài đặt Wifi</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form">
+                                        <h3 style="margin: 0;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form">
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="wifi_ssid">Tên Wifi:</label>
+                                            <input type="text" id="wifi_ssid" class="form-control content-input" placeholder="Nhập tên wifi...">
+                                        </div>
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="wifi_password">Mật khẩu Wifi</label>
+                                            <input type="text" id="wifi_password" class="form-control content-input" placeholder="Nhập mật khẩu">
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label"></label>
+                                            <span class="text-wrap"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-3">
+                        <div class="titleMenu">
+                            <h4>Cài đặt Điểm truy cập</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form">
+                                        <h3 style="margin: 0;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form">
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="ap_ssid">Tên điểm truy cập:</label>
+                                            <input type="text" id="ap_ssid" class="form-control content-input" placeholder="Nhập tên điểm truy cập...">
+                                        </div>
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="ap_password">Mật khẩu điểm truy cập</label>
+                                            <input type="text" id="ap_password" class="form-control content-input" placeholder="Nhập mật khẩu điểm truy cập...">
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label"></label>
+                                            <span class="text-wrap"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-8">
+                        <div class="titleMenu">
+                            <h4>Cài đặt RS232</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form">
+                                        <h3 style="margin: 0;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form" style="padding: 1.5rem 1rem 1.5rem 1.5rem;">
+                                        <div class="form-group content-detail">
+                                            <input type="checkbox" id="rs232_enable">
+                                            <label class="form-label content-label" for="rs232_enable">Kích hoạt RS232</label>
+                                        </div>
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="rs232_baudrate">Tốc độ RS232 (bps):</label>
+                                            <input type="text" id="rs232_baudrate" class="form-control content-input" placeholder="Nhập tốc độ RS232 (bps)...">
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label"></label>
+                                            <span class="text-wrap"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-7">
+                        <div class="titleMenu">
+                            <h4>Cài đặt Barcode Scanner</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form" >
+                                        <h3 style="margin: 0;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form" style="padding: 1.5rem 1rem 1.5rem 1.5rem;">
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="scan_1_baudrate">Scan 1 baud (bps):</label>
+                                            <input type="text" id="scan_1_baudrate" class="form-control content-input" placeholder="Nhập tốc độ RS485 (bps)...">
+                                        </div>
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="scan_2_baudrate">Scan 2 baud (bps):</label>
+                                            <input type="text" id="scan_2_baudrate" class="form-control content-input" placeholder="Nhập tốc độ RS485 (bps)...">
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label"></label>
+                                            <span class="text-wrap"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-6">
+                        <div class="titleMenu">
+                            <h4>Cấu hình IP tĩnh</h6>    
+                        </div>
+                        <div class="d-flex row justify-content-around" style="padding: 0 7.5px 0 7.5px;">
+                            <div class="col-12 col-md-8" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form">
+                                        <h3 style="margin: 0;">Cài đặt</h3>
+                                    </div>
+                                    <div class="content-form">
+                                        <div>
+                                            <div class="form-group content-detail">
+                                                <label class="form-label content-label" for="static_ip">IP tĩnh:</label>
+                                                <input type="text" id="static_ip" class="form-control content-input" placeholder="Nhập tốc độ RS485 (bps)...">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group content-detail">
+                                                <label class="form-label content-label" for="subnet_mask">Subnet Mask:</label>
+                                                <input type="text" id="subnet_mask" class="form-control content-input" placeholder="Nhập tốc độ RS485 (bps)...">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-group content-detail">
+                                                <label class="form-label content-label" for="default_gw">Default Gateway:</label>
+                                                <input type="text" id="default_gw" class="form-control content-input" placeholder="Nhập tốc độ RS485 (bps)...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer-form">
+                                        <button class="btn btn-primary" onclick="set_system_value()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="padding-bottom: 2px;" class="bi bi-floppy" viewBox="0 0 16 16">
+                                                <path d="M11 2H9v3h2z"/>
+                                                <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z"/>
+                                            </svg>
+                                            Lưu và Khởi động lại thiết bị
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" style="padding: 0 7.5px 0 7.5px;">
+                                <div class="form-total">
+                                    <div class="header-form d-flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+                                        </svg>
+                                        <h3>Trợ giúp</h3>
+                                    </div>
+                                    <div class="content-form content-form-help">
+                                        <div class="content-detail">
+                                            <label class="form-label content-label"></label>
+                                            <span class="text-wrap"></span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+     <!-- <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+     <script src="./assets/js/jquery.min.js"></script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    if(window.innerWidth < 700){
+        const deviceList = document.getElementById('menu-setting');
+        deviceList.classList.add('hide');
+        const content = document.getElementById('content-setting');
+        
+        if(deviceList.classList.contains("hide")){
+            content.classList.remove('hide');
+        } else {
+            content.classList.add('hide');
+        }
+    } else {
+        const deviceList = document.getElementById('menu-setting');
+        deviceList.classList.remove('hide');
+        const content = document.getElementById('content-setting');
+        content.classList.remove('hide');
+    }
+});
+function switchTab(event, tabId) {
+    // Prevent default action if used with anchor tag
+    event.preventDefault();
+
+    // Remove 'active' class from all tabs
+    const tabs = document.querySelectorAll('#menu-setting .nav-link');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    // Remove 'active' class from all content panes
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabPanes.forEach(pane => {
+        pane.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked tab
+    const clickedTab = document.querySelector(`#menu-setting a[href="${tabId}"]`);
+    clickedTab.classList.add('active');
+
+    // Add 'active' class to the corresponding tab content
+    const activePane = document.querySelector(tabId);
+    activePane.classList.add('active');
+}
+
+// Add event listeners for each tab
+document.querySelectorAll('#menu-setting .nav-link').forEach(tab => {
+    tab.addEventListener('click', function(event) {
+        const tabId = this.getAttribute('href');
+        switchTab(event, tabId);
+    });
+});
+
+
+var clickMenu = function() {
+    const deviceList = document.getElementById('menu-setting');
+    deviceList.classList.toggle('hide');
+    const content = document.getElementById('content-setting');
+    
+    if(deviceList.classList.contains("hide")){
+        content.classList.remove('d-none');
+    } else {
+        content.classList.add('d-none');
+    }
+}
+
+var clickTab = function() {
+    if(window.innerWidth < 700){
+        const deviceList = document.getElementById('menu-setting');
+        deviceList.classList.add('hide');
+        const content = document.getElementById('content-setting');
+        
+        if(deviceList.classList.contains("hide")){
+            content.classList.remove('d-none');
+        } else {
+            content.classList.add('d-none');
+        }
+    }
+    //get_system_value(); // Uncomment if needed
+}
+
+function getSelectedNetInterface() {
+    const selectedRadio = document.querySelector('input[name="net_interface"]:checked');
+    if (selectedRadio) {
+        return selectedRadio.value;  // This returns the value of the selected radio button
+    }
+    return null;  // If no radio button is selected
+}
+
+function set_system_value() 
+{
+    var jsonData = {
+    "device_name": document.getElementById("device_name").value,
+    "net_interface": getSelectedNetInterface(),  
+//RS232
+    "rs232_enable": document.getElementById("rs232_enable").checked ? 1 : 0,
+    "rs232_baudrate": document.getElementById("rs232_baudrate").value,
+//RS485
+    "scan_1_baudrate": document.getElementById("scan_1_baudrate").value,
+    "scan_2_baudrate": document.getElementById("scan_2_baudrate").value,
+//AP
+    "ap_ssid": document.getElementById("ap_ssid").value,
+    "ap_password": document.getElementById("ap_password").value,
+//WebSocket URI
+    "ws_uri": document.getElementById("ws_uri").value,
+//WiFi
+    "wifi_ssid": document.getElementById("wifi_ssid").value,
+    "wifi_password": document.getElementById("wifi_password").value,
+//IP
+    "static_ip": document.getElementById("static_ip").value,
+    "subnet_mask": document.getElementById("subnet_mask").value,
+    "default_gw": document.getElementById("default_gw").value,
+    };
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/setsysteminfo", true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("Request successful: ", xhr.responseText);
+        } else {
+            console.error("Request failed with status: ", xhr.status);
+        }
+    };
+    xhr.onerror = function() {
+        console.error("Request error");
+    };
+    xhr.send(JSON.stringify(jsonData));
+}
+
+function setInitialNetInterface(value) {
+    const radioButton = document.querySelector(`input[name="net_interface"][value="${value}"]`);
+    if (radioButton) {
+        radioButton.checked = true;  // This sets the radio button as checked
+    }
+}
+
+// Example usage: Assuming you have a predefined value (e.g., from server)
+
+//
+function get_system_value() 
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/getsysteminfo", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onload = function() 
+    {
+        if (xhr.status >= 200 && xhr.status < 300) 
+        {
+            var data = JSON.parse(xhr.responseText);
+                //
+                document.getElementById("device_name").value = data.device_name;
+                //document.getElementById("net_interface").value = data.net_interface;
+                setInitialNetInterface(data.net_interface)
+                //RS485
+                document.getElementById("scan_1_baudrate").checked = data.scan_1_baudrate;
+                document.getElementById("scan_2_baudrate").value = data.scan_2_baudrate;
+                //RS232
+                document.getElementById("rs232_enable").checked = data.rs232_enable ? true : false;
+                document.getElementById("rs232_baudrate").value = data.rs232_baudrate;
+                //AP
+                document.getElementById("ap_ssid").value = data.ap_ssid;
+                document.getElementById("ap_password").value = data.ap_password;
+                //
+                document.getElementById("ws_uri").value = data.ws_uri;
+                //WiFi
+                document.getElementById("wifi_ssid").value = data.wifi_ssid;
+                document.getElementById("wifi_password").value = data.wifi_password;
+                //IP
+                document.getElementById("static_ip").value = data.static_ip;
+                document.getElementById("subnet_mask").value = data.subnet_mask;
+                document.getElementById("default_gw").value = data.default_gw;
+        } 
+        else {
+            console.error("Failed to fetch system info");
+        }
+            };
+
+            xhr.onerror = function() {
+                console.error("Error occurred while fetching system info");
+            };
+
+            xhr.send();
+}
+//
+function stop_hotspot()
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/stophotspot", true);
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("Request successful: ", xhr.responseText);
+        } else {
+            console.error("Request failed with status: ", xhr.status);
+        }
+    };
+    xhr.onerror = function() {
+        console.error("Request error");
+    };
+    xhr.send();
+}
+//
+window.onload = get_system_value;
+
+
+window.onresize = function () {
+    if (window.innerWidth < 700) {
+        const deviceList = document.getElementById('menu-setting');
+        deviceList.classList.add('hide');
+        const content = document.getElementById('content-setting');
+        
+        if (deviceList.classList.contains('hide')) {
+            content.classList.remove('hide');
+        } else {
+            content.classList.add('hide');
+        }
+    } else {
+        const deviceList = document.getElementById('menu-setting');
+        deviceList.classList.remove('hide');
+        const content = document.getElementById('content-setting');
+        content.classList.remove('hide');
+    }
+}
+    </script>
+</body>
+
+</html>

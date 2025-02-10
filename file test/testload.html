@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng với DataTables</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Tổng quát */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      white-space: nowrap; /* Ngăn dòng xuống */
+    }
+
+    th {
+      background-color: #f4f4f4;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    /* Hàng nhóm (Group) */
+    .group {
+      background-color: #28a745;
+      color: #fff;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    /* Ngày tháng (hàng đặc biệt) */
+    .day-cell {
+      background-color: #f9f9f9;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .day-cell.red {
+      color: red;
+    }
+
+    /* Cột checkbox */
+    .checkbox-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    /* Bố cục cuộn ngang */
+    .table-container {
+      overflow-x: auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Thanh tìm kiếm và bộ lọc -->
+  <div style="margin-bottom: 10px; display: flex; align-items: center;">
+    <button style="margin-right: 10px;">Lọc</button>
+    <input type="text" id="txtSearchGridRoutes" placeholder="Tìm kiếm..." style="padding: 5px; width: 300px;">
+  </div>
+
+  <!-- Container Bảng -->
+  <div class="table-container">
+    <table id="MainDataGridRoutes">
+      <thead>
+        <tr>
+          <th>Ngày - tháng</th>
+          <th>Lịch ca 1<br>07:00-12:00</th>
+          <th>Lịch ca 2<br>13:00-17:00</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dữ liệu sẽ được tự động thêm thông qua JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    // Định nghĩa các cột
+    const columnsDefined = [
+      { data: "day_month", title: "Ngày - tháng", width: 160 },
+      { data: "shift_1", title: "Lịch ca 1<br>07:00-12:00", width: 160 },
+      { data: "shift_2", title: "Lịch ca 2<br>13:00-17:00", width: 160 }
+    ];
+
+    // Hàm tải dữ liệu và hiển thị bảng
+    function LoadDataSuccess(data) {
+      try {
+        // Parse dữ liệu JSON
+        const state = JSON.parse(data);
+
+        // Cấu hình DataTable
+        const optgrid = {
+          scrollX: true, // Kích hoạt thanh trượt ngang
+          scrollY: "400px", // Chiều cao cuộn dọc
+          scrollCollapse: true,
+          paging: false,
+          searching: true,
+          columns: columnsDefined,
+          data: state,
+          drawCallback: function (settings) {
+            const api = this.api();
+            const rows = api.rows({ page: "current" }).nodes();
+            let last = null;
+
+            // Tạo hàng nhóm dựa vào giá trị trong cột đầu tiên
+            api.column(0, { page: "current" }).data().each(function (group, i) {
+              if (last !== group) {
+                $(rows).eq(i).before(
+                  '<tr class="group"><td colspan="3">' + group + "</td></tr>"
+                );
+                last = group;
+              }
+            });
+          },
+        };
+
+        // Áp dụng DataTable
+        $("#MainDataGridRoutes").DataTable(optgrid);
+
+        // Sự kiện tìm kiếm
+        $("#txtSearchGridRoutes").on("keyup", function () {
+          $("#MainDataGridRoutes").DataTable().search($(this).val()).draw();
+        });
+      } catch (e) {
+        console.error("Error:", e);
+        alert("Lỗi khi tải dữ liệu!");
+      }
+    }
+
+    // Ví dụ dữ liệu
+    const exampleData = JSON.stringify([
+      {
+        day_month: "Thứ 4 - 01/01/2025",
+        shift_1: "<button>Võ Thị Thanh Huế</button><br><button>Nguyễn Thị Đào</button>",
+        shift_2: "<button>Võ Thị Thanh Huế</button><br><button>Nguyễn Thị Đào</button>",
+      },
+      {
+        day_month: "Thứ 5 - 02/01/2025",
+        shift_1: "<button>Đặng Thị Hạnh</button><br><button>Phan Thanh Nhật</button>",
+        shift_2: "<button>Đặng Thị Hạnh</button><br><button>Phan Thanh Nhật</button>",
+      },
+      {
+        day_month: "Thứ 6 - 03/01/2025",
+        shift_1: "<button>Đặng Thị Hạnh</button><br><button>Nguyễn Thị Hương</button>",
+        shift_2: "<button>Đặng Thị Hạnh</button><br><button>Nguyễn Thị Hương</button>",
+      },
+    ]);
+
+    // Gọi hàm LoadDataSuccess với dữ liệu mẫu
+    LoadDataSuccess(exampleData);
+  </script>
+</body>
+</html>
