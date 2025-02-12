@@ -7,5 +7,16 @@
 </head>
 <body>
     <input type="datetime-local" id="date_time" readonly style="color: white;" class="form-control content-input" placeholder="Chỉnh thời gian..." step="1">
+    <script>
+        document.getElementById("date_time").addEventListener("focus", function () {
+            this.removeAttribute("readonly"); // Khi focus vào input, cho phép nhập
+        });
+
+        document.getElementById("date_time").addEventListener("blur", function () {
+            if (!this.value) {
+                this.setAttribute("readonly", true); // Nếu không nhập gì, đặt lại readonly
+            }
+        });
+    </script>
 </body>
 </html>
