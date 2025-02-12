@@ -7,6 +7,7 @@
 </head>
 <body>
     <input type="datetime-local" id="date_time" readonly style="color: white;" class="form-control content-input" placeholder="Chỉnh thời gian..." step="1">
+    <input type="date" id="dateInput">
     <script>
         document.getElementById("date_time").addEventListener("focus", function () {
             this.removeAttribute("readonly"); // Khi focus vào input, cho phép nhập
@@ -17,6 +18,17 @@
                 this.setAttribute("readonly", true); // Nếu không nhập gì, đặt lại readonly
             }
         });
+
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        // Định dạng YYYY-MM-DD
+        const formattedTomorrow = tomorrow.toISOString().split("T")[0];
+
+        // Gán giá trị mặc định và giới hạn ngày chọn
+        const dateInput = document.getElementById("dateInput");
+        dateInput.value = formattedTomorrow;
+        dateInput.max = formattedTomorrow;
     </script>
 </body>
 </html>
