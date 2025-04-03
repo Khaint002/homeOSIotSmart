@@ -1,64 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Seven Segment Display</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .seven-segment-container {
+            display: flex;
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 5px;
+            background-color: #222;
+            transform: scale(1);
+            transition: transform 0.2s;
+        }
+    </style>
 </head>
 <body>
-    <input type="text" id="dateTimeInput" placeholder="Nhập ngày giờ (YYYY-MM-DD HH:mm:ss)">
 
-<script>
-// Hàm tự động định dạng và giới hạn nhập
-function formatDateTimeInput(event) {
-    let input = event.target.value.replace(/[^0-9]/g, ''); // Xóa tất cả ký tự không phải số
-    let formattedInput = '';
+    <div id="testResizableArray3" class="seven-segment-container resizable"></div>
+    <div id="testResizableArray3-1" class="seven-segment-container resizable"></div>
+    <div id="testResizableArray3-2" class="seven-segment-container resizable"></div>
+    <div id="testResizableArray3-3" class="seven-segment-container resizable"></div>
 
-    // Xử lý phần YYYY-MM-DD HH:mm:ss
-    if (input.length >= 1) formattedInput = input.substring(0, 4); // YYYY
-    if (input.length >= 4) formattedInput += '-'; // Thêm dấu - sau YYYY
-    if (input.length > 4) formattedInput += input.substring(4, 6); // MM
-    if (input.length >= 6) formattedInput += '-'; // Thêm dấu - sau MM
-    if (input.length > 6) formattedInput += input.substring(6, 8); // DD
-    if (input.length >= 8) formattedInput += ' '; // Thêm dấu cách sau DD
-    if (input.length > 8) formattedInput += input.substring(8, 10); // HH
-    if (input.length >= 10) formattedInput += ':'; // Thêm dấu : sau HH
-    if (input.length > 10) formattedInput += input.substring(10, 12); // mm
-    if (input.length >= 12) formattedInput += ':'; // Thêm dấu : sau mm
-    if (input.length > 12) formattedInput += input.substring(12, 14); // ss
+    <script>
+        class SevenSeg {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.options = Object.assign(this.defaultOptions(), options);
+                this.create();
+            }
 
-    // Giới hạn tối đa 19 ký tự (để không cho nhập quá số ký tự cho phép)
-    if (input.length > 14) {
-        input = input.substring(0, 14); // Đảm bảo không nhập quá số ký tự cho phép
-    }
+            defaultOptions() {
+                return {
+                    value: 0,
+                    colorOn: '#0fb4c0',
+                    colorOff: '#320000',
+                    colorBackground: 'black',
+                    slant: 0,
+                    decimalPoint: false
+                };
+            }
 
-    // Cập nhật giá trị của input
-    event.target.value = formattedInput;
-}
+            create() {
+                this.jqSvgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                this.jqSvgElement.setAttribute('viewBox', '0 0 57 80');
+                this.jqSvgElement.setAttribute('version', '1.1');
+                this.jqSvgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                this.jqSvgElement.classList.add('sevenSeg-svg');
+                this.jqSvgElement.style.fill = this.options.colorOff;
+                this.jqSvgElement.style.backgroundColor = this.options.colorBackground;
 
-// Hàm kiểm tra định dạng ngày giờ hợp lệ (YYYY-MM-DD HH:mm:ss)
-function isValidDateTime(dateTimeString) {
-    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-    return regex.test(dateTimeString);
-}
+                this.element.appendChild(this.jqSvgElement);
 
-// Lắng nghe sự kiện input để tự động format và giới hạn
-document.getElementById("dateTimeInput").addEventListener("input", function(event) {
-    formatDateTimeInput(event);
-});
+                this.createSegments();
 
-// Nếu bạn muốn kiểm tra và lưu khi nhấn nút lưu, ví dụ thêm nút "Lưu":
-// document.getElementById("saveButton")?.addEventListener("click", function() {
-//     const value = document.getElementById("dateTimeInput").value.trim();
-//
-//     if (isValidDateTime(value)) {
-//         alert("Dữ liệu hợp lệ! Đang lưu...");
-//         // Xử lý lưu dữ liệu ở đây
-//     } else {
-//         alert("Vui lòng nhập đúng định dạng: YYYY-MM-DD HH:mm:ss");
-//     }
-// });
-</script>
+                if (this.options.value !== null) {
+                    this.displayValue(this.options.value);
+                }
+            }
+
+            createSegments() {
+                this.segments = [];
+
+                const segmentCoordinates = [
+                    { x: 6, y: 5, width: 45, height: 10, id: 'a' },
+                    { x: 50, y: 5, width: 10, height: 35, id: 'b' },
+                    { x: 50, y: 45, width: 10, height: 35, id: 'c' },
+                    { x: 6, y: 75, width: 45, height: 10, id: 'd' },
+                    { x: 0, y: 45, width: 10, height: 35, id: 'e' },
+                    { x: 0, y: 5, width: 10, height: 35, id: 'f' },
+                    { x: 6, y: 35, width: 45, height: 10, id: 'g' },
+                ];
+
+                segmentCoordinates.forEach((seg) => {
+                    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', seg.x);
+                    rect.setAttribute('y', seg.y);
+                    rect.setAttribute('width', seg.width);
+                    rect.setAttribute('height', seg.height);
+                    rect.setAttribute('id', seg.id);
+                    rect.setAttribute('fill', this.options.colorOff);
+                    this.jqSvgElement.appendChild(rect);
+                    this.segments.push(rect);
+                });
+
+                if (this.options.decimalPoint) {
+                    let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', '52');
+                    circle.setAttribute('cy', '75');
+                    circle.setAttribute('r', '5');
+                    circle.setAttribute('fill', this.options.colorOff);
+                    this.jqSvgElement.appendChild(circle);
+                    this.segments.push(circle);
+                }
+            }
+
+            displayValue(value) {
+                const segmentsOn = this.getSegments(value);
+
+                this.segments.forEach((segment, index) => {
+                    if (index < 7) {
+                        segment.setAttribute('fill', this.options.colorOff);
+                        if (segmentsOn & (1 << index)) {
+                            segment.setAttribute('fill', this.options.colorOn);
+                        }
+                    } else {
+                        segment.setAttribute('fill', this.options.decimalPoint ? this.options.colorOn : this.options.colorOff);
+                    }
+                });
+            }
+
+            getSegments(value) {
+                const numberSegments = [
+                    0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F
+                ];
+                return numberSegments[value] || 0;
+            }
+
+            setOption(key, value) {
+                this.options[key] = value;
+                if (key === 'value') {
+                    this.displayValue(value);
+                }
+            }
+        }
+
+        function initializeSevenSegArray(elementId, digits, segmentOptions) {
+            const container = document.getElementById(elementId);
+            if (container) {
+                new SevenSeg(container, { 
+                    value: 0, 
+                    colorOff: segmentOptions.colorOff, 
+                    colorOn: segmentOptions.colorOn 
+                });
+            }
+        }
+
+        function makeResizable(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const resizeObserver = new ResizeObserver(() => {
+                    const aspectRatio = element.offsetWidth / element.offsetHeight;
+                    if (aspectRatio !== 1) {
+                        const width = Math.min(element.offsetWidth, element.offsetHeight);
+                        element.style.width = `${width}px`;
+                        element.style.height = `${width}px`;
+                    }
+                });
+
+                resizeObserver.observe(element);
+            }
+        }
+
+        // Khởi tạo các phần tử SevenSeg
+        initializeSevenSegArray("testResizableArray3", 5, {colorOff: "#073336", colorOn: "#0fb4c0"});
+        initializeSevenSegArray("testResizableArray3-1", 4, {colorOff: "#361b0e", colorOn: "#e97540"});
+        initializeSevenSegArray("testResizableArray3-2", 4, {colorOff: "#2d2d0d", colorOn: "#f2f442"});
+        initializeSevenSegArray("testResizableArray3-3", 4, {colorOff: "#073336", colorOn: "#0fb4c0"});
+
+        // Khởi tạo các phần tử có khả năng thay đổi kích thước
+        makeResizable("testResizableDiv3");
+        makeResizable("testResizableDiv3-1");
+        makeResizable("testResizableDiv3-2");
+        makeResizable("testResizableDiv3-3");
+    </script>
 
 </body>
 </html>
