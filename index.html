@@ -2956,10 +2956,10 @@
     <script>
         $(document).ready(function () {
             console.log(typeof $.widget);
-            timeoutHandle = setTimeout(runLed7, 5000);
+            // setTimeout(runLed7, 5000);
             function runLed7() {
                 
-            
+            console.log(1);
                 (function($) {
 
                     var numberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http://en.wikipedia.org/wiki/Seven-segment_display
@@ -3801,6 +3801,7 @@
                     document.getElementById("condition").classList.remove("hidden");
                     document.getElementById("pickApp").classList.add("hidden");
                     // document.getElementById("history").classList.remove("hidden");
+                    runLed7();
                     getWebSocket("hoangminhlighting.vn:447")
                 }
             }
