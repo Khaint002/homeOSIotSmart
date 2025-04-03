@@ -2524,14 +2524,14 @@ $(document).ready(function () {
         window.addEventListener('resize', () => {
             if (window.innerHeight < windowHeight) {
                 // Keyboard is visible, hide or adjust footer
-                document.getElementById("footer-instruct-text").classList.add("d-none");
-                document.getElementById("footer-instruct-warranty").classList.add("d-none");
-                footer.style.display = 'none'; // You can also reposition it instead of hiding
+                document.getElementById("footer-instruct-text")?.classList.add("d-none");
+                document.getElementById("footer-instruct-warranty")?.classList.add("d-none");
+                // footer.style.display = 'none'; // You can also reposition it instead of hiding
             } else {
                 // Keyboard is hidden, show footer
-                document.getElementById("footer-instruct-text").classList.remove("d-none");
-                document.getElementById("footer-instruct-warranty").classList.remove("d-none");
-                footer.style.display = 'block';
+                document.getElementById("footer-instruct-text")?.classList.remove("d-none");
+                document.getElementById("footer-instruct-warranty")?.classList.remove("d-none");
+                // footer.style.display = 'block';
             }
         });
     }

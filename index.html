@@ -1574,8 +1574,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12" style="padding: 5px 10px;">
+                        <div id="PickApp-button-condition" class="iconApp">
+                            <div class="icon" style="background-color: #17a2b8;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" style="color: #fff;" class="bi bi-cloud-sun" viewBox="0 0 16 16">
+                                    <path d="M7 8a3.5 3.5 0 0 1 3.5 3.555.5.5 0 0 0 .624.492A1.503 1.503 0 0 1 13 13.5a1.5 1.5 0 0 1-1.5 1.5H3a2 2 0 1 1 .1-3.998.5.5 0 0 0 .51-.375A3.5 3.5 0 0 1 7 8m4.473 3a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5z" />
+                                    <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708zm1.734 3.374a2 2 0 1 1 3.296 2.198q.3.423.516.898a3 3 0 1 0-4.84-3.225q.529.017 1.028.129m4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377M14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z" />
+                                </svg>
+                            </div>
+                            <div class="info-box-content">
+                                <div class="d-flex justify-content-between">
+                                    <span class="app-text">Điều khiển</span>
+                                    <span class="app-text">v1.0.1</span>
+                                </div>
+                                <span class="app-text-number">Điều khiển và giám sát năng lượng</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
                 <div class="footer-instruct">
                     <div class="step">
                         <div class="circle">01</div>
@@ -1603,6 +1619,7 @@
                         </button>
                     </div>
                     <div>
+                        <div style="line-height: 50px; float: left;" id="extra_view"></div>
                         <div style="line-height: 50px; float: left;">
                             <button id="PickApp-button-scanQR"
                                 style="height: 40px; border: none; background-color: #1E2833;">
@@ -2370,10 +2387,8 @@
                         <div id="box-RN" class="d-none col-6 p-2">
                             <div class="box-value" style="height: 116px; margin: 0;">
                                 <div class="d-flex justify-content-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                        class="bi bi-moisture" viewBox="0 0 16 16">
-                                        <path
-                                            d="M13.5 0a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V7.5h-1.5a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V15h-1.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5zM7 1.5l.364-.343a.5.5 0 0 0-.728 0l-.002.002-.006.007-.022.023-.08.088a29 29 0 0 0-1.274 1.517c-.769.983-1.714 2.325-2.385 3.727C2.368 7.564 2 8.682 2 9.733 2 12.614 4.212 15 7 15s5-2.386 5-5.267c0-1.05-.368-2.169-.867-3.212-.671-1.402-1.616-2.744-2.385-3.727a29 29 0 0 0-1.354-1.605l-.022-.023-.006-.007-.002-.001zm0 0-.364-.343zm-.016.766L7 2.247l.016.019c.24.274.572.667.944 1.144.611.781 1.32 1.776 1.901 2.827H4.14c.58-1.051 1.29-2.046 1.9-2.827.373-.477.706-.87.945-1.144zM3 9.733c0-.755.244-1.612.638-2.496h6.724c.395.884.638 1.741.638 2.496C11 12.117 9.182 14 7 14s-4-1.883-4-4.267" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-moisture" viewBox="0 0 16 16">
+                                        <path d="M13.5 0a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V7.5h-1.5a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V15h-1.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5zM7 1.5l.364-.343a.5.5 0 0 0-.728 0l-.002.002-.006.007-.022.023-.08.088a29 29 0 0 0-1.274 1.517c-.769.983-1.714 2.325-2.385 3.727C2.368 7.564 2 8.682 2 9.733 2 12.614 4.212 15 7 15s5-2.386 5-5.267c0-1.05-.368-2.169-.867-3.212-.671-1.402-1.616-2.744-2.385-3.727a29 29 0 0 0-1.354-1.605l-.022-.023-.006-.007-.002-.001zm0 0-.364-.343zm-.016.766L7 2.247l.016.019c.24.274.572.667.944 1.144.611.781 1.32 1.776 1.901 2.827H4.14c.58-1.051 1.29-2.046 1.9-2.827.373-.477.706-.87.945-1.144zM3 9.733c0-.755.244-1.612.638-2.496h6.724c.395.884.638 1.741.638 2.496C11 12.117 9.182 14 7 14s-4-1.883-4-4.267" />
                                     </svg>
                                     <p style="padding-left: 5px;">Mực nước</p>
                                 </div>
@@ -2598,6 +2613,163 @@
                 </div>
             </div>
         </div>
+        <div id="condition" class="hidden">
+            <div class="container-homePage" style="padding: 0; width: 100%;">
+                <div class="homePage-header history-header" style="background-color: #282d31;">
+                    <div style="line-height: 50px; justify-content: flex-start;" class="d-flex">
+                        <button class="WarrantyScanNext" style="height: 40px; border: none; background-color: #282d31;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                            </svg>
+                        </button>
+                        <p id="header-productName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Tủ ĐK PNJ[12929152]</p>
+                    </div>
+                    <div class="d-flex" style="line-height: 50px;">
+                        <button id="errorWarranty" class="d-none" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                            </svg>
+                        </button>
+                        <button class="homepage-Pre-pickApp d-none style="height: 40px; border: none; background-color: #282d31; padding: 0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" style="color: #fff;" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="homePage-body">
+                    <div class="m-3 m-md-5 p-4 border rounded-5" style="background-color: black; color: white; border-radius: 15px;">
+                        <div class="col-12 row mb-5" style="--bs-gutter-x: 0rem;">
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="power" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px;" onclick>
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>power</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="online" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px;" onclick>
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>online</span>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-1 mb-4 px-md-5 d-flex justify-content-center">
+                            <div id="ElectricityMeter" class="d-flex w-100 p-1" style="border: 1px solid;cursor: pointer;">
+                                <div class="w-50">
+                                    <div class="d-flex py-4">
+                                        <div id="testResizableDiv3" class="w-75">
+                                            <div id="testResizableArray3" class="float-end" style="width: 120px;"></div>
+                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #149aa4;"><strong>V</strong></span>
+                                    </div>
+                                    <div class="d-flex py-4">
+                                        <div id="testResizableDiv3-1" class="w-75">
+                                            <div id="testResizableArray3-1" class="float-end" style="width: 100px;"></div>
+                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #e97540;"><strong>W</strong></span>
+                                    </div>
+                                </div>
+                                <div class="w-50">
+                                    <div class="d-flex py-4">
+                                        <div id="testResizableDiv3-2">
+                                            <div id="testResizableArray3-2" style="width: 100px;"></div>
+                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #f2f442;"><strong>A</strong></span>
+                                    </div>
+                                    <div class="d-flex py-4">
+                                        <div id="testResizableDiv3-3">
+                                            <div id="testResizableArray3-3" style="width: 100px;"></div>
+                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #1a8f93;"><strong>Kwh</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 row" style="--bs-gutter-x: 0rem;">
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_1" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_1', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;">
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 1</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_2" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_2', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;">
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 2</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_3" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_3', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;" >
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 3</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_4" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_4', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;" >
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 4</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_5" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_5', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;" >
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 5</span>
+                            </div>
+                            <div class="col-4 d-flex flex-column align-items-center">
+                                <div id="Relay_6" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
+                                    <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_6', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;" >
+                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.5 1v7h1V1z"></path>
+                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span>Relay 6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="qr-popup" class="modal">
             <div id="qr-reader"></div>
             <button id="close-scanner">
@@ -2771,14 +2943,286 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/Draggable.min.js"></script>
     <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js"></script>
     <script>
         $(document).ready(function () {
+            (function($) {
+
+var numberSegments = [0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F]; //http://en.wikipedia.org/wiki/Seven-segment_display
+
+// Default CSS styles. If you don't specify your own CSS or discrete color options, this is what gets used.
+// 
+$("<style type='text/css'>" 
+    + ".sevenSeg-svg {fill: #320000; overflow: hidden; stroke-width: 0; height: 100%; width: 100%; background-color: Black}"
+    + ".sevenSeg-segOn {fill: Red}"
+    + "</style>")
+    .prependTo("head");
+
+$.widget("bw.sevenSeg", {
+
+options: {
+    /**
+    This option controls the display value on the 7seg.  Set this to the numeric digit you
+    want displayed.
+    */
+    value: null,
+
+    /**
+    Override the default segment on color (Red).  
+    Note: You can alternatively define a CSS style for the class.sevenSeg-segOn that specifies a 'fill' color.
+    */
+    colorOn: null,
+
+    /**
+    Override the default segment off color (#320000).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'fill' color.
+    */
+    colorOff: null,
+
+    /**
+    Override the default background color of the display (Black).  
+    Note: You can alternatively define a CSS style for the class .sevenSeg-svg that specifies a 'background-color' color.
+    */
+    colorBackground: null,
+    
+    /**
+    This option allows skewing the segments to create a slant effect.
+    Note: Setting "transform: skew()" in CSS is problematic for SVG. Would be nice to have, but browser support just 
+    isn't there yet. So, setting the slant must be done through options.
+    */
+    slant: 0,  
+
+    /**
+    This flag controls the appearance of the decimal point 'dot' in the display.
+    The default is to display it (true), but you can set to false to omit it.
+    */
+    decimalPoint: true
+},		
+
+/**
+Widget factory creation handler.
+*/
+_create: function () {
+    this.jqSvgElement = $("<svg/>", {
+        class: this.widgetName + "-svg",
+        viewBox: "0 0 57 80",
+        version: "1.1", 
+        xmlns: "http://www.w3.org/2000/svg", 
+        "xmlns:xlink":"http://www.w3.org/1999/xlink"
+    })
+    .css({fill: this.options.colorOff, "background-color": this.options.colorBackground})    ;
+
+    $("<defs/>")
+        .append($("<polyline/>", {id: "h-seg", points:"11 0, 37 0, 42 5, 37 10, 11 10, 6 5"}))
+        .append($("<polyline/>", {id: "v-seg", points:"0 11, 5 6, 10 11, 10 34, 5 39, 0 39"}))
+        .appendTo(this.jqSvgElement);
+    
+    this.jqSegments = $("<g/>", {class: this.widgetName + "-segGroup"})
+        .append($("<use/>", {"xlink:href": "#h-seg", x: "0", y: "0"}))                                  //Segment A
+        .append($("<use/>", {"xlink:href": "#v-seg", x: "-48", y: "0", transform: "scale(-1,1)"}))      //Segment B
+        .append($("<use/>", {"xlink:href": "#v-seg", x: "-48", y: "-80", transform: "scale(-1,-1)"}))   //Segment C
+        .append($("<use/>", {"xlink:href": "#h-seg", x: "0", y: "70"}))                                 //Segment D
+        .append($("<use/>", {"xlink:href": "#v-seg", x: "0", y: "-80", transform: "scale(1,-1)"}))      //Segment E
+        .append($("<use/>", {"xlink:href": "#v-seg", x: "0", y: "0"}))                                  //Segment F
+        .append($("<use/>", {"xlink:href": "#h-seg", x: "0", y: "35"}))                                 //Segment G
+        .appendTo(this.jqSvgElement);
+
+    if(this.options.slant) {
+        this.jqSegments.attr("transform", "skewX(" + -this.options.slant + ")");
+    }
+
+    if(this.options.decimalPoint) {
+        $("<circle/>", {cx:"52", cy:"75", r:"5"}).appendTo(this.jqSvgElement);
+    }
+    
+    this.jqSvgElement.appendTo(this.element);
+    this.element.append(this.jqSvgElement);
+    
+    // http://stackoverflow.com/a/13654655/390906
+    //
+    this.element.html(this.element.html());
+    this.jqSvgElement = this.element.find("svg");
+    this.jqSegments = this.jqSvgElement.find("." + this.widgetName + "-segGroup");
+
+    if(this.options.value) {
+        this.displayValue(this.options.value);
+    }
+},
+
+_destroy: function() {
+    this.jqSvgElement.remove();
+},
+
+_setOption: function(key, value){
+    this.options[key] = value;
+
+    switch(key){
+        case "value":
+            this.displayValue(value);
+            break;
+    }
+},
+
+/**
+This is the method to set the digit displayed.
+@param value The numeric digit to display.  Call with null to blank out the display.
+@param bDecimalPoint Set to true or false to drive the illumination state of the decimal point
+(does not apply if decimal point display is disabled)
+*/
+displayValue: function(value, bDecimalPoint) {
+    var self = this;
+    if(value >= numberSegments.length) return;
+    self.options.value = value;
+    var segments = self._getSegments(value);
+    self.jqSegments.children().each(function(index, element) {                     
+        self._setSvgElementFill($(element), segments & (1 << index));        
+    });
+    
+    self._setSvgElementFill(self.jqSvgElement.find("circle"), bDecimalPoint);
+},
+
+/**
+Return the bitfield mask for the segments to illuminate for the argumen numeric digit value.    
+*/
+_getSegments: function(value) {
+    if(value === "-") return 0x40;
+    return numberSegments[value];
+},
+
+_setSvgElementFill: function(jqElement, bOn) {
+    // jQuery addClass/removeClass doesn't work with svg <use> elements. So we have to do it the old way.
+    //
+    jqElement.attr("class", bOn && (this.widgetName + "-segOn"));
+    
+    // Set the fill style if options.colorOn is defined. This overrides CSS definitions.
+    //
+    jqElement.css("fill", (bOn && this.options.colorOn) || "");
+}
+
+});
+
+// Plugin Knockout binding handler for sevenSeg if KO is defined.
+//
+if (typeof ko !== "undefined" && ko.bindingHandlers) {  
+    ko.bindingHandlers.sevenSeg = {
+        init: function(element, valueAccessor) {        
+            $(element).sevenSeg(ko.toJS(valueAccessor()));
+        },
+        update: function(element, valueAccessor) {        
+            $(element).sevenSeg("option", ko.toJS(valueAccessor()));
+        }
+    };
+}
+
+/**
+This widget creates a group comprised of any number of discrete sevenSegs.
+*/
+$.widget("bw.sevenSegArray", {
+
+options: {
+    /**
+    This option controls the display value on the 7seg array.  Set this to the numeric value you
+    want displayed.
+    */
+    value: null,
+
+    /**
+    Defines the number of digits that comprise the array.
+    */
+    digits: 2,
+
+    /**
+    If you want to also specify control options for the internally created sevenSeg widgets, this is where you do it
+    Simply pass an object with any sevenSeg options you want as property/value pairs.
+    For example { colorOn: "Lime", colorOff: "#003200" }
+    */
+    segmentOptions: null
+},		
+
+/**
+Widget factory creation handler.
+*/
+_create: function () {
+    this.aJqDigits = [];
+    var sDigitWidth = 100/this.options.digits + "%";
+    for(var iDigit = 0; iDigit < this.options.digits; ++iDigit) {
+        this.aJqDigits[iDigit] = $("<div/>", {style: "display: inline-block; height: 100%;"})
+            .css("width", sDigitWidth) 
+            .sevenSeg(this.options.segmentOptions)
+            .appendTo(this.element);
+    }
+    this.aJqDigits.reverse();
+    if(this.options.value) {
+        this.displayValue(this.options.value);
+    }
+},
+
+_destroy: function() {
+    $.each(this.aJqDigits, function(index, jqDigit) {
+        jqDigit.sevenSeg("destroy");
+        jqDigit.remove();
+    });
+},
+
+_setOption: function(key, value){
+    this.options[key] = value;
+
+    switch(key){
+        case "value":
+            this.displayValue(value);
+            break;
+        
+        // TODO BW : Add other options.
+    }    
+},
+
+/**
+Set the value of the digits to display.  You simply call this with a number and the respective
+digits will be set.  Whatever digits that fit will be displayed, any additional will just be omitted.
+@param value The numeric value to display.  Call with null to blank out the display.
+*/
+displayValue: function(value) {
+    var self = this;    
+    var sValue = value.toString();
+    var iDecimalIdx = sValue.indexOf('.');
+    var iDigitIdx = sValue.length - 1;
+    $.each(self.aJqDigits, function(index, jqDigit) {
+        var bDecimal = iDecimalIdx >= 0 && iDigitIdx === iDecimalIdx;
+        if(bDecimal) {
+            --iDigitIdx;
+        }
+
+        var sDigitValue = sValue[iDigitIdx];        
+        jqDigit.sevenSeg("displayValue", sDigitValue, bDecimal);
+        
+        --iDigitIdx;
+    });
+}
+
+});
+
+// Plugin Knockout binding handler for sevenSegArray if KO is defined.
+//
+if(ko && ko.bindingHandlers) {
+    ko.bindingHandlers.sevenSegArray = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+            $(element).sevenSegArray(ko.toJS(valueAccessor()));
+        },
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {        
+            $(element).sevenSegArray("option", ko.toJS(valueAccessor()));
+        }
+    };
+}
+
+})(jQuery);
             var DataUser;
             var typeQR;
             var listDomain = [];
@@ -3039,16 +3483,6 @@
                 showHistory();
                 pickApp('MUA');
             });
-            $("#PickApp-button-IOT").click(function () {
-                pickApp('IOT');
-            });
-            $("#PickApp-button-pick").click(function () {
-                showHistory();
-                pickApp('PICK');
-            });
-            $("#PickApp-button-login").click(function () {
-                pickApp('LOGIN');
-            });
             $("#PickApp-button-warranty").click(function () {
                 $('#NameHistoryPage').text("Sản phẩm:")
                 $('#descHistoryPage').text("Lịch sử sản phẩm đã xem")
@@ -3067,6 +3501,31 @@
                 addItemWarranty();
                 pickApp('GUA');
             });
+            $("#PickApp-button-condition").click(function () {
+                // $('#NameHistoryPage').text("Tủ điều khiển:");
+                // $('#descHistoryPage').text("Lịch sử tủ đã truy cập:");
+                // $('#historySelect').addClass("d-none");
+                // $('#footerHistoryPage').text("chọn tủ đã truy cập hoặc thêm mới");
+
+                // historyListDetail.empty();
+                // showAddWorkStationButton();
+                // checkTabHistory = 3;
+                // addItemWarranty();
+                pickApp('DK');
+            });
+            
+            $("#PickApp-button-IOT").click(function () {
+                pickApp('IOT');
+            });
+            
+            $("#PickApp-button-pick").click(function () {
+                showHistory();
+                pickApp('PICK');
+            });
+            $("#PickApp-button-login").click(function () {
+                pickApp('LOGIN');
+            });
+            
             $("#backHistoryWarranty").click(function () {
                 $('#ScanQRWarranty').addClass("hidden");
                 $("#PickApp-button-warranty").click();
@@ -3323,6 +3782,11 @@
                             add('WARRANTY_USER', willInsertData);
                         }
                     }
+                } else if (type == 'DK'){
+                    document.getElementById("condition").classList.remove("hidden");
+                    document.getElementById("pickApp").classList.add("hidden");
+                    // document.getElementById("history").classList.remove("hidden");
+                    getWebSocket("hoangminhlighting.vn:447")
                 }
             }
             async function CheckWorkStation(workstationID) {
@@ -4201,10 +4665,11 @@
                             
                         }
                     }
-                } else {
-                    const path = document.querySelector("#mySvg path");
-                    path.setAttribute("fill", "#007bff");
-                }
+                } 
+                // else {
+                //     const path = document.querySelector("#mySvg path");
+                //     path.setAttribute("fill", "#007bff");
+                // }
                 $('#loading-popup').hide()
             }
 
@@ -5303,13 +5768,13 @@
                 window.addEventListener('resize', () => {
                     if (window.innerHeight < windowHeight) {
                         // Keyboard is visible, hide or adjust footer
-                        document.getElementById("footer-instruct-text").classList.add("d-none");
-                        document.getElementById("footer-instruct-warranty").classList.add("d-none");
+                        document.getElementById("footer-instruct-text")?.classList.add("d-none");
+                        document.getElementById("footer-instruct-warranty")?.classList.add("d-none");
                         footer.style.display = 'none'; // You can also reposition it instead of hiding
                     } else {
                         // Keyboard is hidden, show footer
-                        document.getElementById("footer-instruct-text").classList.remove("d-none");
-                        document.getElementById("footer-instruct-warranty").classList.remove("d-none");
+                        document.getElementById("footer-instruct-text")?.classList.remove("d-none");
+                        document.getElementById("footer-instruct-warranty")?.classList.remove("d-none");
                         footer.style.display = 'block';
                     }
                 });
@@ -6281,7 +6746,164 @@
                 }
             }
             //-----------------------------------------------------------------------------------------------------------
+            // code điều khiển 
 
+            changeColorbutton = function(id, color, Status){
+                //console.log(id, Status);
+                if(Status == 2){
+                    if ($('#'+id).css('background-color') == 'rgb(0, 0, 0)') {
+                        $('#'+id).css('background', color);
+                        $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ color);
+                    } else {
+                        $('#'+id).css('background', '#000000');
+                        $('#'+id).css('box-shadow', '0px 0px 30px 5px #000000');
+                    }
+                } else if(Status == 0) {
+                    //console.log(id, color, Status);
+                    $('#'+id).css('background', '#000000');
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px #000000');
+                } else if(Status == 1) {
+                    //console.log(id, color, Status);
+                    $('#'+id).css('background', color);
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ color);
+                }
+            }
+            var ws = null;
+            var wss = null;
+            var timeoutHandle;
+            getWebSocket = function (value) {
+                try {
+                    ws = new WebSocket("wss://" + value + "/findme");
+                    // ws = new WebSocket("wss://" + value + "/forwarding");
+                    ws.onopen = function () {
+                        // w.send("10eba031-2203-4105-b80b-04b675dfe576");
+                        ws.send("Website/" + 12929152 + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
+                    };
+                    ws.onmessage = function (data) {
+                        var txt = data.data;
+                        let checkValue = txt.split(":");
+                        // console.log(data);
+                        if(checkValue[0] == "12929152"){
+                            clearTimeout(timeoutHandle);
+                            timeoutHandle = setTimeout(noDataReceived, 120000);
+                            $('#power').css('background', '#d41c1f');
+                            $('#power').css('box-shadow', '0px 0px 30px 5px'+ '#d41c1f');
+                            $('#online').css('background', '#ceac30');
+                            $('#online').css('box-shadow', '0px 0px 30px 5px'+ '#ceac30');
+                            $("#cboDeviceServer").empty();
+                            $("#listDevice").empty();
+                            let checkLogin = true;
+                            if (txt != "NOT FOUND") {
+                                console.log(txt);
+                                if (txt.slice(9, 12) == 'T:2') {
+                                    let temp = txt.split(",");
+                                    if(temp[temp.length - 1].slice(0, 2) == 'RL'){
+                                        let number = parseInt(temp[temp.length - 1].substring(3));
+                                        let binary = number.toString(2).padStart(6, '0'); // Chuyển sang nhị phân, thêm 0 nếu thiếu
+                                        let binaryArray = binary.split('').reverse();
+                                        console.log(binaryArray);
+                                        for (let i = binaryArray.length -1; i >= 0; i--) {
+                                            if(binaryArray[i] == 1){
+                                                $('#Relay_'+(i + 1)).css('background', '#08ed0a');
+                                                $('#Relay_'+(i + 1)).css('box-shadow', '0px 0px 30px 5px'+ '#08ed0a');
+                                            } else {
+                                                $('#Relay_'+(i + 1)).css('background', '#000000');
+                                                $('#Relay_'+(i + 1)).css('box-shadow', '0px 0px 30px 5px #000000');
+                                            }
+                                        }
+                                    } else {
+                                        let temp2 = txt.split("T:2");
+                                        console.log("check dữ liệu:", temp2);
+                                        updateDataLed(temp2[3]);
+                                    }
+                                }
+                                // for (var i = 0; i <= txt.split(";").length; i++) {
+                                //     var temp = txt.split(";")[i];
+                                //     console.log(temp);
+
+                                //     if (temp.slice(0, 3) == 'T:2') {
+                                //         console.log(temp.split(","));
+                                //     }
+                                // }
+                                // if (checkLogin) {
+                                //     alert("Thiết bị " + HomeOS.Login.NameDevice + " hiện đang tắt.!");
+                                // }
+                            } else {
+                                $("#cboDeviceServer").append(
+                                    $("<option>", {
+                                        value: txt,
+                                        text: txt,
+                                    })
+                                );
+                                $("#btnAccessDevice").prop("disabled", true);
+                            }
+                        }
+                        // w.close();
+                        // "ws://"+$("#txtDNSServer").val() + "/forwarding"
+                    };
+                    wss = new WebSocket("wss://" + value + "/controller");
+                    wss.onopens = function () {
+                        // w.send("10eba031-2203-4105-b80b-04b675dfe576");
+                        wss.send("Website/" + 12929152 + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
+                    }; 
+                } catch (e) {
+                    // alert("Máy chủ " + $("#txtDNSServer").val() + " hiện đang tắt.!");
+                }
+            };
+            var noDataReceived = function () {
+                $('#online').css('background', '#000000');
+                $('#online').css('box-shadow', '0px 0px 30px 5px #000000');
+            }
+            onOffRelay = function(id, color) {
+                let checkID = parseInt(id.substring(6));
+                if ($('#'+id).css('background-color') == 'rgb(0, 0, 0)') {
+                    $('#'+id).css('background', color);
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ color);
+                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+checkID+');' }]; 
+                    wss.send(JSON.stringify(cmd));
+                } else {
+                    $('#'+id).css('background', '#000000');
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px #000000');
+                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+ (checkID+6) +');' }]; 
+                    wss.send(JSON.stringify(cmd));
+                    // ws.send('12929152:SEND CAN(17 0 0 0 41 '+ (checkID+6) +');')
+                }
+            }
+
+            
+
+            $("#testResizableArray3").sevenSegArray({ digits: 5 ,segmentOptions: {colorOff: "#073336", colorOn: "#0fb4c0"}});
+            $("#testResizableDiv3").resizable({ aspectRatio: true });
+            $("#testResizableArray3-1").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#361b0e", colorOn: "#e97540"}});
+            $("#testResizableDiv3-1").resizable({ aspectRatio: true });
+            $("#testResizableArray3-2").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#2d2d0d", colorOn: "#f2f442"}});
+            $("#testResizableDiv3-2").resizable({ aspectRatio: true });
+            $("#testResizableArray3-3").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#073336", colorOn: "#0fb4c0"}});
+            $("#testResizableDiv3-3").resizable({ aspectRatio: true });
+            // $('#Relay_1').click(function () {
+            //     ws.send('12929152:SEND CAN(17 0 0 0 41 7);')
+            // });
+            var updateDataLed = function (dataString) {
+                // Xóa ký tự xuống dòng và khoảng trắng dư thừa
+                dataString = dataString.trim();
+
+                // Chuyển chuỗi dữ liệu thành object
+                var dataObj = {};
+                dataString.split(",").forEach(function (item) {
+                    var parts = item.split(":");
+                    if (parts.length === 2) {
+                        dataObj[parts[0]] = parts[1]; // Lưu vào object với key:value
+                    }
+                });
+
+                // Cập nhật giá trị cho từng màn hình LED
+                $("#testResizableArray3").sevenSegArray({ value: dataObj["U"] || "0" });  // Điện áp (V)
+                $("#testResizableArray3-1").sevenSegArray({ value: dataObj["P"] || "0" }); // Công suất (W)
+                $("#testResizableArray3-2").sevenSegArray({ value: dataObj["I"] || "0" }); // Dòng điện (A)
+                $("#testResizableArray3-3").sevenSegArray({ value: dataObj["E"] || "0" }); // Năng lượng (kWh)
+            };
+            
+            //-----------------------------------------------------------------------------------------------------------
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",

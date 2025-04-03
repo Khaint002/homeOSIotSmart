@@ -6,29 +6,59 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="datetime-local" id="date_time" readonly style="color: white;" class="form-control content-input" placeholder="Chỉnh thời gian..." step="1">
-    <input type="date" id="dateInput">
-    <script>
-        document.getElementById("date_time").addEventListener("focus", function () {
-            this.removeAttribute("readonly"); // Khi focus vào input, cho phép nhập
-        });
+    <input type="text" id="dateTimeInput" placeholder="Nhập ngày giờ (YYYY-MM-DD HH:mm:ss)">
 
-        document.getElementById("date_time").addEventListener("blur", function () {
-            if (!this.value) {
-                this.setAttribute("readonly", true); // Nếu không nhập gì, đặt lại readonly
-            }
-        });
+<script>
+// Hàm tự động định dạng và giới hạn nhập
+function formatDateTimeInput(event) {
+    let input = event.target.value.replace(/[^0-9]/g, ''); // Xóa tất cả ký tự không phải số
+    let formattedInput = '';
 
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
+    // Xử lý phần YYYY-MM-DD HH:mm:ss
+    if (input.length >= 1) formattedInput = input.substring(0, 4); // YYYY
+    if (input.length >= 4) formattedInput += '-'; // Thêm dấu - sau YYYY
+    if (input.length > 4) formattedInput += input.substring(4, 6); // MM
+    if (input.length >= 6) formattedInput += '-'; // Thêm dấu - sau MM
+    if (input.length > 6) formattedInput += input.substring(6, 8); // DD
+    if (input.length >= 8) formattedInput += ' '; // Thêm dấu cách sau DD
+    if (input.length > 8) formattedInput += input.substring(8, 10); // HH
+    if (input.length >= 10) formattedInput += ':'; // Thêm dấu : sau HH
+    if (input.length > 10) formattedInput += input.substring(10, 12); // mm
+    if (input.length >= 12) formattedInput += ':'; // Thêm dấu : sau mm
+    if (input.length > 12) formattedInput += input.substring(12, 14); // ss
 
-        // Định dạng YYYY-MM-DD
-        const formattedTomorrow = tomorrow.toISOString().split("T")[0];
+    // Giới hạn tối đa 19 ký tự (để không cho nhập quá số ký tự cho phép)
+    if (input.length > 14) {
+        input = input.substring(0, 14); // Đảm bảo không nhập quá số ký tự cho phép
+    }
 
-        // Gán giá trị mặc định và giới hạn ngày chọn
-        const dateInput = document.getElementById("dateInput");
-        dateInput.value = formattedTomorrow;
-        dateInput.max = formattedTomorrow;
-    </script>
+    // Cập nhật giá trị của input
+    event.target.value = formattedInput;
+}
+
+// Hàm kiểm tra định dạng ngày giờ hợp lệ (YYYY-MM-DD HH:mm:ss)
+function isValidDateTime(dateTimeString) {
+    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    return regex.test(dateTimeString);
+}
+
+// Lắng nghe sự kiện input để tự động format và giới hạn
+document.getElementById("dateTimeInput").addEventListener("input", function(event) {
+    formatDateTimeInput(event);
+});
+
+// Nếu bạn muốn kiểm tra và lưu khi nhấn nút lưu, ví dụ thêm nút "Lưu":
+// document.getElementById("saveButton")?.addEventListener("click", function() {
+//     const value = document.getElementById("dateTimeInput").value.trim();
+//
+//     if (isValidDateTime(value)) {
+//         alert("Dữ liệu hợp lệ! Đang lưu...");
+//         // Xử lý lưu dữ liệu ở đây
+//     } else {
+//         alert("Vui lòng nhập đúng định dạng: YYYY-MM-DD HH:mm:ss");
+//     }
+// });
+</script>
+
 </body>
 </html>
