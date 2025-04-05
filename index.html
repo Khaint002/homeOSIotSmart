@@ -3434,6 +3434,15 @@
                 document.getElementById("result-truycap").classList.remove("d-none");
                 scanAgain()
             });
+            $("#result-condition-scanagain").click(function () {
+                document.getElementById("result-condition").classList.add("d-none");
+                document.getElementById("result-form-loading").classList.remove("d-none");
+                document.getElementById("result-condition-title").classList.add("d-none");
+                document.getElementById("result-form-conditionName").classList.remove("d-none");
+                document.getElementById("result-form-conditionCode").classList.remove("d-none");
+                document.getElementById("result-truycap").classList.remove("d-none");
+                scanAgain()
+            });
             $("#PickApp-button-scanQR").click(function () {
                 if(checkTabHistory == 1){
                     stopInterval()
@@ -4528,6 +4537,7 @@
                         },
                         error: function (e, t, x) {
                             document.getElementById("result-form-total").classList.remove("d-none");
+                            document.getElementById("result-condition").classList.add("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
                             document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
@@ -5267,6 +5277,7 @@
                                 document.getElementById("result-form").classList.remove("d-none");
                                 document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                 document.getElementById("result-form-total").classList.remove("d-none");
+                                document.getElementById("result-condition").classList.add("d-none");
                                 document.getElementById("result-form-loading").classList.add("d-none");
                                 document.getElementById("result-form-title").classList.remove("d-none");
                                 document.getElementById("result-form-stationID").classList.add("d-none");
@@ -5287,6 +5298,7 @@
                         localStorage.setItem("URL", resultArray[0]);
                         workstation = resultArray[1];
                         document.getElementById("result-form-total").classList.remove("d-none");
+                        document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form").classList.remove("d-none");
                         document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
@@ -5301,11 +5313,13 @@
                         localStorage.setItem("URL", url);
                         workstation = decodedText;
                         document.getElementById("result-form-total").classList.remove("d-none");
+                        document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form").classList.remove("d-none");
                         document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                     } else {
                         document.getElementById("result-form-total").classList.remove("d-none");
+                        document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form-title").classList.remove("d-none");
                         document.getElementById("result-form-stationID").classList.add("d-none");
@@ -5326,6 +5340,7 @@
                         toastr.success("Quét QR thành công");
                     } else {
                         document.getElementById("result-form-total").classList.remove("d-none");
+                        document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form-title").classList.remove("d-none");
                         document.getElementById("result-form-stationID").classList.add("d-none");
@@ -5414,6 +5429,53 @@
                                                     changeDataWarranty(data);
                                                 }
                                                 
+                                            } if(checkQRcode.length == 4){
+                                                data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));
+                                                // const checkValue = dataLot.data.some(item => item.LOT_NUMBER == decodedText);
+                                                if(data.length == 0) {
+                                                    const willInsertData = {
+                                                        QR_CODE: decodedText,
+                                                        MA_SAN_PHAM: checkQRcode[1],
+                                                        DATE_CREATE: new Date(),
+                                                        ACTIVATE_WARRANTY: new Date('1999-01-01 07:00:00.000'),
+                                                        USER_ID: UserID,
+                                                        DATASTATE: "ADD",
+                                                    };
+                                                    console.log(willInsertData);
+                                                    
+                                                    add('DM_QRCODE', willInsertData).then(async data => {
+                                                        try {
+                                                            toastr.success("Quét QR và lưu thông tin thành công!");
+                                                            if(checkTab){
+                                                                scanAgain();
+                                                            } else {
+                                                                document.getElementById("result-condition").classList.remove("d-none");
+                                                                document.getElementById("result-form-loading").classList.add("d-none");
+                                                                document.getElementById("result-form").classList.remove("d-none");
+                                                                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                                document.getElementById("result-condition-truycap").disabled = false;
+                                                                document.getElementById("result-form-conditionName").value = checkQRcode[1];
+                                                                document.getElementById("result-form-conditionCode").value = checkQRcode[3];
+                                                                document.getElementById("header-conditionName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
+                                                                data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));  
+                                                                localStorage.setItem("itemCondition", JSON.stringify(data));
+                                                            }
+                                                        } catch (e) { }
+                                                    }).catch(err => {
+                                                        console.error('Error:', err);
+                                                    });
+                                                } else {
+                                                    console.log(data);
+                                                    document.getElementById("result-condition").classList.remove("d-none");
+                                                    document.getElementById("result-form-loading").classList.add("d-none");
+                                                    document.getElementById("result-form").classList.remove("d-none");
+                                                    document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                    document.getElementById("result-condition-truycap").disabled = false;
+                                                    document.getElementById("result-form-conditionName").value = checkQRcode[1];
+                                                    document.getElementById("result-form-conditionCode").value = checkQRcode[3];
+                                                    document.getElementById("header-conditionName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
+                                                    localStorage.setItem("itemCondition", JSON.stringify(data));
+                                                }
                                             } else {
                                                 if(typeQR == 3 && checkQRcode[0].substring(0, 3) == "T20"){
                                                     console.log(1);
@@ -5510,6 +5572,7 @@
                                                         document.getElementById("result-form").classList.remove("d-none");
                                                         document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                         document.getElementById("result-form-total").classList.remove("d-none");
+                                                        document.getElementById("result-condition").classList.add("d-none");
                                                         document.getElementById("result-form-loading").classList.add("d-none");
                                                         document.getElementById("result-form-title").classList.remove("d-none");
                                                         document.getElementById("result-form-stationID").classList.add("d-none");
@@ -5533,6 +5596,7 @@
                                                 localStorage.setItem("URL", resultArray[0]);
                                                 workstation = resultArray[1];
                                                 document.getElementById("result-form-total").classList.remove("d-none");
+                                                document.getElementById("result-condition").classList.add("d-none");
                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                 document.getElementById("result-form").classList.remove("d-none");
                                                 document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
@@ -5547,11 +5611,13 @@
                                                 localStorage.setItem("URL", url);
                                                 workstation = decodedText;
                                                 document.getElementById("result-form-total").classList.remove("d-none");
+                                                document.getElementById("result-condition").classList.add("d-none");
                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                 document.getElementById("result-form").classList.remove("d-none");
                                                 document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                             } else {
                                                 document.getElementById("result-form-total").classList.remove("d-none");
+                                                document.getElementById("result-condition").classList.add("d-none");
                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                 toastr.error("Vui lòng quét đúng mã QR!");
                                             }
@@ -5574,6 +5640,7 @@
                                         document.getElementById("result-form").classList.remove("d-none");
                                         document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                         document.getElementById("result-form-total").classList.remove("d-none");
+                                        document.getElementById("result-condition").classList.add("d-none");
                                         document.getElementById("result-form-loading").classList.add("d-none");
                                         document.getElementById("result-form-title").classList.remove("d-none");
                                         document.getElementById("result-form-stationID").classList.add("d-none");
@@ -5792,6 +5859,7 @@
                             document.getElementById("result-form").classList.remove("d-none");
                             document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-form-total").classList.remove("d-none");
+                            document.getElementById("result-condition").classList.add("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form-title").classList.remove("d-none");
                             document.getElementById("result-form-stationID").classList.add("d-none");
