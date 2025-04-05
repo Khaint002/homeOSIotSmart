@@ -3049,7 +3049,8 @@
             var NameWorkStation;
             var intervalId; // Lưu ID của setInterval
             var checkTab = false;
-            var checkAppQR;
+            var checkApp;
+
             // var user_id = "admin";
             // var session = "7b504acc-988a-437a-890f-389765305b47";
 
@@ -3238,6 +3239,7 @@
                 showHistory();
                 pickApp('MUA');
             });
+
             $("#PickApp-button-warranty").click(function () {
                 $('#NameHistoryPage').text("Sản phẩm:")
                 $('#descHistoryPage').text("Lịch sử sản phẩm đã xem")
@@ -3289,7 +3291,12 @@
             
             $("#backHistoryWarranty").click(function () {
                 $('#ScanQRWarranty').addClass("hidden");
-                $("#PickApp-button-warranty").click();
+                if(checkApp == 'GUA'){
+                    $("#PickApp-button-warranty").click();
+                } else {
+                    $("#PickApp-button-condition").click();
+                }
+                
             });
             $(".Pre-pickApp").click(function () {
                 stopInterval()
@@ -3467,6 +3474,7 @@
             $("#result-condition-truycap").click(function () {
                 document.getElementById("result-condition-truycap").disabled = true;
                 $("#loading-popup").show()
+                getWebSocket("hoangminhlighting.vn:447");
                 DetailCondition();
             });
             $("#BackWarranty").click(function () {
@@ -3510,6 +3518,7 @@
                     document.getElementById("history").classList.remove("hidden");
                     document.getElementById("homePage").classList.add("hidden");
                 } else if (type == 'GUA') {
+                    checkApp = type;
                     document.getElementById("LoadScreen").classList.remove("d-none");
                     document.getElementById("LogoLoadScreen").classList.remove("hidden");
                     document.getElementById("history").classList.remove("hidden");
@@ -3550,6 +3559,7 @@
                         }
                     }
                 } else if (type == 'DK'){
+                    checkApp = type;
                     // document.getElementById("condition").classList.remove("hidden");
                     document.getElementById("pickApp").classList.add("hidden");
                     document.getElementById("history").classList.remove("hidden");
