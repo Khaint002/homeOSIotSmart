@@ -2817,6 +2817,21 @@
                         <button id="result-product-warranty" class="btn mt-2"
                                 style="background-color: #f39c12;border: solid 1px #f39c12; width: 100%; color: #fff;">Kích hoạt bảo hành</button>
                     </div>
+                    <div id="result-condition" class="d-none">
+                        <div id="result-condition-title" class="d-none" style="width: 100%; text-align: center;">
+                            <p style="color: #fff;">Mã sản phẩm lỗi, vui lòng thử lại.</p>
+                        </div>
+                        <p></p>
+                        <input id="result-form-conditionName" disabled type="text" style="width: 100%; height: 50px; color: #fff; padding-left: 20px; margin-top: 10px; background-color: #343a40; border: none; border-bottom: 1px solid #626262;">
+                        <input id="result-form-conditionCode" disabled type="text" style="width: 100%; height: 50px; color: #fff; padding-left: 20px; margin-top: 10px; background-color: #343a40; border: none; border-bottom: 1px solid #626262;">
+                        <div class="d-flex justify-content-between pt-2">
+                            <button id="result-condition-scanagain" class="btn "
+                                style="background-color: #c44133;border: solid 1px #c44133; width: 47%; color: #fff;">Quét
+                                lại</button>
+                            <button id="result-condition-truycap" disabled class="btn "
+                                style="background-color: #f39c12;border: solid 1px #f39c12; width: 47%; color: #fff;">truy cập</button>
+                        </div>
+                    </div>
                     <div id="result-form-loading">
                         <div style="width: 100%; text-align: center;">
                             <p style="color: #fff;">Đang kiểm tra dữ liệu.</p>
@@ -3148,7 +3163,6 @@
                 document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 document.getElementById("result-product").classList.add("d-none");
-                document.getElementById("result-product").classList.add("d-none");
                 document.getElementById("tab-0").classList.remove("active");
                 document.getElementById("tab-1").classList.add("active");
                 document.getElementById("btn-tab1").classList.add("menuWarranty");
@@ -3158,7 +3172,18 @@
                 document.getElementById("menu-warranty").classList.remove("d-none");
                 $('#loading-popup').hide()
                 console.log('hide');
-
+            }
+            function DetailCondition() {
+                document.getElementById("footer-instruct-scanQR").classList.add("d-none");
+                document.getElementById("result-form").classList.add("d-none");
+                document.getElementById("result-product").classList.add("d-none");
+                document.getElementById("tab-0").classList.remove("active");
+                document.getElementById("tab-1").classList.add("active");
+                document.getElementById("btn-tab1").classList.add("menuWarranty");
+                $('#qr-popup').hide()
+                document.getElementById("ScanQRWarranty").classList.add("hidden");
+                document.getElementById("condition").classList.remove("hidden");
+                $('#loading-popup').hide()
             }
             function scanAgain() {
                 console.log("scan2");
@@ -3438,6 +3463,11 @@
                 document.getElementById("result-product-truycap").disabled = true;
                 $("#loading-popup").show()
                 DetailProduct();
+            });
+            $("#result-condition-truycap").click(function () {
+                document.getElementById("result-condition-truycap").disabled = true;
+                $("#loading-popup").show()
+                DetailCondition();
             });
             $("#BackWarranty").click(function () {
                 $("#error-popup").hide();
@@ -5102,14 +5132,14 @@
                             // });
                         } else {
                             console.log(data);
-                            document.getElementById("result-product").classList.remove("d-none");
+                            document.getElementById("result-condition").classList.remove("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
                             document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
-                            document.getElementById("result-product-truycap").disabled = false;
-                            document.getElementById("result-form-productName").value = checkQRcode[1];
-                            document.getElementById("result-form-productCode").value = checkQRcode[3];
-                            document.getElementById("header-productName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
+                            document.getElementById("result-condition-truycap").disabled = false;
+                            document.getElementById("result-form-conditionName").value = checkQRcode[1];
+                            document.getElementById("result-form-conditionCode").value = checkQRcode[3];
+                            document.getElementById("header-conditionName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
                             // document.getElementById("result-form").classList.remove("d-none");
                             // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             // document.getElementById("result-form-total").classList.remove("d-none");
