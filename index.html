@@ -4396,7 +4396,7 @@
                 waranntyItems = JSON.parse(localStorage.getItem('dataCondition'));
                 console.log(waranntyItems, itemW.CodeCondition);
                 
-                if (waranntyItems.length != 0) {
+                if (waranntyItems) {
                     waranntyItems = waranntyItems.filter(item => item.CodeCondition !== itemW.CodeCondition);
                     waranntyItems.push(itemW);
                     if (waranntyItems.length > 20) {
