@@ -1,14 +1,12 @@
-[
-  {
-    "CodeWarranty": "202412.0087",
-    "NameWarranty": "ROLE Thuận Phong",
-    "imgWarranty": "https://central.homeos.vn/images/ROLETP.jpg",
-    "date": "02/04/2025 11:26:22"
-  },
-  {
-    "CodeWarranty": "202412.0089",
-    "NameWarranty": "ROLE Thuận Phong",
-    "imgWarranty": "https://central.homeos.vn/images/ROLETP.jpg",
-    "date": "04/04/2025 14:09:55"
-  }
-]
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
+}
