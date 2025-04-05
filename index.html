@@ -2085,7 +2085,7 @@
                         </button>
                     </div>
                     <div id="tab4" class="tab-content-guarantee">
-                        <div style="color: #fff; font-size: 1.5rem; padding: 50px 0 0 0;">Sản phẩm cần xem</div>
+                        <div style="color: #fff; font-size: 1.5rem; padding: 50px 0 0 0;">Thiết bị cần xem</div>
                         <div style="text-align: start; margin: 15px 0;">
                             <span style="color: #fff;">Mã QRcode:</span>
                             <input id="warranty_QR" type="text"
@@ -2168,7 +2168,7 @@
                     <div class="step">
                         <div class="circle">02</div>
                     </div>
-                    <p>Nhấn nút để quét sản phẩm cần bảo hành</p>
+                    <p>Nhấn nút để quét QRcode của thiết bị</p>
                 </div>
             </div>
         </div>
@@ -2621,7 +2621,7 @@
                                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                             </svg>
                         </button>
-                        <p id="header-productName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Tủ ĐK PNJ[12929152]</p>
+                        <p id="header-conditionName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">-</p>
                     </div>
                     <div class="d-flex" style="line-height: 50px;">
                         <button id="errorWarranty" class="d-none" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
@@ -4376,6 +4376,37 @@
 
                 localStorage.setItem('dataWarranty', JSON.stringify(waranntyItems));
             }
+
+            function saveCondition(data) {
+                console.log(data);
+                const DataQRcode = data[0].QR_CODE.split(',');
+                const itemW = { 
+                    'CodeCondition': DataQRcode[3], 
+                    'NameCondition': data[0].PRODUCT_NAME, 
+                    'imgCondition': data[0].PRODUCT_IMG,
+                    'date': getCurrentTime(),
+                    'domainCondition': 'hoangminhlighting.vn:447',
+                }
+                
+                waranntyItems = JSON.parse(localStorage.getItem('dataCondition'));
+                console.log(waranntyItems, itemW.CodeCondition);
+                
+                if (waranntyItems.length != 0) {
+                    waranntyItems = waranntyItems.filter(item => item.CodeCondition !== itemW.CodeCondition);
+                    waranntyItems.push(itemW);
+                    if (waranntyItems.length > 20) {
+                        waranntyItems.shift();
+                    }
+                    console.log('chạy:');
+                    
+                } else {
+                    waranntyItems = [];
+                    waranntyItems.push(itemW);
+                    console.log(waranntyItems);
+                }
+
+                localStorage.setItem('dataCondition', JSON.stringify(waranntyItems));
+            }
             
             // update data của trang chính xem dữ liệu
             function changeDataHomePage(data) {
@@ -5108,38 +5139,27 @@
                             };
                             console.log(willInsertData);
                             
-                            // add('DM_QRCODE', willInsertData).then(async data => {
-                            //     try {
-                            //         toastr.success("Quét QR và lưu thông tin thành công!");
-                            //         if(checkTab){
-                            //             scanAgain();
-                            //         } else {
-                            //             document.getElementById("result-product").classList.remove("d-none");
-                            //             document.getElementById("result-form-loading").classList.add("d-none");
-                            //             document.getElementById("result-form").classList.remove("d-none");
-                            //             document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
-                            //             document.getElementById("result-product-truycap").disabled = false;
-                            //             document.getElementById("result-form-productName").value = checkQRcode[1];
-                            //             document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
-                            //             document.getElementById("header-productName").textContent = checkQRcode[1]+" - "+checkQRcode[2].substring(1);
-                            //             data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));  
-                            //             const willInsertData = {
-                            //                 TYPE: "ADD",
-                            //                 ERROR_NAME: "Hoàn thành sản phẩm",
-                            //                 DESCRIPTION: "Nhập sản phẩm vào hệ thống",
-                            //                 DATE_CREATE: new Date(),
-                            //                 ERROR_STATUS: 0,
-                            //                 QRCODE_ID: data[0].PR_KEY,
-                            //                 USER_ID: UserID,
-                            //                 DATASTATE: "ADD",
-                            //             };
-                            //             await add('WARRANTY_ERROR', willInsertData)
-                            //             changeDataWarranty(data);
-                            //         }
-                            //     } catch (e) { }
-                            // }).catch(err => {
-                            //     console.error('Error:', err);
-                            // });
+                            add('DM_QRCODE', willInsertData).then(async data => {
+                                try {
+                                    toastr.success("Quét QR và lưu thông tin thành công!");
+                                    if(checkTab){
+                                        scanAgain();
+                                    } else {
+                                        document.getElementById("result-condition").classList.remove("d-none");
+                                        document.getElementById("result-form-loading").classList.add("d-none");
+                                        document.getElementById("result-form").classList.remove("d-none");
+                                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                        document.getElementById("result-condition-truycap").disabled = false;
+                                        document.getElementById("result-form-conditionName").value = checkQRcode[1];
+                                        document.getElementById("result-form-conditionCode").value = checkQRcode[3];
+                                        document.getElementById("header-conditionName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
+                                        data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));  
+                                        localStorage.setItem("itemCondition", JSON.stringify(data));
+                                    }
+                                } catch (e) { }
+                            }).catch(err => {
+                                console.error('Error:', err);
+                            });
                         } else {
                             console.log(data);
                             document.getElementById("result-condition").classList.remove("d-none");
@@ -5150,16 +5170,8 @@
                             document.getElementById("result-form-conditionName").value = checkQRcode[1];
                             document.getElementById("result-form-conditionCode").value = checkQRcode[3];
                             document.getElementById("header-conditionName").textContent = data[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
-                            // document.getElementById("result-form").classList.remove("d-none");
-                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
-                            // document.getElementById("result-form-total").classList.remove("d-none");
-                            // document.getElementById("result-form-loading").classList.add("d-none");
-                            // document.getElementById("result-form-title").classList.remove("d-none");
-                            // document.getElementById("result-form-stationID").classList.add("d-none");
-                            // document.getElementById("result-form-stationName").classList.add("d-none");
-                            // document.getElementById("result-truycap").classList.add("d-none");
+                            localStorage.setItem("itemCondition", JSON.stringify(data));
                         }
-
                     } else {
                         if(typeQR == 3 && checkQRcode[0].substring(0, 3) == "T20"){
                             const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='"+$('#lot-number').val()+"' AND LOT_CLASS='"+$('#classProduct').val()+"'")
@@ -5258,7 +5270,6 @@
                                 toastr.error("Vui lòng quét đúng mã QR!");
                             }
                         } 
-                        
                     }
                 } else {
                     if (decodedText.length > 6) {
@@ -6602,7 +6613,11 @@
 
             $("#warranty-detail").click( async function () {
                 var inputValue = document.getElementById("warranty_QR").value;
-                accessDevice(inputValue);
+                if(checkApp == 'GUA'){
+                    accessDevice(inputValue);
+                } else {
+                    accessDevice(inputValue, 'DK');
+                }
             })
 
             async function accessDevice(inputValue, check) {
@@ -6611,7 +6626,6 @@
                 if (inputValue == null || inputValue == "") {
                     toastr.error("Vui lòng nhập mã QRcode!");
                 } else {
-                    
                     let dataWarranty = [];
                     const dataQRcode = await getDM("DM_QRCODE", "1=1")
                     const matchedItem = dataQRcode.data.find(item => 
@@ -6624,9 +6638,16 @@
                     }
                     if(dataWarranty.length == 1){
                         if(check == 'DK'){
+                            $("#loading-popup").show()
+                            let checkQRcode = dataWarranty[0].QR_CODE.split(',');
+                            const dataQRCondition = await getDataMDQRcode(dataWarranty[0].QR_CODE.replaceAll(',', '$'));
+                            localStorage.setItem("itemCondition", JSON.stringify(dataQRCondition));
                             document.getElementById("condition").classList.remove("hidden");
                             document.getElementById("history").classList.add("hidden");
-                            getWebSocket("hoangminhlighting.vn:447")
+                            document.getElementById("ScanQRWarranty").classList.add("hidden");
+                            document.getElementById("header-conditionName").textContent = dataQRCondition[0].PRODUCT_NAME+"["+checkQRcode[3]+"]";
+
+                            getWebSocket("hoangminhlighting.vn:447");
                         } else {
                             $("#loading-popup").show()
                             let checkQRcode = dataWarranty[0].QR_CODE.split(',');
@@ -6772,6 +6793,8 @@
                         let cmd = [{ CHIP_ID: '12929152', COMMAND: 'REFRESH;' }]; 
                         wss.send(JSON.stringify(cmd));
                     }, 500);
+                    $("#loading-popup").hide();
+                    saveCondition(JSON.parse(localStorage.getItem('itemCondition')));
                 } catch (e) {
                     // alert("Máy chủ " + $("#txtDNSServer").val() + " hiện đang tắt.!");
                 }
