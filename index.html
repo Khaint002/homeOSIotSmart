@@ -2639,7 +2639,7 @@
                 </div>
                 <div id="homePage-body">
                     <div class="m-3 m-md-5 p-4 border rounded-5" style="background-color: black; color: white; border-radius: 15px;">
-                        <div class="col-12 row mb-5" style="--bs-gutter-x: 0rem;">
+                        <div class="row mb-5" style="--bs-gutter-x: 0rem;">
                             <div class="col-4 d-flex flex-column align-items-center">
                                 
                             </div>
@@ -2666,8 +2666,13 @@
                                 <span>online</span>
                             </div>
                         </div>
-                        <div class="col-12 mt-1 mb-4 p-0 px-md-5 d-flex justify-content-center">
+                        <div class="w-100" style="text-align: start;">
+                            <p class="m-0 p-0">Thời gian nhận tín hiệu: </p><p style="font-weight: 500;" id="setTimeCondition">-</p>
+                        </div>
+                        <div class="mt-1 mb-4 p-0 px-md-5 d-flex justify-content-center">
+                            
                             <div id="ElectricityMeter" class="d-flex w-100 p-1" style="border: 1px solid;cursor: pointer;">
+                                
                                 <div class="w-50">
                                     <div class="d-flex py-4">
                                         <div id="testResizableDiv3" class="w-75">
@@ -2695,7 +2700,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 row" style="--bs-gutter-x: 0rem;">
+                        <div class="row" style="--bs-gutter-x: 0rem;">
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_1" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_1', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px;">
@@ -2705,7 +2710,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 1</span>
+                                <span>K1</span>
                             </div>
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_2" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
@@ -2716,7 +2721,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 2</span>
+                                <span>K2</span>
                             </div>
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_3" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
@@ -2727,7 +2732,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 3</span>
+                                <span>K3</span>
                             </div>
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_4" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
@@ -2738,7 +2743,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 4</span>
+                                <span>K4</span>
                             </div>
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_5" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
@@ -2749,7 +2754,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 5</span>
+                                <span>K5</span>
                             </div>
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_6" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
@@ -2760,7 +2765,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <span>Relay 6</span>
+                                <span>K6</span>
                             </div>
                         </div>
                     </div>
@@ -6740,6 +6745,7 @@
                                 console.log(txt);
                                 if (txt.slice(9, 12) == 'T:2') {
                                     let temp = txt.split(",");
+                                    document.getElementById("setTimeCondition").textContent = temp[0].substring(11);
                                     if(temp[temp.length - 1].slice(0, 2) == 'RL'){
                                         let number = parseInt(temp[temp.length - 1].substring(3));
                                         let binary = number.toString(2).padStart(6, '0'); // Chuyển sang nhị phân, thêm 0 nếu thiếu
