@@ -5055,7 +5055,66 @@
                         }
                         
                     } if(checkQRcode.length == 4){
-                        console.log('test');
+                        data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));  
+                        console.log(data);
+                        // const checkValue = dataLot.data.some(item => item.LOT_NUMBER == decodedText);
+                        if(data.length == 0) {
+                            const willInsertData = {
+                                QR_CODE: decodedText,
+                                MA_SAN_PHAM: checkQRcode[1],
+                                DATE_CREATE: new Date(),
+                                ACTIVATE_WARRANTY: new Date('1999-01-01 07:00:00.000'),
+                                USER_ID: UserID,
+                                DATASTATE: "ADD",
+                            };
+                            console.log(willInsertData);
+                            
+                            // add('DM_QRCODE', willInsertData).then(async data => {
+                            //     try {
+                            //         toastr.success("Quét QR và lưu thông tin thành công!");
+                            //         if(checkTab){
+                            //             scanAgain();
+                            //         } else {
+                            //             document.getElementById("result-product").classList.remove("d-none");
+                            //             document.getElementById("result-form-loading").classList.add("d-none");
+                            //             document.getElementById("result-form").classList.remove("d-none");
+                            //             document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            //             document.getElementById("result-product-truycap").disabled = false;
+                            //             document.getElementById("result-form-productName").value = checkQRcode[1];
+                            //             document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
+                            //             document.getElementById("header-productName").textContent = checkQRcode[1]+" - "+checkQRcode[2].substring(1);
+                            //             data = await getDataMDQRcode(decodedText.replaceAll(',', '$'));  
+                            //             const willInsertData = {
+                            //                 TYPE: "ADD",
+                            //                 ERROR_NAME: "Hoàn thành sản phẩm",
+                            //                 DESCRIPTION: "Nhập sản phẩm vào hệ thống",
+                            //                 DATE_CREATE: new Date(),
+                            //                 ERROR_STATUS: 0,
+                            //                 QRCODE_ID: data[0].PR_KEY,
+                            //                 USER_ID: UserID,
+                            //                 DATASTATE: "ADD",
+                            //             };
+                            //             await add('WARRANTY_ERROR', willInsertData)
+                            //             changeDataWarranty(data);
+                            //         }
+                            //     } catch (e) { }
+                            // }).catch(err => {
+                            //     console.error('Error:', err);
+                            // });
+                        } else {
+                            console.log(data);
+                            
+                            // document.getElementById("result-form").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("result-form-total").classList.remove("d-none");
+                            // document.getElementById("result-form-loading").classList.add("d-none");
+                            // document.getElementById("result-form-title").classList.remove("d-none");
+                            // document.getElementById("result-form-stationID").classList.add("d-none");
+                            // document.getElementById("result-form-stationName").classList.add("d-none");
+                            // document.getElementById("result-truycap").classList.add("d-none");
+                            // toastr.error("Vui lòng quét đúng mã QR!");
+                        }
+
                     } else {
                         if(typeQR == 3 && checkQRcode[0].substring(0, 3) == "T20"){
                             const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='"+$('#lot-number').val()+"' AND LOT_CLASS='"+$('#classProduct').val()+"'")
