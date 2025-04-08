@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -1464,6 +1466,14 @@
             display: table;
             clear: both;
         }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spin-loading {
+            animation: spin 1s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -1583,7 +1593,7 @@
                             <div class="info-box-content">
                                 <div class="d-flex justify-content-between">
                                     <span class="app-text">Điều khiển</span>
-                                    <span class="app-text">v1.0.1</span>
+                                    <span class="app-text">v1.0.3</span>
                                 </div>
                                 <span class="app-text-number">Điều khiển, giám sát năng lượng</span>
                             </div>
@@ -2607,8 +2617,8 @@
             </div>
         </div>
         <div id="condition" class="hidden">
-            <div class="container" style="padding: 0; width: 100%;">
-                <div class="homePage-header history-header" style="background-color: #282d31;">
+            <div class="container" style="padding: 0; width: 100%; height: 100%; padding-bottom: 10px;">
+                <div class="homePage-header history-header" style="background-color: #282d31; z-index: 1001; position: fixed; height: 50px; top: 0; left: 0;">
                     <div style="line-height: 50px; justify-content: flex-start;" class="d-flex">
                         <button class="WarrantyScanNext" style="height: 40px; border: none; background-color: #282d31;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -2633,73 +2643,65 @@
                         </button>
                     </div>
                 </div>
-                <div id="homePage-body">
-                    <div class="m-3 m-md-5 p-4 border rounded-5" style="background-color: black; color: white; border-radius: 15px;">
-                        <div class="row mb-5" style="--bs-gutter-x: 0rem;">
-                            <div class="col-4 d-flex flex-column align-items-center">
-                                
-                            </div>
-                            <div class="col-4 d-flex flex-column align-items-center">
-                                <div id="power" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
-                                    <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px;" onclick>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-lightning-charge" viewBox="0 0 16 16">
-                                            <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09zM4.157 8.5H7a.5.5 0 0 1 .478.647L6.11 13.59l5.732-6.09H9a.5.5 0 0 1-.478-.647L9.89 2.41z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <span>power</span>
-                            </div>
-                            <div class="col-4 d-flex flex-column align-items-center">
-                                <div id="online" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
-                                    <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px;" onclick>
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M7.5 1v7h1V1z"></path>
-                                            <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <span>online</span>
-                            </div>
-                        </div>
-                        <div class="w-100" style="text-align: start;">
-                            <p class="m-0 p-0">Thời gian nhận tín hiệu: </p><p style="font-weight: 500;" id="setTimeCondition">-</p>
-                        </div>
-                        <div class="mt-1 mb-4 p-0 px-md-5 d-flex justify-content-center">
-                            
-                            <div id="ElectricityMeter" class="d-flex w-100 p-1" style="border: 1px solid;cursor: pointer;">
-                                
-                                <div class="w-50">
-                                    <div class="d-flex py-4">
-                                        <div id="testResizableDiv3" class="w-75">
-                                            <div id="testResizableArray3" class="float-end" style="width: 120px;"></div>
-                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #149aa4;"><strong>V</strong></span>
-                                    </div>
-                                    <div class="d-flex py-4">
-                                        <div id="testResizableDiv3-1" class="w-75">
-                                            <div id="testResizableArray3-1" class="float-end" style="width: 100px;"></div>
-                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #e97540;"><strong>W</strong></span>
-                                    </div>
-                                </div>
-                                <div class="w-50">
-                                    <div class="d-flex py-4">
-                                        <div id="testResizableDiv3-2">
-                                            <div id="testResizableArray3-2" style="width: 100px;"></div>
-                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #f2f442;"><strong>A</strong></span>
-                                    </div>
-                                    <div class="d-flex py-4">
-                                        <div id="testResizableDiv3-3">
-                                            <div id="testResizableArray3-3" style="width: 100px;"></div>
-                                        </div><span class="pt-2 px-2" style="font-size: 20px;color: #1a8f93;"><strong>Kwh</strong></span>
+                <div id="homePage-body" class="mb-3 mt-4">
+                    <div>-</div>
+                    <div class="d-flex">
+                        <div class="col-5" style="padding-right: 5px;">
+                            <div class="mt-3 p-2 border rounded-5" style="padding-top: 60px; height: 95px; background-color: black; color: white; border-radius: 15px;">
+                                <div class="row mb-5" style="--bs-gutter-x: 0rem;">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="col-6 d-flex flex-column align-items-center">
+                                            <div id="power" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 55px;height: 55px;border-radius: 50%;">
+                                                <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-lightning-charge" viewBox="0 0 16 16">
+                                                        <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09zM4.157 8.5H7a.5.5 0 0 1 .478.647L6.11 13.59l5.732-6.09H9a.5.5 0 0 1-.478-.647L9.89 2.41z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <span>Power</span>
+                                        </div>
+                                        <div class="col-6 d-flex flex-column align-items-center">
+                                            <div id="online" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 55px;height: 55px;border-radius: 50%;">
+                                                <button class="btn btn-primary buttonClickWater p-0 m-0" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;">
+                                                    <!-- <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                                        <path d="M7.5 1v7h1V1z"></path>
+                                                        <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                                                    </svg> -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-plugin" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <span>Online</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-7" style="padding-left: 5px;">
+                            <div class="mt-3 p-4 border rounded-5" style="padding-top: 60px; height: 95px; background-color: black; color: white; border-radius: 15px;">
+                                <div class="row mb-5" style="--bs-gutter-x: 0rem;">
+                                    <div class="col-12 d-flex flex-column align-items-center">
+                                        <div class="d-flex mb-1" style="line-height: 20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5" />
+                                            </svg>
+                                            <p style="margin: 0; font-size: 16px; margin-left: 10px;">Cập nhật</p>
+                                        </div>
+                                        <div>
+                                            <p id="setDateTimeCondition" style="font-size: 16px; margin: 0;">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-3 m-md-5 p-4 border rounded-5" style="padding-top: 60px; background-color: black; color: white; border-radius: 15px;">
                         <div class="row" style="--bs-gutter-x: 0rem;">
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_1" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_1', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;">
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_1" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
@@ -2710,7 +2712,7 @@
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_2" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_2', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;">
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_2" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
@@ -2721,7 +2723,7 @@
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_3" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_3', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;" >
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_3" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
@@ -2732,7 +2734,7 @@
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_4" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_4', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;" >
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_4" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
@@ -2743,7 +2745,7 @@
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_5" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_5', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;" >
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_5" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
@@ -2754,13 +2756,108 @@
                             <div class="col-4 d-flex flex-column align-items-center">
                                 <div id="Relay_6" class="bs-icon-xl bs-icon-circle d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block bs-icon xl pb-2" style="background: #000000;box-shadow: 0px 0px 30px 5px #000000;border: 1px solid;width: 70px;height: 70px;border-radius: 50%;">
                                     <button class="btn btn-primary buttonClickWater p-0 m-0" onclick="onOffRelay('Relay_6', '#08ed0a')" type="button" style="background-color: initial;border: none;font-size: 35px; outline: none; box-shadow: none;" >
-                                        <svg class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                        <svg id="icon-Relay_6" class="bi bi-power" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M7.5 1v7h1V1z"></path>
                                             <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
                                         </svg>
                                     </button>
                                 </div>
                                 <span>K6</span>
+                            </div>
+                        </div>
+                        <div class="mt-1 mb-4 p-0 px-md-5 justify-content-center">
+                            <div id="ElectricityMeter-1" class="w-100 p-2 mt-4" style="border: 1px solid;cursor: pointer;">
+                                <div>
+                                    <p class="m-0" style="font-size: 20px;">Điện pha 1</p>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv1" class="w-75">
+                                                <div id="testResizableArray1" class="float-end" style="width: 120px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #149aa4;"><strong>V</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv1-1" class="w-75">
+                                                <div id="testResizableArray1-1" class="float-end" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #e97540;"><strong>W</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv1-2">
+                                                <div id="testResizableArray1-2" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #f2f442;"><strong>A</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv1-3">
+                                                <div id="testResizableArray1-3" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #1a8f93;"><strong>Kwh</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ElectricityMeter-2" class=" w-100 p-2 mt-2" style="border: 1px solid;cursor: pointer;">
+                                <div>
+                                    <p class="m-0" style="font-size: 20px;">Điện pha 2</p>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv2" class="w-75">
+                                                <div id="testResizableArray2" class="float-end" style="width: 120px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #149aa4;"><strong>V</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv2-1" class="w-75">
+                                                <div id="testResizableArray2-1" class="float-end" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #e97540;"><strong>W</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv2-2">
+                                                <div id="testResizableArray2-2" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #f2f442;"><strong>A</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv2-3">
+                                                <div id="testResizableArray2-3" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #1a8f93;"><strong>Kwh</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ElectricityMeter-3" class=" w-100 p-2 mt-2" style="border: 1px solid;cursor: pointer;">
+                                <div>
+                                    <p class="m-0" style="font-size: 20px;">Điện pha 3</p>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv3" class="w-75">
+                                                <div id="testResizableArray3" class="float-end" style="width: 120px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #149aa4;"><strong>V</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv3-1" class="w-75">
+                                                <div id="testResizableArray3-1" class="float-end" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #e97540;"><strong>W</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="w-50">
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv3-2">
+                                                <div id="testResizableArray3-2" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #f2f442;"><strong>A</strong></span>
+                                        </div>
+                                        <div class="d-flex py-4">
+                                            <div id="testResizableDiv3-3">
+                                                <div id="testResizableArray3-3" style="width: 100px;"></div>
+                                            </div><span class="pt-2 px-2" style="font-size: 20px;color: #1a8f93;"><strong>Kwh</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3393,6 +3490,7 @@
             $(".WarrantyScanNext").click(function () {
                 document.getElementById("ScanQRWarranty").classList.remove("hidden");
                 document.getElementById("guarantee").classList.add("hidden");
+                document.getElementById("condition").classList.add("hidden");
                 document.getElementById("menu-warranty").classList.add("d-none");
                 document.getElementById("history").classList.add("hidden");
 
@@ -6782,6 +6880,8 @@
             var ws = null;
             var wss = null;
             var timeoutHandle;
+            var intervalId = null;
+            const relayTimeouts = {};
             getWebSocket = function (value) {
                 try {
                     ws = new WebSocket("wss://" + value + "/findme");
@@ -6796,7 +6896,7 @@
                         console.log("check onmessage");
                         if(checkValue[0] == "12929152"){
                             clearTimeout(timeoutHandle);
-                            timeoutHandle = setTimeout(noDataReceived, 120000);
+                            timeoutHandle = setTimeout(noDataReceived, 70000);
                             $('#power').css('background', '#d41c1f');
                             $('#power').css('box-shadow', '0px 0px 30px 5px'+ '#d41c1f');
                             $("#cboDeviceServer").empty();
@@ -6805,8 +6905,13 @@
                             if (txt != "NOT FOUND") {
                                 console.log(txt);
                                 if (txt.slice(9, 12) == 'T:2') {
+                                    if (intervalId) {
+                                        clearInterval(intervalId);
+                                        intervalId = null;
+                                    }
                                     let temp = txt.split(",");
-                                    document.getElementById("setTimeCondition").textContent = temp[0].substring(11);
+                                    // document.getElementById("setDateCondition").textContent = temp[0].slice(11, 22);
+                                    document.getElementById("setDateTimeCondition").textContent = temp[0].substring(11);
                                     $('#online').css('background', '#ceac30');
                                     $('#online').css('box-shadow', '0px 0px 30px 5px'+ '#ceac30');
                                     if(temp[temp.length - 1].slice(0, 2) == 'RL'){
@@ -6815,6 +6920,7 @@
                                         let binaryArray = binary.split('').reverse();
                                         console.log(binaryArray);
                                         for (let i = binaryArray.length -1; i >= 0; i--) {
+                                            const icon = document.getElementById("icon-Relay_" + (i + 1));
                                             if(binaryArray[i] == 1){
                                                 $('#Relay_'+(i + 1)).css('background', '#08ed0a');
                                                 $('#Relay_'+(i + 1)).css('box-shadow', '0px 0px 30px 5px'+ '#08ed0a');
@@ -6822,24 +6928,16 @@
                                                 $('#Relay_'+(i + 1)).css('background', '#000000');
                                                 $('#Relay_'+(i + 1)).css('box-shadow', '0px 0px 30px 5px #000000');
                                             }
+                                            resetIcon(icon);
                                         }
                                     } else {
                                         let temp2 = txt.split("T:2");
                                         console.log("check dữ liệu:", temp2);
-                                        updateDataLed(temp2[3]);
+                                        updateDataLed(temp2[1], "testResizableArray1");
+                                        updateDataLed(temp2[2], "testResizableArray2");
+                                        updateDataLed(temp2[3], "testResizableArray3");
                                     }
                                 }
-                                // for (var i = 0; i <= txt.split(";").length; i++) {
-                                //     var temp = txt.split(";")[i];
-                                //     console.log(temp);
-
-                                //     if (temp.slice(0, 3) == 'T:2') {
-                                //         console.log(temp.split(","));
-                                //     }
-                                // }
-                                // if (checkLogin) {
-                                //     alert("Thiết bị " + HomeOS.Login.NameDevice + " hiện đang tắt.!");
-                                // }
                             } else {
                                 $("#cboDeviceServer").append(
                                     $("<option>", {
@@ -6871,31 +6969,66 @@
             var noDataReceived = function () {
                 $('#online').css('background', '#000000');
                 $('#online').css('box-shadow', '0px 0px 30px 5px #000000');
+                intervalId = setInterval(() => {
+                    onClose();
+                    getWebSocket("hoangminhlighting.vn:447");
+                }, 5000);
             }
+
+            $("#online").click(function () {
+                let cmd = [{ CHIP_ID: '12929152', COMMAND: 'REFRESH;' }]; 
+                wss.send(JSON.stringify(cmd));
+            })
             onOffRelay = function(id, color) {
-                console.log(123);
+                const icon = document.getElementById("icon-" + id);
                 let checkID = parseInt(id.substring(6));
                 if ($('#'+id).css('background-color') == 'rgb(0, 0, 0)') {
-                    // $('#'+id).css('background', color);
-                    // $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ color);
+                    $('#'+id).css('background', '#ceac30');
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ '#ceac30');
+                    icon.innerHTML = `
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                    `;
+                    $('#icon-'+id).addClass("spin-loading");
                     let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+checkID+');' }]; 
                     wss.send(JSON.stringify(cmd));
+                    relayTimeouts[id] = setTimeout(() => {
+                        if ($('#'+id).css('background-color') == 'rgb(206, 172, 48)') {
+                            $('#'+id).css('background', '#000000');
+                            $('#'+id).css('box-shadow', '0px 0px 30px 5px #000000');
+                        }
+                        resetIcon(icon);
+                    }, 5000);
                 } else {
-                    // $('#'+id).css('background', '#000000');
-                    // $('#'+id).css('box-shadow', '0px 0px 30px 5px #000000');
+                    $('#'+id).css('background', '#ceac30');
+                    $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ '#ceac30');
+                    icon.innerHTML = `
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+                    `;
+                    $('#icon-'+id).addClass("spin-loading");
                     let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+ (checkID+6) +');' }]; 
                     wss.send(JSON.stringify(cmd));
                     // ws.send('12929152:SEND CAN(17 0 0 0 41 '+ (checkID+6) +');')
+                    relayTimeouts[id] = setTimeout(() => {
+                        if ($('#'+id).css('background-color') == 'rgb(206, 172, 48)') {
+                            $('#'+id).css('background', '#08ed0a');
+                            $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ '#08ed0a');
+                        }
+                        resetIcon(icon);
+                    }, 5000);
                 }
             }
 
-            
+            function resetIcon(icon) {
+                icon.innerHTML = `
+                    <path d="M7.5 1v7h1V1z"></path>
+                    <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"></path>
+                `;
+                icon.classList.remove("spin-loading");
+            }
 
-            
-            // $('#Relay_1').click(function () {
-            //     ws.send('12929152:SEND CAN(17 0 0 0 41 7);')
-            // });
-            var updateDataLed = function (dataString) {
+            var updateDataLed = function (dataString, id) {
                 // Xóa ký tự xuống dòng và khoảng trắng dư thừa
                 dataString = dataString.trim();
 
@@ -6909,10 +7042,12 @@
                 });
 
                 // Cập nhật giá trị cho từng màn hình LED
-                $("#testResizableArray3").sevenSegArray({ value: dataObj["U"] || "0" });  // Điện áp (V)
-                $("#testResizableArray3-1").sevenSegArray({ value: dataObj["P"] || "0" }); // Công suất (W)
-                $("#testResizableArray3-2").sevenSegArray({ value: dataObj["I"] || "0" }); // Dòng điện (A)
-                $("#testResizableArray3-3").sevenSegArray({ value: dataObj["E"] || "0" }); // Năng lượng (kWh)
+                var keys = ["U", "P", "I", "E"];
+
+                keys.forEach(function (key, index) {
+                    var fullId = index === 0 ? `#${id}` : `#${id}-${index}`;
+                    $(fullId).sevenSegArray({ value: dataObj[key] || "0" });
+                });
             };
             
             function runLed7() {
@@ -7185,14 +7320,53 @@
                     }
 
                 })(jQuery);
-                $("#testResizableArray3").sevenSegArray({ digits: 5 ,segmentOptions: {colorOff: "#041d1e", colorOn: "#0fb4c0"}});
-                $("#testResizableDiv3").resizable({ aspectRatio: true });
-                $("#testResizableArray3-1").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#180c07", colorOn: "#e97540"}});
-                $("#testResizableDiv3-1").resizable({ aspectRatio: true });
-                $("#testResizableArray3-2").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#1a1a07", colorOn: "#f2f442"}});
-                $("#testResizableDiv3-2").resizable({ aspectRatio: true });
-                $("#testResizableArray3-3").sevenSegArray({ digits: 4 ,segmentOptions: {colorOff: "#041d1e", colorOn: "#0fb4c0"}});
-                $("#testResizableDiv3-3").resizable({ aspectRatio: true });
+                initLedDisplay('testResizableArray1');
+                initLedDisplay('testResizableArray2');
+                initLedDisplay('testResizableArray3');
+            }
+
+            function initLedDisplay(baseId) {
+                const ledConfigs = [
+                    {
+                        suffix: "",      // Ví dụ: testResizableArray3
+                        digits: 5,
+                        colorOff: "#041d1e",
+                        colorOn: "#0fb4c0"
+                    },
+                    {
+                        suffix: "-1",    // testResizableArray3-1
+                        digits: 4,
+                        colorOff: "#180c07",
+                        colorOn: "#e97540"
+                    },
+                    {
+                        suffix: "-2",    // testResizableArray3-2
+                        digits: 4,
+                        colorOff: "#1a1a07",
+                        colorOn: "#f2f442"
+                    },
+                    {
+                        suffix: "-3",    // testResizableArray3-3
+                        digits: 4,
+                        colorOff: "#041d1e",
+                        colorOn: "#0fb4c0"
+                    }
+                ];
+
+                ledConfigs.forEach(function (config) {
+                    const ledSelector = `#${baseId}${config.suffix}`;
+                    const divSelector = `#${baseId.replace("Array", "Div")}${config.suffix}`;
+
+                    $(ledSelector).sevenSegArray({
+                        digits: config.digits,
+                        segmentOptions: {
+                            colorOff: config.colorOff,
+                            colorOn: config.colorOn
+                        }
+                    });
+
+                    $(divSelector).resizable({ aspectRatio: true });
+                });
             }
 
             var onClose = function () {
