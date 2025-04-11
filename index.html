@@ -3257,7 +3257,9 @@
                     if (!isHidden && id && !historyStack.includes(id) && id != 'LoadScreen') {
                         historyStack.push(id);
                         console.log(historyStack);
-                        
+                        setTimeout(() => {
+                            goBack();
+                        }, 2000);
                     }
                 }
             });
