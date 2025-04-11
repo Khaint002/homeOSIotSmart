@@ -3245,35 +3245,38 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js"></script>
     <script>
+        let historyStack = ['pickApp'];
+            
+        let observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === "class") {
+                    let target = mutation.target;
+                    let isHidden = target.classList.contains('hidden');
+                    let id = target.id;
+        
+                    if (!isHidden && id && !historyStack.includes(id) && id != 'LoadScreen') {
+                        historyStack.push(id);
+                        console.log(historyStack);
+                        
+                    }
+                }
+            });
+        });
+        let screens = document.querySelectorAll('.app > div[id]');
+        screens.forEach(screen => observer.observe(screen, { attributes: true }));
+        
+        goBack = function () {
+            if (historyStack.length <= 1) {
+                return;
+            }
+            let currentScreen = historyStack.pop();
+            document.getElementById(currentScreen).classList.add('hidden');
+            let prevScreen = historyStack[historyStack.length - 1];
+            document.getElementById(prevScreen).classList.remove('hidden');
+        };
         $(document).ready(function () {
             
-            let historyStack = ['pickApp'];
-            let observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === "class") {
-                        let target = mutation.target;
-                        let isHidden = target.classList.contains('hidden');
-                        let id = target.id;
             
-                        if (!isHidden && id && !historyStack.includes(id) && id != 'LoadScreen') {
-                            historyStack.push(id);
-                        }
-                    }
-                });
-            });
-            let screens = document.querySelectorAll('.app > div[id]');
-            screens.forEach(screen => observer.observe(screen, { attributes: true }));
-            
-            let goBack = function () {
-                if (historyStack.length <= 1) {
-                    return;
-                }
-                let currentScreen = historyStack.pop();
-                document.getElementById(currentScreen).classList.add('hidden');
-                let prevScreen = historyStack[historyStack.length - 1];
-                document.getElementById(prevScreen).classList.remove('hidden');
-            };
-
             var DataUser;
             var typeQR;
             var listDomain = [];
@@ -8095,5 +8098,4 @@
         });
     </script>
 </body>
-
 </html>
