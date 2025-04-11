@@ -2627,20 +2627,26 @@
                                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                             </svg>
                         </button>
-                        <p id="header-conditionName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">-</p>
+                        <p id="header-conditionName" style="width: 200px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">-</p>
                     </div>
                     <div class="d-flex" style="line-height: 50px;">
-                        <button id="errorWarranty" class="d-none" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                        <button id="schedule-condition" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+                                <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                            </svg>
+                        </button>
+                        <button id="error-condition" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                 <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
                             </svg>
                         </button>
-                        <button class="homepage-Pre-pickApp d-none style="height: 40px; border: none; background-color: #282d31; padding: 0;">
+                        <!-- <button class="homepage-Pre-pickApp" style="height: 40px; border: none; background-color: #282d31; padding: 0;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" style="color: #fff;" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
                                 <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                             </svg>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div id="homePage-body" class="mb-3 mt-4">
@@ -2768,7 +2774,7 @@
                         <div class="mt-1 mb-4 p-0 px-md-5 justify-content-center">
                             <div id="ElectricityMeter-1" class="w-100 p-2 mt-4" style="border: 1px solid;cursor: pointer;">
                                 <div>
-                                    <p class="m-0" style="font-size: 20px;">Điện pha 1</p>
+                                    <p class="m-0" style="font-size: 20px;">Điện thiết bị 1</p>
                                 </div>
                                 <div class="d-flex">
                                     <div class="w-50">
@@ -2799,7 +2805,7 @@
                             </div>
                             <div id="ElectricityMeter-2" class=" w-100 p-2 mt-2" style="border: 1px solid;cursor: pointer;">
                                 <div>
-                                    <p class="m-0" style="font-size: 20px;">Điện pha 2</p>
+                                    <p class="m-0" style="font-size: 20px;">Điện thiết bị 2</p>
                                 </div>
                                 <div class="d-flex">
                                     <div class="w-50">
@@ -2830,7 +2836,7 @@
                             </div>
                             <div id="ElectricityMeter-3" class=" w-100 p-2 mt-2" style="border: 1px solid;cursor: pointer;">
                                 <div>
-                                    <p class="m-0" style="font-size: 20px;">Điện pha 3</p>
+                                    <p class="m-0" style="font-size: 20px;">Điện thiết bị 3</p>
                                 </div>
                                 <div class="d-flex">
                                     <div class="w-50">
@@ -3067,6 +3073,161 @@
             </div>
             
         </div>
+        <div id="schedule-condition-popup" class="modal">
+            <div class="container" style="width: 100%; height: 100%; background-color: #1E2833;">
+                <div class="d-flex" style="line-height: 50px;">
+                    <button id="BackSchedule" style="height: 40px; border: none; background-color: #1E2833;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                        </svg>
+                    </button>
+                    <p
+                        style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        Lập lịch bật tắt</p>
+                </div>
+                <div class="content-form" style="background-color: #1E2833; padding: 0;">
+                    <div class="form-group content-detail">
+                        <label class="form-label content-label" for="txtScheduleName">Tên lịch:</label>
+                        <input type="text" id="txtScheduleName" class="form-control content-input"
+                            placeholder="Nhập tên lịch...">
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-12">
+                            <label for="sltDeviceForSchedule">Relay được áp dụng</label>
+                            <div id="sltDeviceForSchedule" class="row">
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK1">K1:</label>
+                                    <input type="checkbox" id="checkboxK1" placeholder="Nhập tên lịch..." data-relayId="1">
+                                </div>
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK2">K2:</label>
+                                    <input type="checkbox" id="checkboxK2" placeholder="Nhập tên lịch..." data-relayId="2">
+                                </div>
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK3">K3:</label>
+                                    <input type="checkbox" id="checkboxK3" placeholder="Nhập tên lịch..." data-relayId="3">
+                                </div>
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK4">K4:</label>
+                                    <input type="checkbox" id="checkboxK4" placeholder="Nhập tên lịch..." data-relayId="4">
+                                </div>
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK5">K5:</label>
+                                    <input type="checkbox" id="checkboxK5" placeholder="Nhập tên lịch..." data-relayId="5">
+                                </div>
+                                <div class="col-2 form-group content-detail">
+                                    <label class="form-label content-label" for="checkboxK6">K6:</label>
+                                    <input type="checkbox" id="checkboxK6" placeholder="Nhập tên lịch..." data-relayId="6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row flex-row" style="justify-content: space-between;">
+                        <div class="col-12 d-flex flex-row pr-0" style="align-items: center;">
+                            <div class="mr-3 d-flex flex-column w-100">
+                                <label for="">Kịch bản áp dụng</label>
+                                <div class="card mw-100 mh-100 m-0 p-3">
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Thời điểm:</label>
+                                        <input type="time" id="startTime" class="form-control content-input w-100">
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="form-group content-detail">
+                                            <label class="form-label content-label" for="cboScriptsCabinet">Kịch
+                                                bản:</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 form-group content-detail">
+                                                <label class="form-label content-label" for="radioOn">Bật:</label>
+                                                <input type="radio" name="cboScripts" id="radioOn"
+                                                    placeholder="Nhập tên lịch..." checked>
+                                            </div>
+                                            <div class="col-6 form-group content-detail">
+                                                <label class="form-label content-label" for="radioOff">Tắt:</label>
+                                                <input type="radio" name="cboScripts" id="radioOff"
+                                                    placeholder="Nhập tên lịch...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="submitCalendar" class="btn btn-warning"
+                            style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                            Áp dụng kịch bản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="error-condition-popup" class="modal">
+            <div class="container" style="width: 100%; height: 100%; background-color: #1E2833;">
+                <div class="d-flex" style="line-height: 50px;">
+                    <button id="BackConditionError" style="height: 40px; border: none; background-color: #1E2833;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                        </svg>
+                    </button>
+                    <p style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Khai báo lỗi</p>
+                </div>
+                <!-- <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200" style="padding-bottom: 3rem;"> -->
+                <div>
+                    <div class="content-form" style="background-color: #1E2833; padding: 0;">
+                        <div class="d-flex row">
+                            <div class="col-6 form-group content-detail">
+                                <label class="form-label content-label" for="ap_ssid">Ca làm việc:</label>
+                                <!-- <input type="text" id="ap_ssid" class="form-control content-input" placeholder="Nhập tên điểm truy cập..."> -->
+                                <select name="" id="errorCaType" class="form-control content-input">
+                                    <option value="1">Ca 1</option>
+                                    <option value="2">Ca 2</option>
+                                    <option value="3">Ca 3</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group content-detail">
+                                <label class="form-label content-label" for="ap_ssid">Loại lỗi:</label>
+                                <!-- <input type="text" id="ap_ssid" class="form-control content-input" placeholder="Nhập tên điểm truy cập..."> -->
+                                <select name="" id="errorConditionType" class="form-control content-input">
+                                    <option value="1">Lỗi thiết bị</option>
+                                    <option value="2">Lỗi người dùng</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group content-detail">
+                            <label class="form-label content-label" for="textCondition">Lệnh sản xuất:</label>
+                            <input type="text" id="textCondition" class="form-control content-input" placeholder="Nhập lệnh sản xuất...">
+                        </div>
+                        <div class="form-group content-detail">
+                            <label class="form-label content-label" for="ap_password">Mô tả:</label>
+                            <!-- <input type="tex" id="ap_password" class="form-control content-input" placeholder="Nhập mật khẩu điểm truy cập..."> -->
+                            <textarea id="errorConditionDesc" class="form-control content-input" style="height: 120px;" placeholder="Mô tả lỗi"></textarea>
+                        </div>
+                        <div class="form-group content-detail">
+                            <label class="form-label content-label" for="textCondition">Số lượng thiệt hại:</label>
+                            <input type="text" id="textCondition" class="form-control content-input" placeholder="Nhập lỗi...">
+                        </div>
+                        <div class="d-flex row">
+                            <div class="col-6 form-group content-detail">
+                                <label class="form-label content-label" for="errorStartTime">Thời gian bắt đầu:</label>
+                                <input type="datetime-local" id="errorStartTime" class="form-control content-input" placeholder="Nhập lỗi...">
+                            </div>
+                            <div class="col-6 form-group content-detail">
+                                <label class="form-label content-label" for="errorEndTime">Thời gian kết thúc:</label>
+                                <input type="datetime-local" id="errorEndTime" class="form-control content-input" placeholder="Nhập lỗi...">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="submitConditionError" class="btn btn-warning" style="margin-top: 20px; background-color: #f39c12;border: solid 1px #f39c12; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                        Xác nhận lỗi
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3086,6 +3247,33 @@
     <script>
         $(document).ready(function () {
             
+            let historyStack = ['pickApp'];
+            let observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === "class") {
+                        let target = mutation.target;
+                        let isHidden = target.classList.contains('hidden');
+                        let id = target.id;
+            
+                        if (!isHidden && id && !historyStack.includes(id) && id != 'LoadScreen') {
+                            historyStack.push(id);
+                        }
+                    }
+                });
+            });
+            let screens = document.querySelectorAll('.app > div[id]');
+            screens.forEach(screen => observer.observe(screen, { attributes: true }));
+            
+            let goBack = function () {
+                if (historyStack.length <= 1) {
+                    return;
+                }
+                let currentScreen = historyStack.pop();
+                document.getElementById(currentScreen).classList.add('hidden');
+                let prevScreen = historyStack[historyStack.length - 1];
+                document.getElementById(prevScreen).classList.remove('hidden');
+            };
+
             var DataUser;
             var typeQR;
             var listDomain = [];
@@ -3460,6 +3648,12 @@
             $("#BackCondition").click(function () {
                 $('#chartCondition-popup').hide();
                 clearCharts();
+            });
+            $("#BackSchedule").click(function () {
+                $('#schedule-condition-popup').hide();
+            });
+            $("#BackConditionError").click(function () {
+                $('#error-condition-popup').hide();
             });
             $("#download-QRcode").click(function () {
                 const img = $('#hidden-image')[0];
@@ -4709,7 +4903,7 @@
                         createChartData(dataChart, 'RD', type)
                     }
                 } else if (type == 'NAM') {
-                    const dataChart = await getDataChart('NAM', '2024-01-01 16$50$08', '2024-12-30 16$50$08', TypeWorkstation, localStorage.getItem("MATRAM"), localStorage.getItem("URL"));
+                    const dataChart = await getDataChart('NAM', '2025-01-01 16$50$08', '2025-12-30 16$50$08', TypeWorkstation, localStorage.getItem("MATRAM"), localStorage.getItem("URL"));
                     if (dataChart != []) {
                         createChartData(dataChart, 'RD', type)
                     }
@@ -6681,7 +6875,7 @@
                             const element = $(
                                 '<div class="iconApp">' +
                                     '<div id="App' + item.CodeCondition + '" class="icon" style="background-color: #28a745 !important; display: block">' +
-                                        '<img style="width: 100%; height: 100%; object-fit: cover; border-radius: .25rem; margin: 0;" src="'+ item.imgCondition+'" alt="">'+
+                                        '<img style="width: 70px; height: 70px; object-fit: cover; border-radius: .25rem; margin: 0;" src="'+ item.imgCondition+'" alt="">'+
                                     '</div>' +
                                     '<div class="info-box-content" style="padding-right: 0">' +
                                         '<div class="d-flex justify-content-between">' +
@@ -6839,6 +7033,7 @@
 
                             getWebSocket("hoangminhlighting.vn:447");
                         } else {
+
                             $("#loading-popup").show()
                             let checkQRcode = dataWarranty[0].QR_CODE.split(',');
                             const dataQRProduct = await getDataMDQRcode(dataWarranty[0].QR_CODE.replaceAll(',', '$'));
@@ -6906,7 +7101,7 @@
             var timeoutHandle;
             var intervalId = null;
             const relayTimeouts = {};
-            getWebSocket = function (value) {
+            getWebSocket = async function (value) {
                 try {
                     ws = new WebSocket("wss://" + value + "/findme");
                     // ws = new WebSocket("wss://" + value + "/forwarding");
@@ -6953,10 +7148,10 @@
                                             resetIcon(icon, 'Relay_'+(i + 1));
                                         }
                                     } else {
-                                        let temp2 = txt.split("T:2");
-                                        updateDataLed(temp2[1], "testResizableArray1");
-                                        updateDataLed(temp2[2], "testResizableArray2");
-                                        updateDataLed(temp2[3], "testResizableArray3");
+                                        // let temp2 = txt.split("T:2");
+                                        if(temp[temp.length - 1].slice(0, 2) == 'E:'){
+                                            updateDataLed(txt, "testResizableArray");
+                                        }
                                     }
                                 }
                             } else {
@@ -6981,6 +7176,7 @@
                         let cmd = [{ CHIP_ID: '12929152', COMMAND: 'REFRESH;' }]; 
                         wss.send(JSON.stringify(cmd));
                     }, 500);
+                    
                     $("#loading-popup").hide();
                     saveCondition(JSON.parse(localStorage.getItem('itemCondition')));
                 } catch (e) {
@@ -7001,22 +7197,67 @@
                 wss.send(JSON.stringify(cmd));
             })
 
-            $("#ElectricityMeter-1").click(function () {
-                $("#title-condition-popup").text("Biểu đồ điện năng pha 1");
+            function formatCustomDate(date) {
+                const pad = (num) => num.toString().padStart(2, '0');
+
+                const year = date.getFullYear();
+                const month = pad(date.getMonth() + 1);
+                const day = pad(date.getDate());
+                const hour = pad(date.getHours());
+                const minute = pad(date.getMinutes());
+                const second = pad(date.getSeconds());
+
+                return `${year}-${month}-${day}T${hour}$${minute}$${second}`;
+            }
+
+            $("#ElectricityMeter-1").click(async function () {
+                $("#title-condition-popup").text("Biểu đồ điện năng thiết bị 1");
                 $("#chartCondition-popup").show();
-                initCharts()
+                const now = new Date();
+                const formattedNow = formatCustomDate(now);
+
+                const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+                const formattedOneHourAgo = formatCustomDate(oneHourAgo);
+
+                const data = await getDataChartCondition(formattedOneHourAgo, formattedNow, 1)
+                createChartDataCondition(data)
             });
 
-            $("#ElectricityMeter-2").click(function () {
-                $("#title-condition-popup").text("Biểu đồ điện năng pha 2");
+            $("#ElectricityMeter-2").click(async function () {
+                $("#title-condition-popup").text("Biểu đồ điện năng thiết bị 2");
                 $("#chartCondition-popup").show();
-                initCharts()
+                const now = new Date();
+                const formattedNow = formatCustomDate(now);
+
+                const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+                const formattedOneHourAgo = formatCustomDate(oneHourAgo);
+
+                const data = await getDataChartCondition(formattedOneHourAgo, formattedNow, 2)
+                createChartDataCondition(data)
             });
 
-            $("#ElectricityMeter-3").click(function () {
-                $("#title-condition-popup").text("Biểu đồ điện năng pha 3");
+            $("#ElectricityMeter-3").click(async function () {
+                $("#title-condition-popup").text("Biểu đồ điện năng thiết bị 3");
                 $("#chartCondition-popup").show();
-                initCharts()
+                const now = new Date();
+                const formattedNow = formatCustomDate(now);
+
+                const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+                const formattedOneHourAgo = formatCustomDate(oneHourAgo);
+
+                const data = await getDataChartCondition(formattedOneHourAgo, formattedNow, 3)
+                createChartDataCondition(data)
+            });
+
+            $("#schedule-condition").click(function () {
+                // $("#title-condition-popup").text("Biểu đồ điện năng pha 3");
+                $("#schedule-condition-popup").show();
+                // initCharts()
+            });
+            $("#error-condition").click(function () {
+                // $("#title-condition-popup").text("Biểu đồ điện năng pha 3");
+                $("#error-condition-popup").show();
+                // initCharts()
             });
 
             onOffRelay = function(id, color) {
@@ -7031,7 +7272,7 @@
                         <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
                     `;
                     $('#icon-'+id).addClass("spin-loading");
-                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+checkID+');' }]; 
+                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'CALL BATCH LGS_ON_'+checkID+';' }]; 
                     wss.send(JSON.stringify(cmd));
                     relayTimeouts[id] = setTimeout(() => {
                         if ($('#'+id).css('background-color') == 'rgb(206, 172, 48)') {
@@ -7044,13 +7285,14 @@
                 } else {
                     $('#'+id).css('background', '#ceac30');
                     $('#'+id).css('box-shadow', '0px 0px 30px 5px'+ '#ceac30');
-                    $('#btn-'+id).prop('disabled', true)
+                    $('#btn-'+id).prop('disabled', true);
                     icon.innerHTML = `
                         <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
                         <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
                     `;
                     $('#icon-'+id).addClass("spin-loading");
-                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+ (checkID+6) +');' }]; 
+                    // let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+ (checkID+6) +');' }]; 
+                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'CALL BATCH LGS_OFF_'+ (checkID) +';' }]; 
                     wss.send(JSON.stringify(cmd));
                     // ws.send('12929152:SEND CAN(17 0 0 0 41 '+ (checkID+6) +');')
                     relayTimeouts[id] = setTimeout(() => {
@@ -7085,12 +7327,12 @@
                         dataObj[parts[0]] = parts[1]; // Lưu vào object với key:value
                     }
                 });
-
+                console.log(dataObj["ID"]);
                 // Cập nhật giá trị cho từng màn hình LED
                 var keys = ["U", "P", "I", "E"];
 
                 keys.forEach(function (key, index) {
-                    var fullId = index === 0 ? `#${id}` : `#${id}-${index}`;
+                    var fullId = index === 0 ? `#${id+dataObj["ID"]}` : `#${id+dataObj["ID"]}-${index}`;
                     $(fullId).sevenSegArray({ value: dataObj[key] || "0" });
                 });
             };
@@ -7447,117 +7689,125 @@
             // Hàm xử lý dữ liệu
             let voltageChart, currentChart, powerChart, energyChart;
 
-            function initCharts() {
-                const baseOptions = {
-                    type: 'line',
-                    options: {
-                        responsive: true,
-                        animation: {
-                            duration: 800,
-                            easing: 'easeInOutQuad'
-                        },
-                        scales: {
-                            x: { display: false },
-                            y: {
-                                beginAtZero: true,
-                                ticks: { stepSize: 1 }
-                            }
-                        },
-                        elements: {
-                            line: {
-                                tension: 0.4 // Độ cong của đường
-                            },
-                            point: {
-                                radius: 0 // Ẩn các chấm điểm
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                                labels: {
-                                    color: "#333",
-                                    font: {
-                                        size: 14
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
+            // function initCharts() {
+            //     const baseOptions = {
+            //         type: 'line',
+            //         options: {
+            //             responsive: true,
+            //             animation: {
+            //                 duration: 800,
+            //                 easing: 'easeInOutQuad'
+            //             },
+            //             scales: {
+            //                 x: { display: false },
+            //                 y: {
+            //                     beginAtZero: true,
+            //                     ticks: { stepSize: 1 }
+            //                 }
+            //             },
+            //             elements: {
+            //                 line: {
+            //                     tension: 0.4 // Độ cong của đường
+            //                 },
+            //                 point: {
+            //                     radius: 0 // Ẩn các chấm điểm
+            //                 }
+            //             },
+            //             plugins: {
+            //                 legend: {
+            //                     display: true,
+            //                     labels: {
+            //                         color: "#333",
+            //                         font: {
+            //                             size: 14
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     };
 
-                voltageChart = new Chart($('#chartVoltage'), {
-                    ...baseOptions,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Điện áp (V)',
-                            borderColor: '#0fb4c0',
-                            backgroundColor: 'rgba(15, 180, 192, 0.2)',
-                            data: []
-                        }]
-                    }
-                });
+            //     voltageChart = new Chart($('#chartVoltage'), {
+            //         ...baseOptions,
+            //         data: {
+            //             labels: [],
+            //             datasets: [{
+            //                 label: 'Điện áp (V)',
+            //                 borderColor: '#0fb4c0',
+            //                 backgroundColor: 'rgba(15, 180, 192, 0.2)',
+            //                 data: []
+            //             }]
+            //         }
+            //     });
 
-                currentChart = new Chart($('#chartCurrent'), {
-                    ...baseOptions,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Dòng điện (A)',
-                            borderColor: '#f2f442',
-                            backgroundColor: 'rgba(242, 244, 66, 0.2)',
-                            data: []
-                        }]
-                    }
-                });
+            //     currentChart = new Chart($('#chartCurrent'), {
+            //         ...baseOptions,
+            //         data: {
+            //             labels: [],
+            //             datasets: [{
+            //                 label: 'Dòng điện (A)',
+            //                 borderColor: '#f2f442',
+            //                 backgroundColor: 'rgba(242, 244, 66, 0.2)',
+            //                 data: []
+            //             }]
+            //         }
+            //     });
 
-                powerChart = new Chart($('#chartPower'), {
-                    ...baseOptions,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Công suất (W)',
-                            borderColor: '#e97540',
-                            backgroundColor: 'rgba(233, 117, 64, 0.2)',
-                            data: []
-                        }]
-                    }
-                });
+            //     powerChart = new Chart($('#chartPower'), {
+            //         ...baseOptions,
+            //         data: {
+            //             labels: [],
+            //             datasets: [{
+            //                 label: 'Công suất (W)',
+            //                 borderColor: '#e97540',
+            //                 backgroundColor: 'rgba(233, 117, 64, 0.2)',
+            //                 data: []
+            //             }]
+            //         }
+            //     });
 
-                energyChart = new Chart($('#chartEnergy'), {
-                    ...baseOptions,
-                    data: {
-                        labels: [],
-                        datasets: [{
-                            label: 'Năng lượng (kWh)',
-                            borderColor: '#58a6ff',
-                            backgroundColor: 'rgba(88, 166, 255, 0.2)',
-                            data: []
-                        }]
-                    }
-                });
-                setInterval(() => {
-                    // const mockData = generateMockData();
-                    generateAndUpdateMockData();
-                }, 1000);
-            }
+            //     energyChart = new Chart($('#chartEnergy'), {
+            //         ...baseOptions,
+            //         data: {
+            //             labels: [],
+            //             datasets: [{
+            //                 label: 'Năng lượng (kWh)',
+            //                 borderColor: '#58a6ff',
+            //                 backgroundColor: 'rgba(88, 166, 255, 0.2)',
+            //                 data: []
+            //             }]
+            //         }
+            //     });
+                
+            // }
 
+            let dataIndex = 0; // để duyệt qua từng phần tử dữ liệu thật
             let energyCounter = 0;
 
-            function generateAndUpdateMockData() {
-                const voltage = (220 + Math.random() * 10).toFixed(1);  // U
-                const current = (5 + Math.random() * 2).toFixed(2);     // I
-                const power = (voltage * current).toFixed(0);           // P
+            async function generateAndUpdateMockData() {
+                const realData = await getDataChartCondition();
+                // const chartData = dataChart.map(item => ({
+                //     time: new Date(item.DATE_CREATE), // hoặc .toISOString() nếu bạn cần định dạng chuẩn
+                //     U: item.U,
+                //     I: item.I,
+                //     P: item.P,
+                //     E: item.E,
+                // }));
+                if (dataIndex >= realData.length) return; // hết dữ liệu thì dừng
 
-                energyCounter += (power / 3600000 * 2); // tăng mỗi 2 giây
-                const energy = energyCounter.toFixed(3);                // E
+                const record = realData[dataIndex];
+                const voltage = parseFloat(record.U);
+                const current = parseFloat(record.I);
+                const power = parseFloat(record.P);
+                const energy = parseFloat(record.E);
+                const time = new Date(record.DATE_CREATE).toLocaleTimeString();
 
-                const time = new Date().toLocaleTimeString();
+                addData(voltageChart, time, voltage);
+                addData(currentChart, time, current);
+                addData(powerChart, time, power);
+                addData(energyChart, time, energy);
 
-                addData(voltageChart, time, parseFloat(voltage));
-                addData(currentChart, time, parseFloat(current));
-                addData(powerChart, time, parseFloat(power));
-                addData(energyChart, time, parseFloat(energy));
+                dataIndex++;
             }
 
             function addData(chart, label, value) {
@@ -7570,6 +7820,157 @@
                 chart.data.datasets[0].data.push(value);
                 chart.update();
             }
+
+            
+            var ctx_U = document.getElementById("chartVoltage");
+            var ChartU;
+            var ctx_I = document.getElementById("chartCurrent");
+            var ChartI;
+            var ctx_P = document.getElementById("chartPower");
+            var ChartP;
+            var ctx_E = document.getElementById("chartEnergy");
+            var ChartE;
+            createChartDataCondition = function (data) {
+                if (ChartU != null) ChartU.destroy();
+                if (ChartI != null) ChartI.destroy();
+                if (ChartP != null) ChartP.destroy();
+                if (ChartE != null) ChartE.destroy();
+
+                var ctxU = ctx_U.getContext('2d');
+                var ctxI = ctx_I.getContext('2d');
+                var ctxP = ctx_P.getContext('2d');
+                var ctxE = ctx_E.getContext('2d');
+
+                let labels = [];
+                let dataU = [];
+                let dataI = [];
+                let dataP = [];
+                let dataE = [];
+
+                data.forEach(item => {
+                    const timeLabel = new Date(item.DATE_CREATE).toLocaleTimeString(); // hoặc toLocaleString()
+                    labels.push(timeLabel);
+                    dataU.push(parseFloat(item.U).toFixed(2));
+                    dataI.push(parseFloat(item.I).toFixed(2));
+                    dataP.push(parseFloat(item.P).toFixed(2));
+                    dataE.push(parseFloat(item.E).toFixed(3));
+                });
+                // {
+                //         type: "line", // Chọn kiểu bar cho dataset này
+                //         label: "Nhiệt độ (°C)",
+                //         data: newDataRT,
+                //         backgroundColor: "rgb(173 14 14)",
+                //         borderColor: "rgb(173 14 14)",
+                //         borderWidth: 1,
+                //         // fill: 'start',
+                //         tension: 0.4,
+                //     }
+                const createDataSet = (label, data, color) => ({
+                    type: "line",
+                    label,
+                    data,
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: 1,
+                    tension: 0.4,
+                });
+
+                // U - điện áp
+                const dataSetU = [createDataSet("Điện áp (V)", dataU, "rgba(75,192,192)")];
+                ChartU = new Chart(ctxU, createChart("line", labels, [], "V", "", dataSetU, "Thời gian"));
+
+                // I - dòng điện
+                const dataSetI = [createDataSet("Dòng điện (A)", dataI, "rgba(255,99,132)")];
+                ChartI = new Chart(ctxI, createChart("line", labels, [], "A", "", dataSetI, "Thời gian"));
+
+                // P - công suất
+                const dataSetP = [createDataSet("Công suất (W)", dataP, "rgba(54,162,235)")];
+                ChartP = new Chart(ctxP, createChart("line", labels, [], "W", "", dataSetP, "Thời gian"));
+
+                // E - điện năng
+                const dataSetE = [createDataSet("Điện năng (kWh)", dataE, "rgba(255,206,86)")];
+                ChartE = new Chart(ctxE, createChart("line", labels, [], "kWh", "", dataSetE, "Thời gian"));
+
+                // document.getElementById("loading-spinner").classList.add("d-none");
+            }
+
+            
+            const GenerateCreateScheduleString = function (batchName, startTime, cmd) {
+                let res = 'CREATE(SL,<BATCH_NAME>,<START_TIME>, <END_TIME>,1,<COMMAND_STRING>);\r\n';
+                res = res.replace(/<BATCH_NAME>/g, batchName);
+                res = res.replace(/<START_TIME>/g, startTime + ":00");
+                res = res.replace(/<END_TIME>/g, startTime + ":05");
+                res = res.replace(/<COMMAND_STRING>/g, cmd);
+                return res;
+            }
+
+            $('#submitCalendar').on('click', () => {
+                let scheduleName = $('#txtScheduleName').val();
+                let startTime = $('#startTime').val();
+                let relayList = Array.from(document.querySelectorAll('#sltDeviceForSchedule input')).filter(item => item.checked);
+                let state = $('#radioOn').prop('checked');
+                let command = '';
+
+                // validate
+                let regex = /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
+                if (!regex.test(scheduleName)) {
+                    toastr.error("Tên kịch bản không hợp lệ!");
+                    return;
+                }
+                if (startTime.length == 0) {
+                    toastr.error("Chưa chọn thời điểm!");
+                    return;
+                }
+                if (relayList.length == 0) {
+                    toastr.error("Không có relay nào được áp dụng!");
+                    return;
+                }
+
+                if (relayList.length == document.querySelectorAll('#sltDeviceForSchedule input').length) {
+                    command += `CALL BATCH ${state ? 'LGS_ON_ALL' : 'LGS_OFF_ALL'}; DELAY 200;`;
+                }
+                else {
+                    relayList.forEach(relay => {
+                        let batchName = `${state ? 'LGS_ON_' : 'LGS_OFF_'}${relay.getAttribute('data-relayId')}`;
+                        command += `CALL BATCH ${batchName}; DELAY 200;`;
+                    });
+                }
+                command = GenerateCreateScheduleString(scheduleName, startTime, command);
+                // gửi lệnh xuống thiết bị
+                let cmd = [{ CHIP_ID: '12929152', COMMAND: command }]; 
+                wss.send(JSON.stringify(cmd));
+            });
+            
+            function getDataChartCondition(startDate, endDate, ZONE_ID){
+
+                // const url = "https://DEV.HOMEOS.vn/service/service.svc/";
+                const url = "https://central.homeos.vn/service_XD/service.svc/";
+
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: url + "ApiServicePublic/" + "GetdataChart/STARTDATE='"+startDate+"',ENDDATE='"+endDate+"',ZONE_ID="+ZONE_ID,
+                        type: "GET",
+                        dataType: "jsonp",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (msg) {
+                            try {
+                                let state = JSON.parse(msg);
+                                console.log("dữ liệu", state);
+                                
+                                resolve(state); // Trả về dữ liệu khi thành công
+                            } catch (error) {
+                                reject(error); // Bắt lỗi nếu JSON parse thất bại
+                            }
+                        },
+                        complete: function (data) {
+                            // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
+                        },
+                        error: function (e, t, x) {
+                            
+                        },
+                    });
+                });
+                } 
             //-----------------------------------------------------------------------------------------------------------
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
