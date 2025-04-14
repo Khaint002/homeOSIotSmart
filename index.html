@@ -8272,13 +8272,14 @@
                             const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
+                            window.downloadFileToDevice(link);
                             // window.open(link, "download");
-                            const a = document.createElement('a');
-                            a.href = link;
-                            a.download = link.split('/').pop(); // tự lấy tên file từ URL
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
+                            // const a = document.createElement('a');
+                            // a.href = link;
+                            // a.download = link.split('/').pop(); // tự lấy tên file từ URL
+                            // document.body.appendChild(a);
+                            // a.click();
+                            // document.body.removeChild(a);
                             console.log(link);
                         }
                     }
