@@ -4318,6 +4318,7 @@
                 const TypeWorkstation = getDayMessage(item.workstationType);
                 const dataChart = await getDataChart('NGAY', '', '', TypeWorkstation, localStorage.getItem("MATRAM"), localStorage.getItem("URL"));
                 // const dataChart = await getDataChart('NGAY', '', '', 'RD---', localStorage.getItem("MATRAM"), localStorage.getItem("URL"));
+                
                 if (dataChart != []) {
                     createChartData(dataChart, 'RD', 'NGAY')
                 }
@@ -5278,6 +5279,8 @@
                         return 'RD---';
                     case "MS":
                         return 'RD---';
+                    case "NNS":
+                        return 'RT-RN-SS-';
                     default:
                         return "";
                 }
