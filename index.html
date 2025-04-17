@@ -2786,6 +2786,12 @@
                             -</p>
                     </div>
                     <div class="d-flex" style="line-height: 50px;">
+                        <button id="export-condition" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
+                                <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                              </svg>
+                        </button>
                         <button id="schedule-condition"
                             style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;"
@@ -2853,7 +2859,7 @@
                                                     </svg>
                                                 </button>
                                             </div>
-                                            <span>Online</span>
+                                            <span id="statusCabinet">Offline</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3508,6 +3514,52 @@
                 </div>
             </div>
         </div>
+        <div id="export-condition-popup" class="modal">
+            <div class="container" style="width: 100%; height: 100%; background-color: #1E2833;">
+                <div class="d-flex" style="line-height: 50px;">
+                    <button id="BackExportCondition" style="height: 40px; border: none; background-color: #1E2833;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                        </svg>
+                    </button>
+                    <p style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Xuất báo cáo</p>
+                </div>
+                <div class="content-form" style="background-color: #1E2833; padding: 0;">
+                    <div class="form-group content-detail">
+                        <label class="form-label content-label" for="txtScheduleName">Báo cáo:</label>
+                        <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
+                        <select name="" class="form-control content-input" id="nameReport">
+                            <option value="RPT_BAO_CAO_GIO">Báo cáo điện năng theo giờ</option>
+                            <option value="RPT_BAO_CAO_NGAY">Báo cáo điện năng theo ngày</option>
+                        </select>
+                    </div>
+                    <div class="row flex-row" style="justify-content: space-between;">
+                        <div class="col-12 d-flex flex-row pr-0" style="align-items: center;">
+                            <div class="mr-3 d-flex flex-column w-100">
+                                <div class="card mw-100 mh-100 m-0 p-3">
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Ngày bắt đầu:</label>
+                                        <input type="date" id="startDate" class="form-control content-input w-100">
+                                    </div>
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Ngày kết thúc:</label>
+                                        <input type="date" id="endDate" class="form-control content-input w-100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="submitExport" class="btn btn-warning"
+                            style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                            Xuất dữ liệu báo cáo (excel)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -3940,6 +3992,9 @@
             });
             $("#BackConditionError").click(function () {
                 $('#error-condition-popup').hide();
+            });
+            $("#BackExportCondition").click(function () {
+                $('#export-condition-popup').hide();
             });
             $("#download-QRcode").click(function () {
                 const img = $('#hidden-image')[0];
@@ -7387,18 +7442,24 @@
             var timeoutHandle;
             var intervalId = null;
             const relayTimeouts = {};
+            var cabinetID;
             getWebSocket = async function (value) {
+                const dataItemcabinet = JSON.parse(localStorage.getItem('itemCondition'));
+                const QRcode = dataItemcabinet[0].QR_CODE.split(',');
+                cabinetID = QRcode[3];
+                console.log(cabinetID);
+                
                 try {
                     ws = new WebSocket("wss://" + value + "/findme");
                     // ws = new WebSocket("wss://" + value + "/forwarding");
                     ws.onopen = function () {
                         // w.send("10eba031-2203-4105-b80b-04b675dfe576");
-                        ws.send("Website/" + 12929152 + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
+                        ws.send("Website/" + cabinetID + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
                     };
                     ws.onmessage = function (data) {
                         var txt = data.data;
                         let checkValue = txt.split(":");
-                        if (checkValue[0] == "12929152") {
+                        if (checkValue[0] == cabinetID) {
                             clearTimeout(timeoutHandle);
                             timeoutHandle = setTimeout(noDataReceived, 70000);
                             $('#power').css('background', '#d41c1f');
@@ -7413,9 +7474,11 @@
                                         clearInterval(intervalId);
                                         intervalId = null;
                                     }
+                                    
                                     let temp = txt.split(",");
                                     // document.getElementById("setDateCondition").textContent = temp[0].slice(11, 22);
                                     document.getElementById("setDateTimeCondition").textContent = temp[0].substring(11);
+                                    document.getElementById("statusCabinet").textContent = 'Online';
                                     $('#online').css('background', '#ceac30');
                                     $('#online').css('box-shadow', '0px 0px 30px 5px' + '#ceac30');
                                     if (temp[temp.length - 1].slice(0, 2) == 'RL') {
@@ -7456,11 +7519,22 @@
                     wss = new WebSocket("wss://" + value + "/controller");
                     wss.onopens = function () {
                         // w.send("10eba031-2203-4105-b80b-04b675dfe576");
-                        wss.send("Website/" + 12929152 + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
+                        wss.send("Website/" + cabinetID + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
                     };
+                    var checkOnOff = 'ON';
                     setTimeout(() => {
-                        let cmd = [{ CHIP_ID: '12929152', COMMAND: 'REFRESH;' }];
+                        let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
                         wss.send(JSON.stringify(cmd));
+                        
+                        setInterval(() => {
+                            let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_' + (checkOnOff) + '_1;' }];
+                            wss.send(JSON.stringify(cmd));
+                            if(checkOnOff == 'ON'){
+                                checkOnOff = 'OFF';
+                            } else {
+                                checkOnOff = 'ON';
+                            }
+                        }, 1000);
                     }, 500);
 
                     $("#loading-popup").hide();
@@ -7473,6 +7547,7 @@
             var noDataReceived = function () {
                 $('#online').css('background', '#000000');
                 $('#online').css('box-shadow', '0px 0px 30px 5px #000000');
+                document.getElementById("statusCabinet").textContent = 'Offline';
                 intervalId = setInterval(() => {
                     onClose();
                     getWebSocket("hoangminhlighting.vn:447");
@@ -7480,7 +7555,7 @@
             }
 
             $("#online").click(function () {
-                let cmd = [{ CHIP_ID: '12929152', COMMAND: 'REFRESH;' }];
+                let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
                 wss.send(JSON.stringify(cmd));
             })
 
@@ -7546,6 +7621,9 @@
                 $("#error-condition-popup").show();
                 // initCharts()
             });
+            $("#export-condition").click(function () {
+                $("#export-condition-popup").show();
+            });
 
             onOffRelay = function (id, color) {
                 const icon = document.getElementById("icon-" + id);
@@ -7559,7 +7637,7 @@
                         <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
                     `;
                     $('#icon-' + id).addClass("spin-loading");
-                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'CALL BATCH LGS_ON_' + checkID + ';' }];
+                    let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_ON_' + checkID + ';' }];
                     wss.send(JSON.stringify(cmd));
                     relayTimeouts[id] = setTimeout(() => {
                         if ($('#' + id).css('background-color') == 'rgb(206, 172, 48)') {
@@ -7579,7 +7657,7 @@
                     `;
                     $('#icon-' + id).addClass("spin-loading");
                     // let cmd = [{ CHIP_ID: '12929152', COMMAND: 'SEND CAN(17 0 0 0 41 '+ (checkID+6) +');' }]; 
-                    let cmd = [{ CHIP_ID: '12929152', COMMAND: 'CALL BATCH LGS_OFF_' + (checkID) + ';' }];
+                    let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_OFF_' + (checkID) + ';' }];
                     wss.send(JSON.stringify(cmd));
                     // ws.send('12929152:SEND CAN(17 0 0 0 41 '+ (checkID+6) +');')
                     relayTimeouts[id] = setTimeout(() => {
@@ -8128,7 +8206,7 @@
                 }
                 command = GenerateCreateScheduleString(scheduleName, startTime, command);
                 // gửi lệnh xuống thiết bị
-                let cmd = [{ CHIP_ID: '12929152', COMMAND: command }];
+                let cmd = [{ CHIP_ID: cabinetID, COMMAND: command }];
                 wss.send(JSON.stringify(cmd));
             });
 
@@ -8165,7 +8243,7 @@
             //-----------------------------------------------------------------------------------------------------------
             // xuất báo cáo
             
-            function DateFormatServerToLocal(input, format = 'dd/mm/yy') {
+            function DateFormatServerToLocal(input, format) {
                 if (!input) return '';
 
                 let dateObj;
@@ -8198,17 +8276,31 @@
                 return format.replace(/dd|mm|yyyy|yy|HH|MM|SS/g, (token) => map[token] || '');
             }
 
-            const exportRepost = function (type = 'E', isViewer) {
-                let Sdate = new Date();
-                let Edate = new Date();
+            $('#submitExport').click(function () {
+                const reportType = $('#nameReport').val();
+                const startDate = $('#startDate').val();
+                const endDate = $('#endDate').val();
 
-                // Trừ đi 1 ngày (tính bằng mili giây)
-                Sdate.setDate(Sdate.getDate() - 1);
+                console.log("Loại báo cáo:", reportType);
+                console.log("Ngày bắt đầu:", startDate);
+                console.log("Ngày kết thúc:", endDate);
+
+                exportRepost('E', startDate, endDate, reportType);
+                // Bạn có thể xử lý tiếp ở đây, ví dụ:
+                // Gọi API, tạo URL báo cáo, hiển thị kết quả...
+            });
+
+            const exportRepost = function (type = 'E', startDate, endDate, nameReport, isViewer) {
+                // let Sdate = new Date();
+                // let Edate = new Date();
+
+                // // Trừ đi 1 ngày (tính bằng mili giây)
+                // Sdate.setDate(Sdate.getDate() - 1);
                 if (isViewer)
                     this.IsViewer = isViewer;
                 // startLoading();
-                const datetesst =  DateFormatServerToLocal(Sdate.toISOString(), 'dd/mm/yy');
-                console.log(datetesst, ":--", new Date(datetesst));
+                // const datetesst =  DateFormatServerToLocal(Sdate.toISOString(), 'dd/mm/yy');
+                // console.log(datetesst, ":--", new Date(datetesst));
                 
                 var val = [];
                 val.url = 'https://central.homeos.vn/service_XD/service.svc/' + "GenerateReportOther";
@@ -8216,10 +8308,10 @@
                 val.data = {
                     Uid: 'admin',
                     Sid: 'cb880c13-5465-4a1d-a598-28e06be43982',
-                    PRid: "RPT_BAO_CAO_GIO",
-                    Rid: "RPT_BAO_CAO_GIO",
-                    Sd: DateFormatServerToLocal(Sdate.toISOString(), 'yyyy/mm/dd'),
-                    Ed: DateFormatServerToLocal(Edate.toISOString(), 'yyyy/mm/dd'),
+                    PRid: nameReport,
+                    Rid: nameReport,
+                    Sd: DateFormatServerToLocal(startDate, 'yyyy/mm/dd'),
+                    Ed: DateFormatServerToLocal(endDate, 'yyyy/mm/dd'),
                     // St: this.txtFromTime.Value(),
                     // Et: this.txtToTime.Value(),
                     c: JSON.stringify([]),
@@ -8272,14 +8364,18 @@
                             const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
-                            window.downloadFileToDevice(link);
-                            // window.open(link, "download");
-                            // const a = document.createElement('a');
-                            // a.href = link;
-                            // a.download = link.split('/').pop(); // tự lấy tên file từ URL
-                            // document.body.appendChild(a);
-                            // a.click();
-                            // document.body.removeChild(a);
+                            if(window.downloadFileToDevice){
+                                window.downloadFileToDevice(link);
+                            } else {
+                                // window.open(link, "download");
+                                const a = document.createElement('a');
+                                a.href = link;
+                                a.download = link.split('/').pop(); // tự lấy tên file từ URL
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                console.log(1);
+                            }
                             console.log(link);
                         }
                     }
@@ -8291,7 +8387,6 @@
                 $.ajax(val);
             }
             
-            exportRepost();
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",

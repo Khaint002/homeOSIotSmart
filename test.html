@@ -1,63 +1,96 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seven Segment Display</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        .seven-segment-container {
-            display: flex;
-            margin: 20px;
-            padding: 10px;
-            border: 2px solid white;
-            border-radius: 5px;
-            background-color: #222;
-            transform: scale(1);
-            transition: transform 0.2s;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Xem PDF bằng Canvas</title>
+  <style>
+    body {
+      background: #333;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      background: white;
+    }
+
+    .controls {
+      margin: 10px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-    <div id="testResizableArray3" style="width: 200px; height: 80px;"></div>
-<div id="testResizableArray3-1" style="width: 200px; height: 80px;"></div>
-<div id="testResizableArray3-2" style="width: 200px; height: 80px;"></div>
-<div id="testResizableArray3-3" style="width: 200px; height: 80px;"></div>
+  <h2>Xem PDF bằng Canvas (PDF.js)</h2>
+  <div class="controls">
+    <button onclick="prevPage()">Trang trước</button>
+    <button onclick="nextPage()">Trang sau</button>
+    <span>Trang: <span id="page_num">1</span> / <span id="page_count">?</span></span>
+  </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-<script src="https://unpkg.com/seven-segment"></script>
-<script>
-    function initializeSevenSegArray(elementId, digits, options) {
-        var display = new SegmentDisplay(elementId);
-        display.pattern = "#".repeat(digits); // Số lượng chữ số
-        display.displayAngle = 6;
-        display.digitHeight = 20;
-        display.digitWidth = 10;
-        display.segmentWidth = 3;
-        display.segmentSpacing = 1;
-        display.colorOn = options.colorOn;
-        display.colorOff = options.colorOff;
-        display.setValue("1234"); // Giá trị mặc định
-    }
+  <canvas id="pdf-canvas"></canvas>
 
-    // Khởi tạo 4 LED 7 đoạn
-    initializeSevenSegArray("testResizableArray3", 5, {colorOff: "#073336", colorOn: "#0fb4c0"});
-    initializeSevenSegArray("testResizableArray3-1", 4, {colorOff: "#361b0e", colorOn: "#e97540"});
-    initializeSevenSegArray("testResizableArray3-2", 4, {colorOff: "#2d2d0d", colorOn: "#f2f442"});
-    initializeSevenSegArray("testResizableArray3-3", 4, {colorOff: "#073336", colorOn: "#0fb4c0"});
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script>
+    const url = 'https://central.homeos.vn/service_XD/Ex/admin_95749cd3-4e41-45eb-9df9-4c50566f6601.pdf';
 
+    let pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        canvas = document.getElementById('pdf-canvas'),
+        ctx = canvas.getContext('2d');
+
+    const renderPage = (num) => {
+      pageRendering = true;
+      pdfDoc.getPage(num).then((page) => {
+        const viewport = page.getViewport({ scale: 1.5 });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        const renderTask = page.render(renderContext);
+        renderTask.promise.then(() => {
+          pageRendering = false;
+          document.getElementById('page_num').textContent = pageNum;
+        });
+      });
+    };
+
+    const queueRenderPage = (num) => {
+      if (pageRendering) return;
+      renderPage(num);
+    };
+
+    const prevPage = () => {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+    };
+
+    const nextPage = () => {
+      if (pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+    };
+
+    pdfjsLib.getDocument(url).promise.then((pdfDoc_) => {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page_count').textContent = pdfDoc.numPages;
+      renderPage(pageNum);
+    });
+  </script>
 
 </body>
 </html>
