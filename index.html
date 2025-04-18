@@ -2459,7 +2459,7 @@
                                 </div>
                                 <div style="display: flex; align-items: center;">
                                     <div>
-                                        <p>Nhiệt độ</p>
+                                        <p id="titleRT">Nhiệt độ</p>
                                         <h5 id="RT">-</h5>
                                     </div>
 
@@ -2584,7 +2584,7 @@
                                 <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: white; padding-top: 5px;" class="bi bi-gear-fill" viewBox="0 0 16 16">
                                     <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
                                 </svg> -->
-                                <h3 style="margin: 0; padding-left: 2px;">Biểu đồ nhiệt độ</h3>
+                                <h3 id="titleChartRT" style="margin: 0; padding-left: 2px;">Biểu đồ nhiệt độ</h3>
                             </div>
                             <div class="content-form">
                                 <canvas id="ChartRT" width="400" height="200"></canvas>
@@ -4308,7 +4308,6 @@
             }
 
             async function getDataMonitoring() {
-                createNewChart()
                 const data = await getNewData(
                     localStorage.getItem("MATRAM"),
                     "WORKSTATION_ID='" + localStorage.getItem("MATRAM") + "'",
@@ -5381,109 +5380,122 @@
                 });
             }
 
+            // function checkTypeWorkstation() {
+            //     document.getElementById("box-RT").classList.add("d-none");
+            //     document.getElementById("box-RH").classList.add("d-none");
+            //     document.getElementById("box-RD").classList.add("d-none");
+            //     document.getElementById("box-RD").classList.add("col-6");
+            //     document.getElementById("box-RD").classList.remove("col-12");
+            //     document.getElementById("box-RP").classList.add("d-none");
+            //     document.getElementById("box-RN").classList.add("d-none");
+            //     document.getElementById("box-RN").classList.add("col-6");
+            //     document.getElementById("box-RN").classList.remove("col-12");
+            //     document.getElementById("chart-RT").classList.add("d-none");
+            //     document.getElementById("chart-RH").classList.add("d-none");
+            //     document.getElementById("chart-RD").classList.add("d-none");
+            //     document.getElementById("chart-RP").classList.add("d-none");
+            //     document.getElementById("chart-RN").classList.add("d-none");
+            //     document.getElementById("box-SS").classList.add("d-none");
+            //     document.getElementById("box-SS").classList.add("col-6");
+            //     document.getElementById("box-SS").classList.remove("col-12");
+            //     document.getElementById("chart-SS").classList.add("d-none");
+            //     const item = JSON.parse(localStorage.getItem('itemHistory'));
+            //     document.getElementById("titleRT").textContent = "Nhiệt độ";
+            //     document.getElementById("titleChartRT").textContent = "biểu đồ nhiệt độ";
+            //     if (item.workstationType == "NAAM") {
+            //         document.getElementById("box-RT").classList.remove("d-none");
+            //         document.getElementById("box-RH").classList.remove("d-none");
+            //         document.getElementById("box-RD").classList.remove("d-none");
+            //         document.getElementById("box-RP").classList.remove("d-none");
+            //         document.getElementById("chart-RT").classList.remove("d-none");
+            //         document.getElementById("chart-RH").classList.remove("d-none");
+            //         document.getElementById("chart-RD").classList.remove("d-none");
+            //         document.getElementById("chart-RP").classList.remove("d-none");
+            //     } else if (item.workstationType == "N") {
+            //         document.getElementById("box-RN").classList.remove("d-none");
+            //         document.getElementById("chart-RN").classList.remove("d-none");
+            //         document.getElementById("box-RN").classList.remove("col-6");
+            //         document.getElementById("box-RN").classList.add("col-12");
+            //     } else if (item.workstationType == "M" || item.workstationType == "MS") {
+            //         document.getElementById("box-RD").classList.remove("d-none");
+            //         document.getElementById("chart-RD").classList.remove("d-none");
+            //         document.getElementById("box-RD").classList.remove("col-6");
+            //         document.getElementById("box-RD").classList.add("col-12");
+            //     } else if (item.workstationType == "NNS") {
+            //         document.getElementById("box-RN").classList.remove("d-none");
+            //         document.getElementById("chart-RN").classList.remove("d-none");
+            //         document.getElementById("box-RT").classList.remove("d-none");
+            //         document.getElementById("chart-RT").classList.remove("d-none");
+            //         document.getElementById("box-SS").classList.remove("d-none");
+            //         document.getElementById("chart-SS").classList.remove("d-none");
+            //         document.getElementById("box-SS").classList.remove("col-6");
+            //         document.getElementById("box-SS").classList.add("col-12");
+            //         document.getElementById("titleRT").textContent = "Nhiệt độ nước";
+            //         document.getElementById("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
+            //     }
+            // }
+
             function checkTypeWorkstation() {
-                document.getElementById("box-RT").classList.add("d-none");
-                document.getElementById("box-RH").classList.add("d-none");
-                document.getElementById("box-RD").classList.add("d-none");
-                document.getElementById("box-RD").classList.add("col-6");
-                document.getElementById("box-RD").classList.remove("col-12");
-                document.getElementById("box-RP").classList.add("d-none");
-                document.getElementById("box-RN").classList.add("d-none");
-                document.getElementById("box-RN").classList.add("col-6");
-                document.getElementById("box-RN").classList.remove("col-12");
-                document.getElementById("chart-RT").classList.add("d-none");
-                document.getElementById("chart-RH").classList.add("d-none");
-                document.getElementById("chart-RD").classList.add("d-none");
-                document.getElementById("chart-RP").classList.add("d-none");
-                document.getElementById("chart-RN").classList.add("d-none");
-                document.getElementById("box-SS").classList.add("d-none");
-                document.getElementById("box-SS").classList.add("col-6");
-                document.getElementById("box-SS").classList.remove("col-12");
-                document.getElementById("chart-SS").classList.add("d-none");
-                const item = JSON.parse(localStorage.getItem('itemHistory'));
-                if (item.workstationType == "NAAM") {
-                    document.getElementById("box-RT").classList.remove("d-none");
-                    document.getElementById("box-RH").classList.remove("d-none");
-                    document.getElementById("box-RD").classList.remove("d-none");
-                    document.getElementById("box-RP").classList.remove("d-none");
-                    document.getElementById("chart-RT").classList.remove("d-none");
-                    document.getElementById("chart-RH").classList.remove("d-none");
-                    document.getElementById("chart-RD").classList.remove("d-none");
-                    document.getElementById("chart-RP").classList.remove("d-none");
-                } else if (item.workstationType == "N") {
-                    document.getElementById("box-RN").classList.remove("d-none");
-                    document.getElementById("chart-RN").classList.remove("d-none");
-                    document.getElementById("box-RN").classList.remove("col-6");
-                    document.getElementById("box-RN").classList.add("col-12");
-                } else if (item.workstationType == "M" || item.workstationType == "MS") {
-                    document.getElementById("box-RD").classList.remove("d-none");
-                    document.getElementById("chart-RD").classList.remove("d-none");
-                    document.getElementById("box-RD").classList.remove("col-6");
-                    document.getElementById("box-RD").classList.add("col-12");
-                } else if (item.workstationType == "NNS") {
-                    document.getElementById("box-RN").classList.remove("d-none");
-                    document.getElementById("chart-RN").classList.remove("d-none");
-                    document.getElementById("box-RT").classList.remove("d-none");
-                    document.getElementById("chart-RT").classList.remove("d-none");
-                    document.getElementById("box-SS").classList.remove("d-none");
-                    document.getElementById("chart-SS").classList.remove("d-none");
-                    document.getElementById("box-SS").classList.remove("col-6");
-                    document.getElementById("box-SS").classList.add("col-12");
-                }
-            }
-            var ctx = document.getElementById("lineBarChart");
-            var lineBarChart;
-            var ctx_RT = document.getElementById("ChartRT");
-            var ChartRT;
-            var ctx_RH = document.getElementById("ChartRH");
-            var ChartRH;
-            var ctx_RP = document.getElementById("ChartRP");
-            var ChartRP;
-            var ctx_RN = document.getElementById("ChartRN");
-            var ChartRN;
-            var ctx_SS = document.getElementById("ChartSS");
-            var ChartSS;
-            // khởi Tạo biểu đồ
-            ctx.getContext("2d");
-            function createNewChart() {
-                if (lineBarChart != null) {
-                    lineBarChart.destroy();
-                }
-                lineBarChart = new Chart(ctx, {
-                    type: "bar", // Chọn loại biểu đồ chính là bar
-                    data: {
-                        labels: ["January", "February", "March", "April", "May", "June", "July"],
-                        datasets: [
-                            {
-                                type: "bar", // Chọn kiểu bar cho dataset này
-                                label: "Lượng bán hàng",
-                                data: [30, 50, 40, 60, 70, 45, 80],
-                                backgroundColor: "rgba(75, 192, 192, 0.5)",
-                                borderColor: "rgba(75, 192, 192, 1)",
-                                borderWidth: 1,
-                            },
-                            {
-                                type: "line", // Chọn kiểu line cho dataset này
-                                label: "Doanh thu",
-                                data: [300, 400, 350, 450, 500, 400, 550],
-                                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                                borderColor: "rgba(255, 99, 132, 1)",
-                                fill: false, // Không tô nền dưới đường
-                                tension: 0.3, // Tạo độ cong cho đường
-                                borderWidth: 2,
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true, // Đảm bảo trục Y bắt đầu từ 0
-                            },
-                        },
-                    },
+                const $ = (id) => document.getElementById(id);
+                const hideElements = ["RT", "RH", "RD", "RP", "RN", "SS"];
+
+                // Reset toàn bộ trạng thái hiển thị
+                hideElements.forEach(type => {
+                    $(`box-${type}`).classList.add("d-none");
+                    $(`chart-${type}`).classList.add("d-none");
+
+                    if (["RD", "RN", "SS"].includes(type)) {
+                        $(`box-${type}`).classList.remove("col-12");
+                        $(`box-${type}`).classList.add("col-6");
+                    }
                 });
+
+                const item = JSON.parse(localStorage.getItem("itemHistory"));
+                $("titleRT").textContent = "Nhiệt độ";
+                $("titleChartRT").textContent = "biểu đồ nhiệt độ";
+
+                switch (item.workstationType) {
+                    case "NAAM":
+                        ["RT", "RH", "RD", "RP"].forEach(type => {
+                            $(`box-${type}`).classList.remove("d-none");
+                            $(`chart-${type}`).classList.remove("d-none");
+                        });
+                        break;
+
+                    case "N":
+                        ["RN"].forEach(type => {
+                            $(`box-${type}`).classList.remove("d-none");
+                            $(`chart-${type}`).classList.remove("d-none");
+                            $(`box-${type}`).classList.remove("col-6");
+                            $(`box-${type}`).classList.add("col-12");
+                        });
+                        break;
+
+                    case "M":
+                    case "MS":
+                        ["RD"].forEach(type => {
+                            $(`box-${type}`).classList.remove("d-none");
+                            $(`chart-${type}`).classList.remove("d-none");
+                            $(`box-${type}`).classList.remove("col-6");
+                            $(`box-${type}`).classList.add("col-12");
+                        });
+                        break;
+
+                    case "NNS":
+                        ["RN", "RT", "SS"].forEach(type => {
+                            $(`box-${type}`).classList.remove("d-none");
+                            $(`chart-${type}`).classList.remove("d-none");
+                        });
+
+                        $("box-SS").classList.remove("col-6");
+                        $("box-SS").classList.add("col-12");
+
+                        $("titleRT").textContent = "Nhiệt độ nước";
+                        $("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
+                        break;
+                }
             }
+
 
             function roundToTwoDecimals(num) {
                 if (Number.isInteger(num)) {
@@ -5491,157 +5503,75 @@
                 }
                 return Math.round(num * 100) / 100; // Làm tròn đến 2 chữ số thập phân
             }
-            // lọc data để tạo chart
-            createChartData = function (data, type, typeData) {
-                if (lineBarChart != null) {
-                    lineBarChart.destroy();
-                }
-                if (ChartRT != null) {
-                    ChartRT.destroy();
-                }
-                if (ChartRH != null) {
-                    ChartRH.destroy();
-                }
-                if (ChartRP != null) {
-                    ChartRP.destroy();
-                }
-                if (ChartRN != null) {
-                    ChartRN.destroy();
-                }
-                if (ChartSS != null) {
-                    ChartSS.destroy();
-                }
-                var RA = ctx.getContext('2d');
-                var RT = ctx_RT.getContext('2d');
-                var RH = ctx_RH.getContext('2d');
-                var RP = ctx_RP.getContext('2d');
-                var RN = ctx_RN.getContext('2d');
-                var SS = ctx_SS.getContext('2d');
-                let newDataRA = [];
-                let newlabelRA = [];
-                let newDataRT = [];
-                let newlabelRT = [];
-                let newDataRH = [];
-                let newlabelRH = [];
-                let newDataRP = [];
-                let newlabelRP = [];
-                let newDataRN = [];
-                let newlabelRN = [];
-                let newDataSS = [];
-                let newlabelSS = [];
+
+            var chartConfigs = [
+                { id: "lineBarChart", varName: "lineBarChart", zone: "RD", label: "Lượng mưa (mm)", unit: "mm", type: "bar", color: "rgba(75, 192, 192, 0.5)", border: "rgba(75, 192, 192, 1)", divideBy10: true },
+                { id: "ChartRT", varName: "ChartRT", zone: "RT", label: "Nhiệt độ (°C)", unit: "°C", type: "line", color: "rgb(173 14 14)", border: "rgb(173 14 14)", divideBy10: true, tension: 0.4 },
+                { id: "ChartRH", varName: "ChartRH", zone: "RH", label: "Độ ẩm (%)", unit: "%", type: "line", color: "rgb(13,154,154, 0.5)", border: "rgb(13,154,154)", divideBy10: true, fill: true, tension: 0.4, min: 0, max: 100 },
+                { id: "ChartRP", varName: "ChartRP", zone: "RP", label: "Áp suất (hPa)", unit: "hPa", type: "line", color: "rgb(40, 167, 69)", border: "rgb(40, 167, 69)", divideBy10: true, dashed: true },
+                { id: "ChartRN", varName: "ChartRN", zone: "RN", label: "Mực nước (cm)", unit: "cm", type: "line", color: "rgb(0,95,95, 0.5)", border: "rgb(13,154,154)", divideBy10: false, fill: true, tension: 0.4 },
+                { id: "ChartSS", varName: "ChartSS", zone: "SS", label: "Độ mặn (ppm)", unit: "ppt", type: "line", color: "rgb(40, 167, 69)", border: "rgb(40, 167, 69)", divideBy10: true, tension: 0.4 }
+            ];
+
+            var charts = {};
+
+            function createChartData(data, type, typeData) {
+                // Destroy old charts
+                chartConfigs.forEach(cfg => {
+                    if (charts[cfg.varName]) {
+                        charts[cfg.varName].destroy();
+                    }
+                });
+
+                // Xử lý dữ liệu
+                var datasets = {};
+                var labels = {};
+
+                chartConfigs.forEach(cfg => {
+                    datasets[cfg.zone] = [];
+                    labels[cfg.zone] = [];
+                });
+
                 $.each(data, function (i, item) {
-                    //if (item.AverageValue != 0) {
-                    if (item.ZONE_PROPERTY == 'RD') {
-                        newlabelRA.push(item.Label);
-                        const value = roundToTwoDecimals(item.AverageValue / 10)
-                        newDataRA.push(value)
-                    } else if (item.AverageValue != 0) {
-                        if (item.ZONE_PROPERTY == 'RT') {
-                            newlabelRT.push(item.Label);
-                            const value = roundToTwoDecimals(item.AverageValue / 10)
-                            newDataRT.push(value.toFixed(2))
-                        } else if (item.ZONE_PROPERTY == 'RH') {
-                            newlabelRH.push(item.Label);
-                            const value = roundToTwoDecimals(item.AverageValue / 10)
-                            newDataRH.push(value.toFixed(2))
-                        } else if (item.ZONE_PROPERTY == 'RP') {
-                            newlabelRP.push(item.Label);
-                            const value = roundToTwoDecimals(item.AverageValue / 10)
-                            newDataRP.push(value.toFixed(2))
-                        } else if (item.ZONE_PROPERTY == 'RN') {
-                            newlabelRN.push(item.Label);
-                            const value = roundToTwoDecimals(item.AverageValue)
-                            newDataRN.push(value.toFixed(2))
-                        } else if (item.ZONE_PROPERTY == 'SS') {
-                            newlabelSS.push(item.Label);
-                            const value = roundToTwoDecimals(item.AverageValue)
-                            newDataSS.push(value.toFixed(2))
+                    let zone = item.ZONE_PROPERTY;
+                    let config = chartConfigs.find(c => c.zone === zone);
+                    if (!config) return;
+
+                    if (zone === 'RD' || item.AverageValue !== 0) {
+                        let value;
+                        console.log(zone);
+                        
+                        if(zone == 'SS'){
+                            value = config.divideBy10 ? item.AverageValue / 10000 : item.AverageValue;
+                        } else {
+                            value = config.divideBy10 ? item.AverageValue / 10 : item.AverageValue;
                         }
+                        value = roundToTwoDecimals(value).toFixed(2);
+                        labels[zone].push(item.Label);
+                        datasets[zone].push(value);
                     }
+                });
 
+                let labelSuffix = typeData === "NGAY" ? "giờ" : "";
 
-                    //}
-                })
-                var dataSetRA = [
-                    {
-                        type: "bar", // Chọn kiểu bar cho dataset này
-                        label: "Lượng mưa (mm)",
-                        data: newDataRA,
-                        backgroundColor: "rgba(75, 192, 192, 0.5)",
-                        borderColor: "rgba(75, 192, 192, 1)",
+                chartConfigs.forEach(cfg => {
+                    let ctx = document.getElementById(cfg.id).getContext('2d');
+                    let dataSet = [{
+                        type: cfg.type,
+                        label: cfg.label,
+                        data: datasets[cfg.zone],
+                        backgroundColor: cfg.color,
+                        borderColor: cfg.border,
                         borderWidth: 1,
-                    }
-                ]
-                var dataSetRP = [
-                    {
-                        type: "line", // Chọn kiểu bar cho dataset này
-                        label: "Áp suất (hPa)",
-                        data: newDataRP,
-                        backgroundColor: "rgb(40, 167, 69)",
-                        borderColor: "rgb(40, 167, 69)",
-                        borderDash: [5, 5],
-                        borderWidth: 1,
-                    }
-                ]
-                var dataSetRT = [
-                    {
-                        type: "line", // Chọn kiểu bar cho dataset này
-                        label: "Nhiệt độ (°C)",
-                        data: newDataRT,
-                        backgroundColor: "rgb(173 14 14)",
-                        borderColor: "rgb(173 14 14)",
-                        borderWidth: 1,
-                        // fill: 'start',
-                        tension: 0.4,
-                    }
-                ]
-                var dataSetRH = [
-                    {
-                        type: "line", // Chọn kiểu bar cho dataset này
-                        label: "Độ ẩm (%)",
-                        data: newDataRH,
-                        backgroundColor: "rgb(13,154,154, 0.5)",
-                        borderColor: "rgb(13,154,154)",
-                        borderWidth: 1,
-                        fill: 'start',
-                        tension: 0.4,
-                    }
-                ]
-                var dataSetRN = [
-                    {
-                        type: "line", // Chọn kiểu bar cho dataset này
-                        label: "Mực nước (cm)",
-                        data: newDataRN,
-                        backgroundColor: "rgb(0,95,95, 0.5)",
-                        borderColor: "rgb(13,154,154)",
-                        borderWidth: 1,
-                        fill: 'start',
-                        tension: 0.4,
-                    }
-                ]
-                var dataSetSS = [
-                    {
-                        type: "line", // Chọn kiểu bar cho dataset này
-                        label: "Độ mặn (ppm)",
-                        data: newDataRN,
-                        backgroundColor: "rgb(40, 167, 69)",
-                        borderColor: "rgb(40, 167, 69)",
-                        borderWidth: 1,
-                        // fill: 'start',
-                        tension: 0.4,
-                    }
-                ]
-                var label = '';
-                if (typeData == 'NGAY') {
-                    label = "giờ"
-                }
-                lineBarChart = new Chart(RA, createChart("bar", newlabelRA, [], "mm", "", dataSetRA, label));
-                ChartRT = new Chart(RT, createChart("bar", newlabelRT, [], "°C", "", dataSetRT, label));
-                ChartRH = new Chart(RH, createChart("bar", newlabelRH, [], "%", "", dataSetRH, label, 0, 100));
-                ChartRP = new Chart(RP, createChart("bar", newlabelRP, [], "hPa", "", dataSetRP, label));
-                ChartRN = new Chart(RN, createChart("bar", newlabelRN, [], "cm", "", dataSetRN, label));
-                ChartSS = new Chart(SS, createChart("bar", newlabelSS, [], "ppm", "", dataSetSS, label));
-                document.getElementById("loading-spinner").classList.add("d-none");
+                        fill: cfg.fill ? 'start' : false,
+                        tension: cfg.tension || 0,
+                        borderDash: cfg.dashed ? [5, 5] : undefined
+                    }];
+
+                    charts[cfg.varName] = new Chart(ctx, createChart("bar", labels[cfg.zone], [], cfg.unit, "", dataSet, labelSuffix, cfg.min, cfg.max));
+                });
+
+                $("#loading-spinner").addClass("d-none");
             }
 
             // hàm để tạo chart
@@ -5701,50 +5631,6 @@
             var devices = [];  // Danh sách các camera
             var isScannerRunning = false;  // Biến theo dõi trạng thái quét
             var currentCamera;
-            // Hàm khởi tạo quét QR
-            // function startScan(cameraId, cam) {
-            //     currentCamera = cam;
-            //     const formatsToSupport = [
-            //         Html5QrcodeSupportedFormats.QR_CODE,
-            //         Html5QrcodeSupportedFormats.UPC_A,
-            //         Html5QrcodeSupportedFormats.UPC_E,
-            //         Html5QrcodeSupportedFormats.UPC_EAN_EXTENSION,
-            //     ];
-
-            //     const config = {
-            //         fps: 30,
-            //         qrbox: 150,
-            //         rememberLastUsedCamera: true,
-            //         aspectRatio: 2,
-            //         experimentalFeatures: {
-            //             useBarCodeDetectorIfSupported: false
-            //         },
-            //         formatsToSupport: formatsToSupport
-            //     };
-
-            //     const cameraMode = {
-            //         facingMode: { exact: cam }
-            //     };
-
-            //     html5QrCode = new Html5Qrcode("qr-reader");
-            //     html5QrCode.start(
-            //         cameraMode,
-            //         config,
-            //         qrCodeMessage => {
-            //             stockitProcessQrCode(qrCodeMessage);
-            //         },
-            //         errorMessage => {
-            //             // parse error, ignore it.
-            //             // console.log("Error Message:", errorMessage);
-            //         },
-            //         onScanSuccess,
-            //         onScanFailure
-            //     ).then(() => {
-            //         isScannerRunning = true;  // Đánh dấu scanner đang chạy
-            //     }).catch(err => {
-            //         console.error("Lỗi khi khởi động camera: ", err);
-            //     });
-            // }
 
             async function startScan(cameraId, cam) {
                 currentCamera = cam;
