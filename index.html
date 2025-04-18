@@ -4068,7 +4068,7 @@
                 document.getElementById("RD").textContent = '0 mm';
                 document.getElementById("lastTimeRain").textContent = '';
                 document.getElementById("lateDateTime").textContent = "-";
-                pickApp('HISTORY')
+                pickApp('HISTORY');
             });
             $(".WarrantyScanNext").click(function () {
                 document.getElementById("ScanQRWarranty").classList.remove("hidden");
@@ -4459,6 +4459,8 @@
 
                     // Gắn sự kiện click cho phần tử chính
                     element.on('click', function () {
+                        document.getElementById("RD").textContent = '0 mm';
+                        document.getElementById("lastTimeRain").textContent = '';
                         handleItemClick(item);
                     });
 
@@ -8282,7 +8284,8 @@
                 // Gọi API, tạo URL báo cáo, hiển thị kết quả...
             });
 
-            const exportRepost = function (type = 'E', startDate, endDate, nameReport, isViewer) {
+            
+            const exportRepost = function (type, startDate, endDate, nameReport, isViewer) {
                 // let Sdate = new Date();
                 // let Edate = new Date();
 
@@ -8293,18 +8296,25 @@
                 // startLoading();
                 // const datetesst =  DateFormatServerToLocal(Sdate.toISOString(), 'dd/mm/yy');
                 // console.log(datetesst, ":--", new Date(datetesst));
-                var c = [];
-                if(nameReport == 'RPT_BAO_CAO'){
-                    c = ""
-                } else {
+                // var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RT","NAME":"Thiết bị đo nhiệt độ","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
+                var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RT","NAME":"Thiết bị đo nhiệt độ","IDFIELD":"","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
+                // var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RD","NAME":"Lượng mưa","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}];
+                // if(nameReport == 'RPT_BAO_CAO'){
+                //     c = ""
+                // } else {
 
-                }
+                // }
                 var val = [];
+                console.log(1);
+                
                 val.url = 'https://central.homeos.vn/service_XD/service.svc/' + "GenerateReportOther";
+                // val.url = 'https://namdinh.homeos.vn/Service/Service.svc/' + "GenerateReportOther";
                 // this.generateCondition();
                 val.data = {
-                    Uid: 'admin',
-                    Sid: 'cb880c13-5465-4a1d-a598-28e06be43982',
+                    // Uid: 'admin',
+                    // Sid: 'cb880c13-5465-4a1d-a598-28e06be43982',
+                    Uid: 'GUEST',
+                    Sid: '9484e8a8-afed-474c-a0b1-dd8af78e178f',
                     PRid: nameReport,
                     Rid: nameReport,
                     Sd: DateFormatServerToLocal(startDate, 'yyyy/mm/dd'),
@@ -8342,6 +8352,7 @@
                         if (this.IsViewer) {
                             var link = HomeOS.linkbase().toLowerCase().replace('Service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
+                            
                             // this.transOutput.LinkDocument = link;
                             if (!this.transOutput.is_Initial) {
                                 this.transOutput.Form_Loaded = function () {
@@ -8358,9 +8369,11 @@
                             }
                         }
                         else {
+                            // const urlservice = 'https://namdinh.homeos.vn/Service/service.svc/'
                             const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
+                            // link = link.replace('pdf', 'xls');
                             if(window.downloadFileToDevice){
                                 window.downloadFileToDevice(link);
                             }
@@ -8384,7 +8397,7 @@
                 }.bind(this);
                 $.ajax(val);
             }
-            
+            // exportRepost('E', '2025-04-18', '2025-04-18', 'RPT_API_MOBILE');
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",
