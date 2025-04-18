@@ -5189,7 +5189,7 @@
                             document.getElementById("RN").textContent = filteredItems[i].ZONE_VALUE + " cm";
                         } else if (filteredItems[i].ZONE_PROPERTY == "SS") {
                             checkRD = true;
-                            document.getElementById("SS").textContent = filteredItems[i].ZONE_VALUE + " ppm";
+                            document.getElementById("SS").textContent = filteredItems[i].ZONE_VALUE / 10 + " ppm";
                         }
                         if (checkRT == false) {
                             setRangeValue(0)
