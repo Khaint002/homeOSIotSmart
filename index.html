@@ -2302,20 +2302,21 @@
                                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                             </svg>
                         </button>
-                        <p id="footer-stationName"
-                            style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            -</p>
+                        <p id="footer-stationName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">-</p>
                     </div>
                     <div class="d-flex" style="line-height: 50px;">
-                        <button id="share-qrcode-workstation"
-                            style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" style="color: #fff;"
-                                fill="currentColor" class="bi bi-qr-code" viewBox="0 0 16 16">
+                        <button id="export-kttv" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="color: #fff;" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
+                                <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                              </svg>
+                        </button>
+                        <button id="share-qrcode-workstation" style="height: 40px; border: none; background-color: #282d31; padding: 0;margin-right: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" style="color: #fff;" fill="currentColor" class="bi bi-qr-code" viewBox="0 0 16 16">
                                 <path d="M2 2h2v2H2z" />
                                 <path d="M6 0v6H0V0zM5 1H1v4h4zM4 12H2v2h2z" />
                                 <path d="M6 10v6H0v-6zm-5 1v4h4v-4zm11-9h2v2h-2z" />
-                                <path
-                                    d="M10 0v6h6V0zm5 1v4h-4V1zM8 1V0h1v2H8v2H7V1zm0 5V4h1v2zM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8zm0 0v1H2V8H1v1H0V7h3v1zm10 1h-1V7h1zm-1 0h-1v2h2v-1h-1zm-4 0h2v1h-1v1h-1zm2 3v-1h-1v1h-1v1H9v1h3v-2zm0 0h3v1h-2v1h-1zm-4-1v1h1v-2H7v1z" />
+                                <path d="M10 0v6h6V0zm5 1v4h-4V1zM8 1V0h1v2H8v2H7V1zm0 5V4h1v2zM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8zm0 0v1H2V8H1v1H0V7h3v1zm10 1h-1V7h1zm-1 0h-1v2h2v-1h-1zm-4 0h2v1h-1v1h-1zm2 3v-1h-1v1h-1v1H9v1h3v-2zm0 0h3v1h-2v1h-1zm-4-1v1h1v-2H7v1z" />
                                 <path d="M7 12h1v3h4v1H7zm9 2v2h-3v-1h2v-1z" />
                             </svg>
                         </button>
@@ -3550,7 +3551,16 @@
                     <p style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Xuất báo cáo</p>
                 </div>
                 <div class="content-form" style="background-color: #1E2833; padding: 0;">
-                    <div class="form-group content-detail">
+                    <div id="filter-kttv" class="form-group content-detail">
+                        <label class="form-label content-label" for="txtScheduleName">Báo cáo:</label>
+                        <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
+                        <select name="" class="form-control content-input" id="KTTV_Report">
+                            <option value="RT">Nhiệt độ</option>
+                            <option value="RH">Độ ẩm</option>
+                            <option value="RD">mưa</option>
+                        </select>
+                    </div>
+                    <div id="filter-condition" class="form-group content-detail">
                         <label class="form-label content-label" for="txtScheduleName">Báo cáo:</label>
                         <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
                         <select name="" class="form-control content-input" id="nameReport">
@@ -3640,6 +3650,7 @@
             var typeQR;
             var listDomain = [];
             var checkTabHistory = 0;
+            var checkReport = '';
             // Gọi hàm GetUser từ script chính
             DataUser = JSON.parse(localStorage.getItem("userInfo"));
             var UserID = localStorage.getItem("userID");
@@ -3651,7 +3662,7 @@
                             document.getElementById("PickApp-button-login").classList.add("d-none");
                             $(".userAvt").attr("src", DataUser.avatar);
                             document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
-                            const dataUserResponse = await getDM("WARRANTY_USER", "USER_ID='" + UserID + "'");
+                            const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                             console.log(dataUserResponse.data);
                             if (dataUserResponse.data.length == 0) {
                                 const willInsertData = {
@@ -3668,7 +3679,7 @@
                                 localStorage.setItem('RoleUser', dataUserResponse.data[0].USER_ROLE);
                             }
                         } else if (DataUser != undefined) {
-                            const dataUserResponse = await getDM("WARRANTY_USER", "USER_ID='" + UserID + "'");
+                            const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                             console.log(dataUserResponse.data);
                             if (dataUserResponse.data.length == 0) {
                                 const willInsertData = {
@@ -3695,7 +3706,7 @@
             }
 
             async function getListDomain() {
-                const datatest = await getDM('WARRANTY_SERVICE', "1=1");
+                const datatest = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
                 for (let i = 0; i < datatest.data.length; i++) {
                     listDomain.push(datatest.data[i].DOMAIN);
                 }
@@ -4236,7 +4247,7 @@
                         document.getElementById("PickApp-button-login").classList.add("d-none");
                         $(".userAvt").attr("src", DataUser.avatar);
                         document.getElementById("LogoPickScreen").style.paddingTop = '10vh';
-                        const dataUserResponse = await getDM("WARRANTY_USER", "USER_ID='" + UserID + "'");
+                        const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                         if (dataUserResponse.data.length == 0) {
                             const willInsertData = {
                                 USER_ID: DataUser.id,
@@ -4686,172 +4697,122 @@
                 showHistoryCategory()
             }
 
-            var ZONE_PROPERTY;
-            var ZONE_UNIT;
-            var ZONE_PROPERTY_NNS;
-            var ZONE_UNIT_NNS;
-            // chạy Interval để check trạng thái hoạt động
-            async function startInterval() {
-                // Chạy setInterval nếu chưa chạy
+            let ZONE_PROPERTY = 'RD';
+            let ZONE_UNIT = ' mm';
+            let ZONE_PROPERTY_NNS = 'RT';
+            let ZONE_UNIT_NNS = ' °C';
 
-                if (!intervalId) {
-                    ZONE_PROPERTY = 'RD';
-                    ZONE_UNIT = ' mm';
-                    ZONE_PROPERTY_NNS = 'RT';
-                    ZONE_UNIT_NNS = ' °C';
-                    for (let i = historyItems.length - 1; i >= 0; i--) {
-                        const data = await getNewData(
-                            historyItems[i].CodeWorkStation,
-                            "WORKSTATION_ID='" + historyItems[i].CodeWorkStation + "'",
-                            "https://" + historyItems[i].domain + "/Service/Service.svc"
-                        );
-                        let filteredItems = data.D.filter(item => item.ZONE_ADDRESS === historyItems[i].CodeWorkStation);
-                        console.log();
-                        if (filteredItems.length != 0) {
-                            if (historyItems[i].workstationType == "NAAM") {
-                                const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === ZONE_PROPERTY);
-                                if (dataRD.length != 0) {
-                                    document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + ZONE_UNIT
-                                }
-                            } else if (historyItems[i].workstationType == "N") {
-                                const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RN');
-                                if (dataRD.length != 0) {
-                                    document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE + " cm"
-                                }
-                            } else if (historyItems[i].workstationType == "M") {
-                                const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RD');
-                                if (dataRD.length != 0) {
-                                    document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + " mm"
-                                }
-                            } else if (historyItems[i].workstationType == "MS") {
-                                const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RD');
-                                if (dataRD.length != 0) {
-                                    document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + " mm"
-                                }
-                            } else if (historyItems[i].workstationType == "NNS") {
-                                const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === ZONE_PROPERTY);
-                                if (dataRD.length != 0) {
-                                    document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + ZONE_UNIT
-                                }
-                            }
-                            const now = new Date();
-                            const dataRA = filteredItems.filter(item => item.ZONE_PROPERTY === 'RA');
-                            const providedTime = new Date(dataRA[0].DATE_CREATE);
-                            const differenceInMilliseconds = now.getTime() - providedTime.getTime();
-                            const checkTimeOnline = differenceInMilliseconds / (1000 * 60)
-                            if (checkTimeOnline < 15) {
-                                const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                                if (button) {
-                                    button.style.backgroundColor = "#28a745";
-                                }
-                            } else {
-                                const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                                if (button) {
-                                    button.style.backgroundColor = "#da4a58";
-                                }
-                            }
+            function getColorByTimeDiff(dateStr) {
+                const now = new Date();
+                const providedTime = new Date(dateStr);
+                const minutesDiff = (now - providedTime) / (1000 * 60);
+                return minutesDiff < 15 ? "#28a745" : "#da4a58";
+            }
+
+            function getDisplayValue(item, type) {
+                switch (type) {
+                    case "NAAM":
+                        return item.ZONE_VALUE / 10 + ZONE_UNIT;
+                    case "N":
+                        return item.ZONE_VALUE + " cm";
+                    case "M":
+                    case "MS":
+                        return item.ZONE_VALUE / 10 + " mm";
+                    case "NNS":
+                        if (ZONE_PROPERTY_NNS === "RN") {
+                            return item.ZONE_VALUE + " cm";
                         } else {
-                            const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                            if (button) {
-                                button.style.backgroundColor = "#da4a58";
-                            }
+                            return item.ZONE_VALUE / 10000 + ZONE_UNIT_NNS;
                         }
-                    }
-                    intervalId = setInterval(async () => {
-                        if (ZONE_PROPERTY == 'RD') {
-                            ZONE_PROPERTY = 'RT'
-                            ZONE_UNIT = ' °C'
-                        } else if (ZONE_PROPERTY == 'RT') {
-                            ZONE_PROPERTY = 'RH'
-                            ZONE_UNIT = ' %'
-                        } else if (ZONE_PROPERTY == 'RH') {
-                            ZONE_PROPERTY = 'RP'
-                            ZONE_UNIT = ' hPa'
-                        } else if (ZONE_PROPERTY == 'RP') {
-                            ZONE_PROPERTY = 'RD'
-                            ZONE_UNIT = ' mm'
-                        }
-                        
-                        for (let i = historyItems.length - 1; i >= 0; i--) {
-                            const data = await getNewData(
-                                historyItems[i].CodeWorkStation,
-                                "WORKSTATION_ID='" + historyItems[i].CodeWorkStation + "'",
-                                "https://" + historyItems[i].domain + "/Service/Service.svc"
-                            );
-                            let filteredItems = data.D.filter(item => item.ZONE_ADDRESS === historyItems[i].CodeWorkStation);
-
-                            if (filteredItems.length != 0) {
-                                if (historyItems[i].workstationType == "NAAM") {
-                                    const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === ZONE_PROPERTY);
-                                    if (dataRD.length != 0) {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + ZONE_UNIT
-                                    } else {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = '0 mm';
-                                    }
-                                } else if (historyItems[i].workstationType == "N") {
-                                    const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RN');
-                                    if (dataRD.length != 0) {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE + " cm"
-                                    }
-                                } else if (historyItems[i].workstationType == "M") {
-                                    const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RD');
-                                    if (dataRD.length != 0) {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + " mm"
-                                    }
-                                } else if (historyItems[i].workstationType == "MS") {
-                                    const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === 'RD');
-                                    if (dataRD.length != 0) {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + " mm"
-                                    }
-                                } else if (historyItems[i].workstationType == "NNS") {
-                                    if (ZONE_PROPERTY_NNS == 'RT') {
-                                        ZONE_PROPERTY_NNS = 'RN'
-                                        ZONE_UNIT_NNS = ' cm'
-                                    } else if (ZONE_PROPERTY_NNS == 'RN') {
-                                        ZONE_PROPERTY_NNS = 'SS'
-                                        ZONE_UNIT_NNS = ' ppm'
-                                    } else if (ZONE_PROPERTY_NNS == 'SS') {
-                                        ZONE_PROPERTY_NNS = 'RT'
-                                        ZONE_UNIT_NNS = ' °C'
-                                    }
-                                    const dataRD = filteredItems.filter(item => item.ZONE_PROPERTY === ZONE_PROPERTY_NNS);
-                                    console.log(filteredItems);
-                                    
-                                    if (dataRD.length != 0) {
-                                        if(ZONE_PROPERTY_NNS == "RN"){
-                                            document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE + " cm"
-                                        } else {
-                                            document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = dataRD[0].ZONE_VALUE / 10 + ZONE_UNIT_NNS;
-                                        }
-                                    } else {
-                                        document.getElementById('Value' + historyItems[i].CodeWorkStation).textContent = '0 cm';
-                                    }
-                                }
-                                const now = new Date();
-                                const dataRA = filteredItems.filter(item => item.ZONE_PROPERTY === 'RA');
-                                const providedTime = new Date(dataRA[0].DATE_CREATE);
-                                const differenceInMilliseconds = now.getTime() - providedTime.getTime();
-                                const checkTimeOnline = differenceInMilliseconds / (1000 * 60);
-                                if (checkTimeOnline < 15) {
-                                    const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                                    if (button) {
-                                        button.style.backgroundColor = "#28a745";
-                                    }
-                                } else {
-                                    const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                                    if (button) {
-                                        button.style.backgroundColor = "#da4a58";
-                                    }
-                                }
-                            } else {
-                                const button = document.getElementById('App' + historyItems[i].CodeWorkStation);
-                                if (button) {
-                                    button.style.backgroundColor = "#da4a58";
-                                }
-                            }
-                        }
-                    }, 10000);
+                    default:
+                        return "-";
                 }
+            }
+
+            async function updateWorkstationUI(station, data) {
+                const filteredItems = data.D.filter(item => item.ZONE_ADDRESS === station.CodeWorkStation);
+                const elementValue = document.getElementById('Value' + station.CodeWorkStation);
+                const button = document.getElementById('App' + station.CodeWorkStation);
+
+                if (filteredItems.length === 0) {
+                    if (button) button.style.backgroundColor = "#da4a58";
+                    return;
+                }
+
+                let prop = 'RD';
+                if (station.workstationType === "NAAM") prop = ZONE_PROPERTY;
+                else if (station.workstationType === "N") prop = 'RN';
+                else if (["M", "MS"].includes(station.workstationType)) prop = 'RD';
+                else if (station.workstationType === "NNS") prop = ZONE_PROPERTY_NNS;
+
+                const dataRD = filteredItems.find(item => item.ZONE_PROPERTY === prop);
+                elementValue.textContent = dataRD ? getDisplayValue(dataRD, station.workstationType) : '_';
+                
+                if(prop == 'RD' && !dataRD){
+                    elementValue.textContent = "0mm";
+                }
+                try {
+                    const dataRA = filteredItems.find(item => item.ZONE_PROPERTY === 'RA');
+                    if (dataRA) {
+                        const color = getColorByTimeDiff(dataRA.DATE_CREATE);
+                        if (button) button.style.backgroundColor = color;
+                    } else {
+                        if (button) button.style.backgroundColor = "#da4a58";
+                    }
+                } catch (e) {
+                    if (button) button.style.backgroundColor = "#da4a58";
+                }
+            }
+
+            function rotateProperties() {
+                const props = [
+                    { prop: 'RD', unit: ' mm' },
+                    { prop: 'RT', unit: ' °C' },
+                    { prop: 'RH', unit: ' %' },
+                    { prop: 'RP', unit: ' hPa' }
+                ];
+                const index = props.findIndex(p => p.prop === ZONE_PROPERTY);
+                const next = props[(index + 1) % props.length];
+                ZONE_PROPERTY = next.prop;
+                ZONE_UNIT = next.unit;
+
+                const nnsProps = [
+                    { prop: 'RT', unit: ' °C' },
+                    { prop: 'RN', unit: ' cm' },
+                    { prop: 'SS', unit: ' ppt' }
+                ];
+                const nnsIndex = nnsProps.findIndex(p => p.prop === ZONE_PROPERTY_NNS);
+                const nextNNS = nnsProps[(nnsIndex + 1) % nnsProps.length];
+                ZONE_PROPERTY_NNS = nextNNS.prop;
+                ZONE_UNIT_NNS = nextNNS.unit;
+            }
+
+            async function startInterval() {
+                if (intervalId) return;
+
+                for (let i = historyItems.length - 1; i >= 0; i--) {
+                    const station = historyItems[i];
+                    const data = await getNewData(
+                        station.CodeWorkStation,
+                        `WORKSTATION_ID='${station.CodeWorkStation}'`,
+                        `https://${station.domain}/Service/Service.svc`
+                    );
+                    await updateWorkstationUI(station, data);
+                }
+
+                intervalId = setInterval(async () => {
+                    rotateProperties();
+
+                    for (let i = historyItems.length - 1; i >= 0; i--) {
+                        const station = historyItems[i];
+                        const data = await getNewData(
+                            station.CodeWorkStation,
+                            `WORKSTATION_ID='${station.CodeWorkStation}'`,
+                            `https://${station.domain}/Service/Service.svc`
+                        );
+                        await updateWorkstationUI(station, data);
+                    }
+                }, 10000);
             }
 
             function stopInterval() {
@@ -4868,97 +4829,102 @@
             });
             // hiển thị dữ liệu lịch sử truy cập 
             function showHistory(type) {
-                if (type == "ADD") {
-                    document.getElementById("history-setting").classList.remove("d-none");
-                    document.getElementById("history-homePage").classList.add("d-none");
-                    OpenAddCategory()
-                } else if (type == "WAR") {
+                const historySetting = document.getElementById("history-setting");
+                const historyHomePage = document.getElementById("history-homePage");
+                const historySelect = document.getElementById("historySelect");
 
-                } else {
-                    historyItems = JSON.parse(localStorage.getItem('dataHistory'));
-                    DataCategory = JSON.parse(localStorage.getItem('dataCategory'));
-                    let arrayCategory = [];
-                    arrayCategory.push("ADD");
-                    if (DataCategory) {
-                        if (DataCategory.length > 0) {
-                            for (let i = DataCategory.length - 1; i >= 0; i--) {
-                                if (!arrayCategory.includes(DataCategory[i].NameCategory)) { // Kiểm tra nếu phần tử chưa có trong mảng
-                                    arrayCategory.push(DataCategory[i].NameCategory);
-                                }
-                            }
-                        }
+                if (type === "ADD") {
+                    historySetting.classList.remove("d-none");
+                    historyHomePage.classList.add("d-none");
+                    OpenAddCategory();
+                    return;
+                }
+
+                historyItems = JSON.parse(localStorage.getItem('dataHistory')) || [];
+                DataCategory = JSON.parse(localStorage.getItem('dataCategory')) || [];
+                const arrayCategory = ["ADD"];
+
+                // Tạo danh sách tên danh mục không trùng
+                DataCategory.forEach(cat => {
+                    if (!arrayCategory.includes(cat.NameCategory)) {
+                        arrayCategory.push(cat.NameCategory);
                     }
-                    if (type) {
-                        if (DataCategory) {
-                            DataCategory = DataCategory.filter(item => item.NameCategory == type);
-                        } else {
-                            DataCategory = []
-                        }
-                        if (type != "ALL" && DataCategory.length == 0) {
-                            historyItems = historyItems.filter(item => item.workstationType === type);
-                        } else if (DataCategory) {
-                            if (DataCategory.length > 0) {
-                                let arrayWostation = [];
-                                for (let i = DataCategory[0].itemCategory.length - 1; i >= 0; i--) {
-                                    const filterHistoryItems = historyItems.filter(item => item.CodeWorkStation === DataCategory[0].itemCategory[i].CodeWorkStation);
-                                    arrayWostation.push(filterHistoryItems[0]);
-                                }
-                                historyItems = arrayWostation;
-                            }
-                        }
-                    }
-                    if (historyItems && historyItems.length > 0) {
-                        historyListDetail.empty();
-                        for (let i = historyItems.length - 1; i >= 0; i--) {
-                            addItemHistory(historyItems[i]);
-                            if (!arrayCategory.includes(historyItems[i].workstationType)) { // Kiểm tra nếu phần tử chưa có trong mảng
-                                arrayCategory.push(historyItems[i].workstationType);
-                            }
-                        }
-                        arrayCategory.push("ALL");
-                        if (!type) {
-                            const selectElement = $('#historySelect');
-                            selectElement.empty();
-                            for (let i = arrayCategory.length - 1; i >= 0; i--) {
-                                const selectElement = document.getElementById("historySelect");
-                                const newOption = document.createElement("option");
-                                let value;
-                                let text;
-                                if (arrayCategory[i] == "NAAM") {
-                                    value = arrayCategory[i]
-                                    text = "Trạm Mưa, nhiệt, ẩm, áp"
-                                } else if (arrayCategory[i] == "N") {
-                                    value = arrayCategory[i]
-                                    text = "Trạm mực nước"
-                                } else if (arrayCategory[i] == "M") {
-                                    value = arrayCategory[i]
-                                    text = "Trạm Mưa"
-                                } else if (arrayCategory[i] == "MS") {
-                                    value = arrayCategory[i]
-                                    text = "Trạm Mưa, sóng"
-                                } else if (arrayCategory[i] == "NNS") {
-                                    value = arrayCategory[i]
-                                    text = "Trạm mặn, nhiệt, mực nước"
-                                } else if (arrayCategory[i] == "ALL") {
-                                    value = arrayCategory[i]
-                                    text = "Tất cả trạm"
-                                } else if (arrayCategory[i] == "ADD") {
-                                    value = arrayCategory[i]
-                                    text = " + Thêm danh mục mới"
-                                    newOption.className = "custom-option";
-                                } else {
-                                    value = arrayCategory[i]
-                                    text = arrayCategory[i]
-                                }
-                                newOption.value = value; // Giá trị mới
-                                newOption.text = text; // Văn bản mới
-                                selectElement.appendChild(newOption); // Thêm vào danh sách select
-                            }
-                        }
-                        startInterval();
+                });
+
+                if (type) {
+                    const categoryMatched = DataCategory.find(cat => cat.NameCategory === type);
+
+                    if (type !== "ALL" && !categoryMatched) {
+                        historyItems = historyItems.filter(item => item.workstationType === type);
+                    } else if (categoryMatched && categoryMatched.itemCategory?.length) {
+                        historyItems = categoryMatched.itemCategory
+                            .map(catItem => historyItems.find(h => h.CodeWorkStation === catItem.CodeWorkStation))
+                            .filter(Boolean);
                     }
                 }
+
+                if (!historyItems || historyItems.length === 0) return;
+
+                // Làm sạch và hiển thị danh sách
+                historyListDetail.empty();
+                historyItems.forEach(item => {
+                    addItemHistory(item);
+                    if (!arrayCategory.includes(item.workstationType)) {
+                        arrayCategory.push(item.workstationType);
+                    }
+                });
+
+                arrayCategory.push("ALL");
+
+                // Chỉ tạo select nếu chưa có type (tức là lần đầu vào)
+                if (!type) {
+                    historySelect.innerHTML = "";
+                    arrayCategory.slice().reverse().forEach(cat => {
+                        const option = document.createElement("option");
+
+                        switch (cat) {
+                            case "NAAM":
+                                option.value = cat;
+                                option.text = "Trạm Mưa, nhiệt, ẩm, áp";
+                                break;
+                            case "N":
+                                option.value = cat;
+                                option.text = "Trạm mực nước";
+                                break;
+                            case "M":
+                                option.value = cat;
+                                option.text = "Trạm Mưa";
+                                break;
+                            case "MS":
+                                option.value = cat;
+                                option.text = "Trạm Mưa, sóng";
+                                break;
+                            case "NNS":
+                                option.value = cat;
+                                option.text = "Trạm mặn, nhiệt, mực nước";
+                                break;
+                            case "ALL":
+                                option.value = cat;
+                                option.text = "Tất cả trạm";
+                                break;
+                            case "ADD":
+                                option.value = cat;
+                                option.text = " + Thêm danh mục mới";
+                                option.className = "custom-option";
+                                break;
+                            default:
+                                option.value = cat;
+                                option.text = cat;
+                                break;
+                        }
+
+                        historySelect.appendChild(option);
+                    });
+                }
+
+                startInterval();
             }
+
 
             function showHistoryCategory(type) {
                 historyItems = JSON.parse(localStorage.getItem('dataHistory'));
@@ -5748,7 +5714,7 @@
                     if (data.length > 0 && checkQRcode.length == 3) {
                         if (checkTab) {
                             if (data[0].LOT_ID == 0) {
-                                const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
+                                const dataQRCODE = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
                                 if (dataQRCODE.data.length < $('#classProductNumber').val()) {
                                     const willInsertData = {
                                         PR_KEY: data[0].PR_KEY,
@@ -5835,7 +5801,7 @@
                         }
                     } else {
                         if (typeQR == 3 && checkQRcode[0].substring(0, 3) == "T20") {
-                            const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
+                            const dataQRCODE = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
                             if (dataQRCODE.data.length < $('#classProductNumber').val()) {
                                 const willInsertData = {
                                     QR_CODE: decodedText,
@@ -5873,7 +5839,7 @@
                                 scanAgain();
                             }
                         } else {
-                            const dataLot = await getDM("WARRANTY_LOT", "1=1")
+                            const dataLot = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_LOT", "1=1")
                             console.log();
                             const checkValue = dataLot.data.some(item => item.LOT_NUMBER == decodedText);
                             if (checkValue) {
@@ -6037,7 +6003,7 @@
                                             if (data.length > 0) {
                                                 if (checkTab) {
                                                     if (data[0].LOT_ID == 0) {
-                                                        const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
+                                                        const dataQRCODE = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
                                                         if (dataQRCODE.data.length < $('#classProductNumber').val()) {
                                                             const willInsertData = {
                                                                 PR_KEY: data[0].PR_KEY,
@@ -6126,7 +6092,7 @@
                                                 if (typeQR == 3 && checkQRcode[0].substring(0, 3) == "T20") {
                                                     console.log(1);
 
-                                                    const dataQRCODE = await getDM("DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
+                                                    const dataQRCODE = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "LOT_ID='" + $('#lot-number').val() + "' AND LOT_CLASS='" + $('#classProduct').val() + "'")
                                                     if (dataQRCODE.data.length < $('#classProductNumber').val()) {
                                                         const willInsertData = {
                                                             QR_CODE: decodedText,
@@ -6166,7 +6132,7 @@
                                                         console.log(1);
                                                     }
                                                 } else {
-                                                    const dataLot = await getDM("WARRANTY_LOT", "1=1")
+                                                    const dataLot = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_LOT", "1=1")
                                                     console.log(dataLot);
                                                     const checkValue = dataLot.data.some(item => item.LOT_NUMBER == decodedText);
                                                     if (checkValue) {
@@ -6414,7 +6380,7 @@
                         $("#ScanAllQRcode").removeClass("d-none");
                         $("#lotProduct").addClass("d-none");
                         $('#lot-number').empty();
-                        const Data = await getDM('WARRANTY_LOT', "1=1");
+                        const Data = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_LOT', "1=1");
                         const newOption = $('<option>', {
                             value: '0', // Giá trị của option
                             text: 'Chọn lô sản phẩm' // Nội dung hiển thị
@@ -6674,7 +6640,7 @@
 
             async function getTranNo() {
                 try {
-                    const data = await getDM('SYS_TRAN_NO', "TABLE_NAME='DM_QRCODE'");
+                    const data = await getDM("https://central.homeos.vn/service_XD/service.svc", 'SYS_TRAN_NO', "TABLE_NAME='DM_QRCODE'");
                     const state = data.data;
                     let temp = state[0].TRAN_NO || null;
                     temp = temp.replace(/\[YEAR\]/g, (new Date()).getFullYear());
@@ -6699,23 +6665,30 @@
                 }
             }
 
-            function getDM(table_name, c) {
+            async function getDM(url, table_name, c, check) {
+                let user_id_getDm = 'admin';
+                let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
+                if(check == "NotCentral"){
+                    const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    user_id_getDm = dataUser[0].StateName;
+                    Sid_getDM = dataUser[0].StateId;
+                }
                 const d = {
                     // Uid: 'vannt',
                     // Sid: 'b99213e4-a8a5-45f4-bb5c-cf03ae90d8d7',
-                    Uid: 'admin',
-                    Sid: 'cb880c13-5465-4a1d-a598-28e06be43982',
+                    Uid: user_id_getDm,
+                    Sid: Sid_getDM,
                     tablename: table_name,
                     c: c,
                     other: '',
                     cmd: ''
                 };
-
+                
                 // const Url = 'https://DEV.HOMEOS.vn/service/service.svc/';
 
                 return new Promise((resolve, reject) => {
                     $.ajax({
-                        url: "https://central.homeos.vn/service_XD/service.svc/getDm?callback=?",
+                        url: url+"/getDm?callback=?",
                         type: "GET",
                         dataType: "jsonp",
                         data: d,
@@ -6874,7 +6847,7 @@
 
             async function generateVoucher(item) {
                 console.log(item);
-                const data = await getDM("DM_QRCODE", "LOT_ID='" + item.PR_KEY + "'")
+                const data = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "LOT_ID='" + item.PR_KEY + "'")
                 let uniqueClasses = [...new Set(data.data.map(item => item.LOT_CLASS))];
                 uniqueClasses.sort();
                 console.log(uniqueClasses);
@@ -7030,8 +7003,8 @@
             }
 
             async function addItemHistoryWarranty(QRID, dataQR) {
-                const data = await getDM('WARRANTY_ERROR', "QRCODE_ID='" + QRID + "'");
-                const data_lot = await getDM('WARRANTY_LOT', "PR_KEY='" + dataQR[0].LOT_ID + "'");
+                const data = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_ERROR', "QRCODE_ID='" + QRID + "'");
+                const data_lot = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_LOT', "PR_KEY='" + dataQR[0].LOT_ID + "'");
                 let dataWarranty = data.data.filter(item => item.GROUP_ID === 0);
                 let dataWarrantyGroup = data.data.filter(item => item.GROUP_ID !== 0);
                 if (localStorage.getItem('RoleUser') == "GUEST") {
@@ -7152,7 +7125,7 @@
             }
 
             async function addItemLotproduct() {
-                const data = await getDM('WARRANTY_LOT', "1=1");
+                const data = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_LOT', "1=1");
                 listLotProduct.empty();
                 data.data.forEach(item => {
                     let element = '';
@@ -7346,7 +7319,7 @@
                     toastr.error("Vui lòng nhập mã QRcode!");
                 } else {
                     let dataWarranty = [];
-                    const dataQRcode = await getDM("DM_QRCODE", "1=1")
+                    const dataQRcode = await getDM("https://central.homeos.vn/service_XD/service.svc", "DM_QRCODE", "1=1")
                     const matchedItem = dataQRcode.data.find(item =>
                         item.QR_CODE.slice(-inputValue.length).replace(/\./g, '') === inputValue.replace(/\./g, '')
                     );
@@ -7615,9 +7588,22 @@
                 $("#error-condition-popup").show();
                 // initCharts()
             });
+
             $("#export-condition").click(function () {
+                checkReport = 'condition';
+                $("filter-kttv").addClass("d-none")
+                $("filter-condition").removeClass("d-none")
                 $("#export-condition-popup").show();
             });
+            $("#export-kttv").click(function () {
+                checkReport = 'KTTV';
+                getDevicefilter();
+                $("#filter-kttv").removeClass("d-none");
+                $("#filter-condition").addClass("d-none");
+                $("#export-condition-popup").show();
+            });
+
+
 
             onOffRelay = function (id, color) {
                 const icon = document.getElementById("icon-" + id);
@@ -8271,7 +8257,13 @@
             }
 
             $('#submitExport').click(function () {
-                const reportType = $('#nameReport').val();
+                let reportType;
+                if(checkReport == 'KTTV'){
+                    reportType = $('#KTTV_Report').val();
+                } else {
+                    reportType = $('#nameReport').val();
+                }
+                
                 const startDate = $('#startDate').val();
                 const endDate = $('#endDate').val();
 
@@ -8284,44 +8276,89 @@
                 // Gọi API, tạo URL báo cáo, hiển thị kết quả...
             });
 
-            
-            const exportRepost = function (type, startDate, endDate, nameReport, isViewer) {
-                // let Sdate = new Date();
-                // let Edate = new Date();
+            function serializeParams(obj) {
+                return Object.keys(obj)
+                    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
+                    .join('&');
+            }
 
-                // // Trừ đi 1 ngày (tính bằng mili giây)
-                // Sdate.setDate(Sdate.getDate() - 1);
+            function checkRoleUser(user_id, password, url) {
+                const d = {
+                    Uid: user_id,
+                    p: password,
+                    ip: '0.0.0.0',
+                    a: '6fba9a59-46f1-42e6-baea-b2479fa1eb3b'
+                };
+                
+                const Url = url;
+                const baseURL = `${Url}GetSessionId?&&`;
+                const urlWithParams = `${baseURL}${serializeParams(d)}`;
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: Url + "GetSessionId?callback=?",
+                        type: "GET",
+                        dataType: "jsonp",
+                        data: d,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (msg) {
+                            try {
+                                let state = JSON.parse(msg);
+                                resolve(state);  // Trả về dữ liệu khi thành công
+                            } catch (error) {
+                                reject(error);  // Bắt lỗi nếu JSON parse thất bại
+                            }
+                        },
+                        complete: function (data) {
+
+                        },
+                        error: function (e, t, x) {
+                        }
+                    });
+                });
+            }
+
+            const exportRepost = async function (type, startDate, endDate, reportType, isViewer) {
+                
                 if (isViewer)
                     this.IsViewer = isViewer;
                 // startLoading();
+                const data = JSON.parse(localStorage.getItem("itemHistory"));
+                console.log(data);
+                
                 // const datetesst =  DateFormatServerToLocal(Sdate.toISOString(), 'dd/mm/yy');
                 // console.log(datetesst, ":--", new Date(datetesst));
                 // var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RT","NAME":"Thiết bị đo nhiệt độ","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
-                var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RT","NAME":"Thiết bị đo nhiệt độ","IDFIELD":"","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
-                // var c = [{"ID":"091840","NAME":"Trực Ninh","IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":"RD","NAME":"Lượng mưa","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}];
-                // if(nameReport == 'RPT_BAO_CAO'){
-                //     c = ""
-                // } else {
-
-                // }
+                var c = [];
+                var linkbase;
+                var nameReport;
+                if(checkReport == 'KTTV'){
+                    linkbase = 'https://'+data.domain+'/Service/Service.svc/'
+                    c = [{"ID":data.CodeWorkStation,"NAME":data.NameWorkStation,"IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":reportType,"NAME":"","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
+                    nameReport = 'RPT_API_MOBILE';
+                } else {
+                    linkbase = 'https://namdinh.homeos.vn/Service/Service.svc/';
+                }
+                const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), linkbase);
+                console.log(dataUser);
+                
                 var val = [];
                 console.log(1);
                 
-                val.url = 'https://central.homeos.vn/service_XD/service.svc/' + "GenerateReportOther";
-                // val.url = 'https://namdinh.homeos.vn/Service/Service.svc/' + "GenerateReportOther";
+                // val.url = 'https://central.homeos.vn/service_XD/service.svc/' + "GenerateReportOther";
+                val.url = linkbase + "GenerateReportOther";
                 // this.generateCondition();
                 val.data = {
                     // Uid: 'admin',
                     // Sid: 'cb880c13-5465-4a1d-a598-28e06be43982',
-                    Uid: 'GUEST',
-                    Sid: '9484e8a8-afed-474c-a0b1-dd8af78e178f',
+                    Uid: dataUser[0].StateName,
+                    Sid: dataUser[0].StateId,
                     PRid: nameReport,
                     Rid: nameReport,
                     Sd: DateFormatServerToLocal(startDate, 'yyyy/mm/dd'),
                     Ed: DateFormatServerToLocal(endDate, 'yyyy/mm/dd'),
                     // St: this.txtFromTime.Value(),
                     // Et: this.txtToTime.Value(),
-                    c: JSON.stringify([]),
+                    c: JSON.stringify(c),
                     type: type
                 };
                 val.type = "POST";
@@ -8350,7 +8387,7 @@
                     }
                     if (state != 'error') {
                         if (this.IsViewer) {
-                            var link = HomeOS.linkbase().toLowerCase().replace('Service.svc/', '') + '' + msg;
+                            var link = HomeOS.linkbase().toLowerCase().replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
                             
                             // this.transOutput.LinkDocument = link;
@@ -8369,8 +8406,8 @@
                             }
                         }
                         else {
-                            // const urlservice = 'https://namdinh.homeos.vn/Service/service.svc/'
-                            const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
+                            const urlservice = 'https://namdinh.homeos.vn/Service/service.svc/'
+                            // const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
                             // link = link.replace('pdf', 'xls');
@@ -8398,6 +8435,157 @@
                 $.ajax(val);
             }
             // exportRepost('E', '2025-04-18', '2025-04-18', 'RPT_API_MOBILE');
+            function processCode(code) {
+                const prefix = code.slice(0, 2); // lấy 2 chữ đầu
+                if (prefix[0] === 'D') {
+                    return prefix.split('').reverse().join(''); // đảo ngược nếu bắt đầu bằng D
+                }
+                return prefix;
+            }
+            const getDevicefilter = async function () {
+                if(checkReport == 'KTTV'){
+                    const data = JSON.parse(localStorage.getItem("itemHistory"));
+                    const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
+                    console.log(dataDevice);
+                    const selectElement = $('#KTTV_Report');
+                    selectElement.empty();
+
+                    for (let i = 0; i < dataDevice.data.length; i++) {
+                        const option = $('<option></option>'); // tạo option bằng jQuery
+                        option.val(processCode(dataDevice.data[i].TRAN_NO));
+                        option.text(dataDevice.data[i].DESCRIPTION);
+                        selectElement.append(option); // dùng jQuery append
+                    }
+                }
+            }
+
+            function sha1Encode(message) {
+                function rotate_left(n, s) {
+                    return (n << s) | (n >>> (32 - s));
+                }
+
+                function cvt_hex(val) {
+                    let str = "";
+                    let i;
+                    let v;
+                    for (i = 7; i >= 0; i--) {
+                        v = (val >>> (i * 4)) & 0x0f;
+                        str += v.toString(16);
+                    }
+                    return str;
+                }
+
+                function utf8_encode(str) {
+                    return unescape(encodeURIComponent(str));
+                }
+
+                let blockstart;
+                let i, j;
+                const W = new Array(80);
+                let H0 = 0x67452301;
+                let H1 = 0xEFCDAB89;
+                let H2 = 0x98BADCFE;
+                let H3 = 0x10325476;
+                let H4 = 0xC3D2E1F0;
+                let A, B, C, D, E;
+                let temp;
+
+                message = utf8_encode(message);
+                const msg_len = message.length;
+
+                const word_array = [];
+                for (i = 0; i < msg_len - 3; i += 4) {
+                    j = (message.charCodeAt(i) << 24) |
+                        (message.charCodeAt(i + 1) << 16) |
+                        (message.charCodeAt(i + 2) << 8) |
+                        message.charCodeAt(i + 3);
+                    word_array.push(j);
+                }
+
+                switch (msg_len % 4) {
+                    case 0:
+                        i = 0x080000000;
+                        break;
+                    case 1:
+                        i = (message.charCodeAt(msg_len - 1) << 24) | 0x0800000;
+                        break;
+                    case 2:
+                        i = (message.charCodeAt(msg_len - 2) << 24) |
+                            (message.charCodeAt(msg_len - 1) << 16) |
+                            0x08000;
+                        break;
+                    case 3:
+                        i = (message.charCodeAt(msg_len - 3) << 24) |
+                            (message.charCodeAt(msg_len - 2) << 16) |
+                            (message.charCodeAt(msg_len - 1) << 8) |
+                            0x80;
+                        break;
+                }
+
+                word_array.push(i);
+
+                while ((word_array.length % 16) !== 14) word_array.push(0);
+
+                word_array.push(msg_len >>> 29);
+                word_array.push((msg_len << 3) & 0x0ffffffff);
+
+                for (blockstart = 0; blockstart < word_array.length; blockstart += 16) {
+                    for (i = 0; i < 16; i++) W[i] = word_array[blockstart + i];
+                    for (i = 16; i <= 79; i++) W[i] = rotate_left(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+
+                    A = H0;
+                    B = H1;
+                    C = H2;
+                    D = H3;
+                    E = H4;
+
+                    for (i = 0; i <= 19; i++) {
+                        temp = (rotate_left(A, 5) + ((B & C) | (~B & D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+                        E = D;
+                        D = C;
+                        C = rotate_left(B, 30);
+                        B = A;
+                        A = temp;
+                    }
+
+                    for (i = 20; i <= 39; i++) {
+                        temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+                        E = D;
+                        D = C;
+                        C = rotate_left(B, 30);
+                        B = A;
+                        A = temp;
+                    }
+
+                    for (i = 40; i <= 59; i++) {
+                        temp = (rotate_left(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+                        E = D;
+                        D = C;
+                        C = rotate_left(B, 30);
+                        B = A;
+                        A = temp;
+                    }
+
+                    for (i = 60; i <= 79; i++) {
+                        temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
+                        E = D;
+                        D = C;
+                        C = rotate_left(B, 30);
+                        B = A;
+                        A = temp;
+                    }
+
+                    H0 = (H0 + A) & 0x0ffffffff;
+                    H1 = (H1 + B) & 0x0ffffffff;
+                    H2 = (H2 + C) & 0x0ffffffff;
+                    H3 = (H3 + D) & 0x0ffffffff;
+                    H4 = (H4 + E) & 0x0ffffffff;
+                }
+
+                const sha1hash = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+                return sha1hash.toLowerCase();
+            }
+            
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",
