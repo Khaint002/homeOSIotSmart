@@ -3552,12 +3552,9 @@
                 </div>
                 <div class="content-form" style="background-color: #1E2833; padding: 0;">
                     <div id="filter-kttv" class="form-group content-detail">
-                        <label class="form-label content-label" for="txtScheduleName">Báo cáo:</label>
+                        <label class="form-label content-label" for="txtScheduleName">Yếu tố:</label>
                         <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
                         <select name="" class="form-control content-input" id="KTTV_Report">
-                            <option value="RT">Nhiệt độ</option>
-                            <option value="RH">Độ ẩm</option>
-                            <option value="RD">mưa</option>
                         </select>
                     </div>
                     <div id="filter-condition" class="form-group content-detail">
@@ -3574,6 +3571,12 @@
                             <div class="mr-3 d-flex flex-column w-100">
                                 <div class="card mw-100 mh-100 m-0 p-3">
                                     <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Kì báo cáo:</label>
+                                        <select name="" class="form-control content-input" id="dateTimeReport">
+                                            
+                                        </select>
+                                    </div>
+                                    <div class="form-group content-detail">
                                         <label class="form-label content-label" for="startTime">Ngày bắt đầu:</label>
                                         <input type="date" id="startDate" class="form-control content-input w-100">
                                     </div>
@@ -3586,8 +3589,7 @@
                         </div>
                     </div>
                     <div>
-                        <button id="submitExport" class="btn btn-warning"
-                            style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                        <button id="submitExport" class="btn btn-warning" style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
                             Xuất dữ liệu báo cáo (excel)
                         </button>
                     </div>
@@ -7488,22 +7490,21 @@
                         // w.send("10eba031-2203-4105-b80b-04b675dfe576");
                         wss.send("Website/" + cabinetID + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
                     };
-                    var checkOnOff = 'ON';
-                    setTimeout(() => {
-                        let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
-                        wss.send(JSON.stringify(cmd));
+                    // var checkOnOff = 'ON';
+                    // setTimeout(() => {
+                    //     let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
+                    //     wss.send(JSON.stringify(cmd));
                         
-                        setInterval(() => {
-                            let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_' + (checkOnOff) + '_1;' }];
-                            wss.send(JSON.stringify(cmd));
-                            if(checkOnOff == 'ON'){
-                                checkOnOff = 'OFF';
-                            } else {
-                                checkOnOff = 'ON';
-                            }
-                        }, 1000);
-                    }, 500);
-
+                    //     setInterval(() => {
+                    //         let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_' + (checkOnOff) + '_1;' }];
+                    //         wss.send(JSON.stringify(cmd));
+                    //         if(checkOnOff == 'ON'){
+                    //             checkOnOff = 'OFF';
+                    //         } else {
+                    //             checkOnOff = 'ON';
+                    //         }
+                    //     }, 1000);
+                    // }, 500);
                     $("#loading-popup").hide();
                     saveCondition(JSON.parse(localStorage.getItem('itemCondition')));
                 } catch (e) {
@@ -8458,6 +8459,133 @@
                     }
                 }
             }
+
+            // Danh sách các option theo yêu cầu
+            const reportOptions = [
+                { value: "CHANGE", text: "Tuỳ ý" },
+                { value: "MONTH1", text: "Tháng 1" },
+                { value: "MONTH2", text: "Tháng 2" },
+                { value: "MONTH3", text: "Tháng 3" },
+                { value: "MONTH4", text: "Tháng 4" },
+                { value: "MONTH5", text: "Tháng 5" },
+                { value: "MONTH6", text: "Tháng 6" },
+                { value: "MONTH7", text: "Tháng 7" },
+                { value: "MONTH8", text: "Tháng 8" },
+                { value: "MONTH9", text: "Tháng 9" },
+                { value: "MONTH10", text: "Tháng 10" },
+                { value: "MONTH11", text: "Tháng 11" },
+                { value: "MONTH12", text: "Tháng 12" },
+                { value: "QUY1", text: "Quý 1" },
+                { value: "QUY2", text: "Quý 2" },
+                { value: "QUY3", text: "Quý 3" },
+                { value: "QUY4", text: "Quý 4" },
+                { value: "MOMTHSTART", text: "6 tháng đầu năm" },
+                { value: "MOMTHEND", text: "6 tháng cuối năm" },
+                { value: "MOMTH9START", text: "9 tháng đầu năm" },
+                { value: "YEAR", text: "Cả năm" },
+            ];
+
+            // Hàm khởi tạo các option trong select
+            function renderOptions() {
+                const select = document.getElementById("dateTimeReport");
+                reportOptions.forEach(opt => {
+                    const option = document.createElement("option");
+                    option.value = opt.value;
+                    option.textContent = opt.text;
+                    select.appendChild(option);
+                });
+            }
+
+            // Hàm xử lý thời gian theo lựa chọn
+            function getReportRange(value) {
+                const year = new Date().getFullYear();
+                let startDate, endDate;
+
+                const date = (m, d) => new Date(year, m - 1, d);
+
+                switch (value) {
+                    case "CHANGE":
+                        startDate = null;
+                        endDate = null;
+                        break;
+                    case "MONTH1":
+                    case "MONTH2":
+                    case "MONTH3":
+                    case "MONTH4":
+                    case "MONTH5":
+                    case "MONTH6":
+                    case "MONTH7":
+                    case "MONTH8":
+                    case "MONTH9":
+                    case "MONTH10":
+                    case "MONTH11":
+                    case "MONTH12":
+                        const month = parseInt(value.replace("MONTH", ""));
+                        startDate = date(month, 1);
+                        endDate = new Date(year, month, 0); // ngày cuối cùng của tháng
+                        break;
+                    case "QUY1":
+                        startDate = date(1, 1);
+                        endDate = date(3, 31);
+                        break;
+                    case "QUY2":
+                        startDate = date(4, 1);
+                        endDate = date(6, 30);
+                        break;
+                    case "QUY3":
+                        startDate = date(7, 1);
+                        endDate = date(9, 30);
+                        break;
+                    case "QUY4":
+                        startDate = date(10, 1);
+                        endDate = date(12, 31);
+                        break;
+                    case "MOMTHSTART":
+                        startDate = date(1, 1);
+                        endDate = date(6, 30);
+                        break;
+                    case "MOMTHEND":
+                        startDate = date(7, 1);
+                        endDate = date(12, 31);
+                        break;
+                    case "MOMTH9START":
+                        startDate = date(1, 1);
+                        endDate = date(9, 30);
+                        break;
+                    case "YEAR":
+                        startDate = date(1, 1);
+                        endDate = date(12, 31);
+                        break;
+                    default:
+                        startDate = null;
+                        endDate = null;
+                }
+
+                return { startDate, endDate };
+            }
+
+            function formatDate(date) {
+                if (!date) return '';
+                const yyyy = date.getFullYear();
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            }
+            // Gọi khi trang load
+            renderOptions();
+
+            // Lắng nghe khi người dùng chọn
+            document.getElementById("dateTimeReport").addEventListener("change", function () {
+                console.log(1);
+                
+                const selectedValue = this.value;
+                const { startDate, endDate } = getReportRange(selectedValue);
+
+                // Đổ vào input
+                document.getElementById("startDate").value = formatDate(startDate);
+                document.getElementById("endDate").value = formatDate(endDate);
+            });
+
 
             function sha1Encode(message) {
                 function rotate_left(n, s) {
