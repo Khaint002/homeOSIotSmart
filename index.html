@@ -2543,6 +2543,17 @@
                                 <h5 id="SS">-</h5>
                             </div>
                         </div>
+                        <div id="box-EC" class="d-none col-6 p-2">
+                            <div class="box-value" style="height: 116px; margin: 0;">
+                                <div class="d-flex justify-content-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+                                        <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/>
+                                    </svg>
+                                    <p style="padding-left: 5px;">Độ dẫn điện</p>
+                                </div>
+                                <h5 id="EC">-</h5>
+                            </div>
+                        </div>
                     </div>
                     <div id="acQuy">
                         <!-- <div class="progress"
@@ -2633,6 +2644,17 @@
                             </div>
                             <div class="content-form">
                                 <canvas id="ChartSS" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                        <div id="chart-EC" class="d-none form-total">
+                            <div class="header-form d-flex">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" style="color: white; padding-top: 5px;" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                                </svg> -->
+                                <h3 style="margin: 0; padding-left: 2px;">Biểu đồ độ dẫn điện</h3>
+                            </div>
+                            <div class="content-form">
+                                <canvas id="ChartEC" width="400" height="200"></canvas>
                             </div>
                         </div>
                         <div style="color: #313539;">-</div>
@@ -4781,7 +4803,8 @@
                 const nnsProps = [
                     { prop: 'RT', unit: ' °C' },
                     { prop: 'RN', unit: ' cm' },
-                    { prop: 'SS', unit: ' ppt' }
+                    { prop: 'SS', unit: ' ppt' },
+                    { prop: 'EC', unit: ' μs/cm' }
                 ];
                 const nnsIndex = nnsProps.findIndex(p => p.prop === ZONE_PROPERTY_NNS);
                 const nextNNS = nnsProps[(nnsIndex + 1) % nnsProps.length];
@@ -5159,6 +5182,9 @@
                         } else if (filteredItems[i].ZONE_PROPERTY == "SS") {
                             checkRD = true;
                             document.getElementById("SS").textContent = (filteredItems[i].ZONE_VALUE / 10000).toFixed(2) + " ppt";
+                        } else if (filteredItems[i].ZONE_PROPERTY == "EC") {
+                            checkRD = true;
+                            document.getElementById("EC").textContent = (filteredItems[i].ZONE_VALUE / 1000).toFixed(2) + " μs/cm";
                         }
                         if (checkRT == false) {
                             setRangeValue(0)
@@ -5249,7 +5275,7 @@
                     case "MS":
                         return 'RD---';
                     case "NNS":
-                        return 'RT-RN-SS-';
+                        return 'RT-RN-SS-EC';
                     default:
                         return "";
                 }
@@ -5258,7 +5284,7 @@
             // lọc theo ngày, tháng, năm
             async function clickGetData(type) {
                 if (lineBarChart != null) {
-                    lineBarChart.destroy();
+                    // lineBarChart.destroy();
                     document.getElementById("loading-spinner").classList.remove("d-none");
                 }
                 const item = JSON.parse(localStorage.getItem('itemHistory'));
@@ -5407,14 +5433,14 @@
 
             function checkTypeWorkstation() {
                 const $ = (id) => document.getElementById(id);
-                const hideElements = ["RT", "RH", "RD", "RP", "RN", "SS"];
+                const hideElements = ["RT", "RH", "RD", "RP", "RN", "SS", "EC"];
 
                 // Reset toàn bộ trạng thái hiển thị
                 hideElements.forEach(type => {
                     $(`box-${type}`).classList.add("d-none");
                     $(`chart-${type}`).classList.add("d-none");
 
-                    if (["RD", "RN", "SS"].includes(type)) {
+                    if (["RD", "RN"].includes(type)) {
                         $(`box-${type}`).classList.remove("col-12");
                         $(`box-${type}`).classList.add("col-6");
                     }
@@ -5452,13 +5478,13 @@
                         break;
 
                     case "NNS":
-                        ["RN", "RT", "SS"].forEach(type => {
+                        ["RN", "RT", "SS", "EC"].forEach(type => {
                             $(`box-${type}`).classList.remove("d-none");
                             $(`chart-${type}`).classList.remove("d-none");
                         });
 
-                        $("box-SS").classList.remove("col-6");
-                        $("box-SS").classList.add("col-12");
+                        // $("box-SS").classList.remove("col-6");
+                        // $("box-SS").classList.add("col-12");
 
                         $("titleRT").textContent = "Nhiệt độ nước";
                         $("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
@@ -5480,7 +5506,8 @@
                 { id: "ChartRH", varName: "ChartRH", zone: "RH", label: "Độ ẩm (%)", unit: "%", type: "line", color: "rgb(13,154,154, 0.5)", border: "rgb(13,154,154)", divideBy10: true, fill: true, tension: 0.4, min: 0, max: 100 },
                 { id: "ChartRP", varName: "ChartRP", zone: "RP", label: "Áp suất (hPa)", unit: "hPa", type: "line", color: "rgb(40, 167, 69)", border: "rgb(40, 167, 69)", divideBy10: true, dashed: true },
                 { id: "ChartRN", varName: "ChartRN", zone: "RN", label: "Mực nước (cm)", unit: "cm", type: "line", color: "rgb(0,95,95, 0.5)", border: "rgb(13,154,154)", divideBy10: false, fill: true, tension: 0.4 },
-                { id: "ChartSS", varName: "ChartSS", zone: "SS", label: "Độ mặn (ppt)", unit: "ppt", type: "line", color: "rgb(40, 167, 69)", border: "rgb(40, 167, 69)", divideBy10: true, tension: 0.4 }
+                { id: "ChartSS", varName: "ChartSS", zone: "SS", label: "Độ mặn (ppt)", unit: "ppt", type: "line", color: "rgb(40, 167, 69)", border: "rgb(40, 167, 69)", divideBy10: true, tension: 0.4 },
+                { id: "ChartEC", varName: "ChartEC", zone: "EC", label: "Độ dẫn điện (μs/cm)", unit: "μs/cm", type: "line", color: "rgb(0,95,95)", border: "rgb(13,154,154)", divideBy10: true, tension: 0.4 }
             ];
 
             var charts = {};
@@ -5513,6 +5540,8 @@
                         
                         if(zone == 'SS'){
                             value = config.divideBy10 ? item.AverageValue / 10000 : item.AverageValue;
+                        } else if(zone == 'EC'){
+                            value = config.divideBy10 ? item.AverageValue / 1000 : item.AverageValue;
                         } else {
                             value = config.divideBy10 ? item.AverageValue / 10 : item.AverageValue;
                         }
