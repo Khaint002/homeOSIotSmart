@@ -1067,7 +1067,9 @@ h1 {
 }
 
 /* Item cha */
-#history-setting-detail .parent-item, #history-warranty-detail .parent-item, #lot-warranty-detail .parent-item {
+#history-setting-detail .parent-item,
+#history-warranty-detail .parent-item,
+#lot-warranty-detail .parent-item {
     margin: 10px 0;
     background: #2A3A4A;
     border-radius: 8px;
@@ -1075,13 +1077,17 @@ h1 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#history-setting-detail .parent-item:last-child, #history-warranty-detail .parent-item:last-child, #lot-warranty-detail .parent-item:last-child {
+#history-setting-detail .parent-item:last-child,
+#history-warranty-detail .parent-item:last-child,
+#lot-warranty-detail .parent-item:last-child {
     border-bottom: none;
     /* Loại bỏ viền dưới cho item cuối */
 }
 
 /* Nút mở rộng */
-#history-setting-detail .toggle-button, #history-warranty-detail .toggle-button, #lot-warranty-detail .toggle-button {
+#history-setting-detail .toggle-button,
+#history-warranty-detail .toggle-button,
+#lot-warranty-detail .toggle-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1096,17 +1102,23 @@ h1 {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-#history-setting-detail .toggle-button:hover, #history-warranty-detail .toggle-button:hover, #lot-warranty-detail .toggle-button:hover {
+#history-setting-detail .toggle-button:hover,
+#history-warranty-detail .toggle-button:hover,
+#lot-warranty-detail .toggle-button:hover {
     border-radius: 8px;
     color: #fff;
 }
 
-#history-setting-detail .toggle-button:focus, #history-warranty-detail .toggle-button:focus, #lot-warranty-detail .toggle-button:focus {
+#history-setting-detail .toggle-button:focus,
+#history-warranty-detail .toggle-button:focus,
+#lot-warranty-detail .toggle-button:focus {
     outline: none;
 }
 
 /* Icon mũi tên */
-#history-setting-detail .arrow-icon, #history-warranty-detail .arrow-icon, #lot-warranty-detail .arrow-icon {
+#history-setting-detail .arrow-icon,
+#history-warranty-detail .arrow-icon,
+#lot-warranty-detail .arrow-icon {
     font-size: 14px;
     margin-left: 8px;
     transition: transform 0.3s ease, color 0.3s ease;
@@ -1114,13 +1126,17 @@ h1 {
 }
 
 /* Khi mở rộng */
-#history-setting-detail .arrow-icon.expanded, #history-warranty-detail .arrow-icon.expanded, #lot-warranty-detail .arrow-icon.expanded {
+#history-setting-detail .arrow-icon.expanded,
+#history-warranty-detail .arrow-icon.expanded,
+#lot-warranty-detail .arrow-icon.expanded {
     transform: rotate(90deg);
     color: #fff;
 }
 
 /* Danh sách con */
-#history-setting-detail .child-list, #history-warranty-detail .child-list, #lot-warranty-detail .child-list {
+#history-setting-detail .child-list,
+#history-warranty-detail .child-list,
+#lot-warranty-detail .child-list {
     border-radius: 0 0 8px 8px;
     list-style: none;
     padding: 0;
@@ -1131,7 +1147,9 @@ h1 {
     padding: 5px 10px;
 }
 
-#history-setting-detail .child-list li, #history-warranty-detail .child-list li, #lot-warranty-detail .child-list li {
+#history-setting-detail .child-list li,
+#history-warranty-detail .child-list li,
+#lot-warranty-detail .child-list li {
     font-size: 14px;
     background-color: #333b44;
     color: #555;
@@ -1139,7 +1157,9 @@ h1 {
     margin: 10px 0;
 }
 
-#history-setting-detail .child-list li:hover, #history-warranty-detail .child-list li:hover, #lot-warranty-detail .child-list li:hover {
+#history-setting-detail .child-list li:hover,
+#history-warranty-detail .child-list li:hover,
+#lot-warranty-detail .child-list li:hover {
     cursor: pointer;
 }
 
@@ -1197,14 +1217,19 @@ h1 {
         transform: scale(1.01);
     }
 }
+
 .custom-option {
     color: #fff;
     background-color: #f39c12;
 }
+
 #qrcode canvas {
-    border-radius: 15px; /* Bo góc cho canvas */
-    border: 2px solid #000; /* Thêm viền nếu cần */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    border-radius: 15px;
+    /* Bo góc cho canvas */
+    border: 2px solid #000;
+    /* Thêm viền nếu cần */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng */
 }
 
 .bottom-navigation {
@@ -1253,6 +1278,7 @@ h1 {
 .blinking {
     animation: blink 0.5s linear infinite;
 }
+
 .card {
     background-color: #343a40;
     color: #fff;
@@ -1269,6 +1295,7 @@ h1 {
     border-top-right-radius: .25rem;
     height: 50px;
 }
+
 .card-header>.card-tools {
     float: right;
     margin-right: -.625rem;
@@ -1305,26 +1332,32 @@ h1 {
 .products-list .product-img {
     float: left;
 }
+
 .products-list .product-info {
     margin-left: 60px;
     text-align: start;
 }
+
 .products-list .product-info .span {
     float: right;
 }
+
 .products-list .product-info a {
     color: #3395ff;
     text-decoration: none;
 }
+
 .products-list .product-info a:not(.btn):hover {
     color: #3395ff;
 }
+
 .products-list .product-img img {
     height: 50px;
     width: 50px;
     margin-top: 0;
     object-fit: cover;
 }
+
 .products-list .product-description {
     color: #6c757d;
     display: block;
@@ -1332,6 +1365,7 @@ h1 {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .card-title {
     float: left;
     font-size: 1.1rem;
@@ -1339,12 +1373,14 @@ h1 {
     margin: 0;
 }
 
-.menuWarranty{
+.menuWarranty {
     color: #1976d2 !important;
 }
 
-.bottom-navigation button:focus, .tab button:focus {
-    outline: none; /* Bỏ hiệu ứng khi focus */
+.bottom-navigation button:focus,
+.tab button:focus {
+    outline: none;
+    /* Bỏ hiệu ứng khi focus */
 }
 
 .vertical-timeline {
@@ -1373,6 +1409,7 @@ h1 {
     visibility: visible;
     animation: cd-bounce-1 .8s;
 }
+
 .vertical-timeline-element-icon {
     position: absolute;
     top: 0;
@@ -1388,6 +1425,7 @@ h1 {
     height: 18px;
     position: relative;
 }
+
 .badge:empty {
     display: none;
 }
@@ -1431,6 +1469,7 @@ h1 {
     font-size: .7619rem;
     white-space: nowrap;
 }
+
 .vertical-timeline-element-content .vertical-timeline-element-dateTime {
     display: block;
     position: absolute;
@@ -1447,4 +1486,18 @@ h1 {
     content: "";
     display: table;
     clear: both;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spin-loading {
+    animation: spin 1s linear infinite;
 }

@@ -2337,14 +2337,13 @@
                                 style="height: 100%; padding-left: 0; padding-right: 0; margin-right: 0; display: flex; align-items: center; justify-content: center;">
                                 <div>
                                     <div class="d-flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            style="margin-right: 5px;" fill="currentColor" class="bi bi-battery-half"
-                                            viewBox="0 0 16 16">
-                                            <path d="M2 6h5v4H2z" />
-                                            <path
-                                                d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8" />
-                                        </svg>
-                                        <p style="margin: 0; font-size: 14px;">Năng lượng</p>
+                                        <div id="statusBattery">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="margin-right: 5px; color: yellow" fill="currentColor" class="bi bi-battery-half" viewBox="0 0 16 16">
+                                                <path d="M2 6h5v4H2z" />
+                                                <path d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8" />
+                                            </svg>
+                                        </div>
+                                        <p style="margin: 0; font-size: 14px; line-height: 30px;">Năng lượng</p>
                                     </div>
                                     <div>
                                         <p id="energy" style="font-size: 25px; margin: 0;">-</p>
@@ -4134,7 +4133,7 @@
                 document.getElementById("result-form-stationID").classList.remove("d-none");
                 document.getElementById("result-form-stationName").classList.remove("d-none");
                 document.getElementById("result-truycap").classList.remove("d-none");
-                scanAgain()
+                scanAgain();
             });
             $("#result-product-scanagain").click(function () {
                 document.getElementById("result-product").classList.add("d-none");
@@ -4143,7 +4142,7 @@
                 document.getElementById("result-form-productName").classList.remove("d-none");
                 document.getElementById("result-form-productCode").classList.remove("d-none");
                 document.getElementById("result-truycap").classList.remove("d-none");
-                scanAgain()
+                scanAgain();
             });
             $("#result-condition-scanagain").click(function () {
                 document.getElementById("result-condition").classList.add("d-none");
@@ -4152,7 +4151,7 @@
                 document.getElementById("result-form-conditionName").classList.remove("d-none");
                 document.getElementById("result-form-conditionCode").classList.remove("d-none");
                 document.getElementById("result-truycap").classList.remove("d-none");
-                scanAgain()
+                scanAgain();
             });
             $("#PickApp-button-scanQR").click(function () {
                 if (checkTabHistory == 1) {
@@ -4743,10 +4742,14 @@
                     case "MS":
                         return item.ZONE_VALUE / 10 + " mm";
                     case "NNS":
-                        if (ZONE_PROPERTY_NNS === "RN") {
-                            return item.ZONE_VALUE + " cm";
+                        if (ZONE_PROPERTY_NNS === "SS") {
+                            return (item.ZONE_VALUE / 10000).toFixed(2) + ZONE_UNIT_NNS;
+                        } else if (ZONE_PROPERTY_NNS === "EC") {
+                            return (item.ZONE_VALUE / 1000).toFixed(2) + ZONE_UNIT_NNS;
+                        } else if(ZONE_PROPERTY_NNS === "RN") {
+                            return item.ZONE_VALUE + ZONE_UNIT_NNS;
                         } else {
-                            return item.ZONE_VALUE / 10000 + ZONE_UNIT_NNS;
+                            return item.ZONE_VALUE / 10 + ZONE_UNIT_NNS;
                         }
                     default:
                         return "-";
@@ -4771,7 +4774,9 @@
 
                 const dataRD = filteredItems.find(item => item.ZONE_PROPERTY === prop);
                 elementValue.textContent = dataRD ? getDisplayValue(dataRD, station.workstationType) : '_';
-                
+                if(station.workstationType === "NNS"){
+                    dataRD
+                }
                 if(prop == 'RD' && !dataRD){
                     elementValue.textContent = "0mm";
                 }
@@ -5129,85 +5134,147 @@
                 localStorage.setItem('dataCondition', JSON.stringify(waranntyItems));
             }
 
-            // update data của trang chính xem dữ liệu
             function changeDataHomePage(data) {
-                if (data != [] && data != null && data != '') {
-                    let checkRD = false;
-                    let checkRT = false;
-                    let filteredItems = data.filter(item => item.ZONE_ADDRESS === localStorage.getItem('MATRAM'));
-                    console.log(filteredItems);
+                if (!data || data.length === 0) return;
 
-                    for (let i = 0; i < filteredItems.length; i++) {
-                        if (filteredItems[i].ZONE_PROPERTY == "RT") {
+                const matram = localStorage.getItem('MATRAM');
+                const filteredItems = data.filter(item => item.ZONE_ADDRESS === matram);
+                console.log(filteredItems);
+
+                let checkRD = false;
+                let checkRT = false;
+
+                filteredItems.forEach(item => {
+                    const { ZONE_PROPERTY, ZONE_VALUE, DATE_CREATE } = item;
+                    const value = ZONE_VALUE / 10;
+
+                    switch (ZONE_PROPERTY) {
+                        case "RT":
                             checkRT = true;
-                            document.getElementById("RT").textContent = filteredItems[i].ZONE_VALUE / 10 + " °C";
-                            setRangeValue(filteredItems[i].ZONE_VALUE / 10, "success")
-                        } else if (filteredItems[i].ZONE_PROPERTY == "RH") {
-                            document.getElementById("RH").textContent = filteredItems[i].ZONE_VALUE / 10 + " %";
-                        } else if (filteredItems[i].ZONE_PROPERTY == "RA") {
-                            document.getElementById("energy").textContent = filteredItems[i].ZONE_VALUE / 10 + " V";
-                            // updateProgressBar("acQuy-bar",0, 50, filteredItems[i].ZONE_VALUE / 10, "v")
-                            getCurrentTime(filteredItems[i].DATE_CREATE);
-                            const now = new Date();
-                            const providedTime = new Date(filteredItems[i].DATE_CREATE);
-                            const differenceInMilliseconds = now.getTime() - providedTime.getTime();
-                            const checkTimeOnline = differenceInMilliseconds / (1000 * 60)
-                            if (checkTimeOnline < 15) {
-                                document.getElementById("status").style.background = "green";
-                                document.getElementById("text-status").textContent = "Đang hoạt động";
-                                document.getElementById("status").classList.add('blinking'); // Thêm class nhấp nháy
+                            updateText("RT", value + " °C");
+                            setRangeValue(value, "success");
+                            break;
 
-                                // Dừng nhấp nháy sau 3 giây
-                                setTimeout(() => {
-                                    document.getElementById("status").classList.remove('blinking'); // Xóa class nhấp nháy
-                                }, 3000);
-                            } else {
-                                document.getElementById("status").style.background = "red";
-                                document.getElementById("text-status").textContent = "Ngừng hoạt động";
-                            }
-                            // document.getElementById("RA").textContent = filteredItems[i].ZONE_VALUE / 10 ;
-                        } else if (filteredItems[i].ZONE_PROPERTY == "RP") {
-                            document.getElementById("RP").textContent = filteredItems[i].ZONE_VALUE / 10 + " hPa";
-                        } else if (filteredItems[i].ZONE_PROPERTY == "RD") {
-                            checkRD = true;
-                            document.getElementById("RD").textContent = filteredItems[i].ZONE_VALUE / 10 + " mm ";
-                            document.getElementById("glass").style.background = "url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/54046/glass_droplets.jpeg) center center / cover no-repeat";
-                            document.getElementById("lastTimeRain").textContent = " (" + getCurrentTime(filteredItems[i].DATE_CREATE).substring(11) + ")";
-                            // const color = getColor(filteredItems[i].ZONE_VALUE / 10);
-                            // changeColorAndText(color, color, filteredItems[i].ZONE_VALUE / 10);
-                            // updateProgressBar("rain-bar", -500, 500, (filteredItems[i].LAST_VALUE / 10), "mm");
-                        } else if (filteredItems[i].ZONE_PROPERTY == "RN") {
-                            checkRD = true;
-                            document.getElementById("RN").textContent = filteredItems[i].ZONE_VALUE + " cm";
-                        } else if (filteredItems[i].ZONE_PROPERTY == "SS") {
-                            checkRD = true;
-                            document.getElementById("SS").textContent = (filteredItems[i].ZONE_VALUE / 10000).toFixed(2) + " ppt";
-                        } else if (filteredItems[i].ZONE_PROPERTY == "EC") {
-                            checkRD = true;
-                            document.getElementById("EC").textContent = (filteredItems[i].ZONE_VALUE / 1000).toFixed(2) + " μs/cm";
-                        }
-                        if (checkRT == false) {
-                            setRangeValue(0)
-                        }
-                        if (checkRD == false) {
-                            const now = new Date();
-                            const hours = String(now.getHours()).padStart(2, '0');
-                            if (hours < 18 && hours > 6) {
-                                document.getElementById("glass").style.background = "url(https://i.pinimg.com/736x/9d/1e/b3/9d1eb31563d0694c0eccd2724b5410a9.jpg) center center / cover no-repeat";
-                            } else {
-                                document.getElementById("landscape").classList.add("d-none");
-                                document.getElementById("glass").style.background = "url(https://i.pinimg.com/736x/43/d4/5d/43d45ddb855463920c7505f846bf2900.jpg) center center / cover no-repeat";
-                            }
+                        case "RH":
+                            updateText("RH", value + " %");
+                            break;
 
-                        }
+                        case "RA":
+                            updateText("energy", value + " V");
+                            document.getElementById("statusBattery").innerHTML = getBatteryStatus(value);
+                            handleStatus(DATE_CREATE);
+                            break;
+
+                        case "RP":
+                            updateText("RP", value + " hPa");
+                            break;
+
+                        case "RD":
+                            checkRD = true;
+                            updateText("RD", value + " mm");
+                            updateText("lastTimeRain", " (" + getCurrentTime(DATE_CREATE).substring(11) + ")");
+                            updateBackground("glass", "https://s3-us-west-2.amazonaws.com/s.cdpn.io/54046/glass_droplets.jpeg");
+                            break;
+
+                        case "RN":
+                            checkRD = true;
+                            updateText("RN", ZONE_VALUE + " cm");
+                            break;
+
+                        case "SS":
+                            checkRD = true;
+                            updateText("SS", (ZONE_VALUE / 10000).toFixed(2) + " ppt");
+                            break;
+
+                        case "EC":
+                            checkRD = true;
+                            updateText("EC", (ZONE_VALUE / 1000).toFixed(2) + " μs/cm");
+                            break;
                     }
-                }
-                // else {
-                //     const path = document.querySelector("#mySvg path");
-                //     path.setAttribute("fill", "#007bff");
-                // }
-                $('#loading-popup').hide()
+                });
+
+                if (!checkRT) setRangeValue(0);
+                if (!checkRD) handleNoRainVisual();
+
+                $('#loading-popup').hide();
             }
+
+            // Helpers
+            function updateText(id, text) {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            }
+
+            function updateBackground(id, url) {
+                const el = document.getElementById(id);
+                if (el) el.style.background = `url(${url}) center center / cover no-repeat`;
+            }
+
+            function handleStatus(dateString, value) {
+                const now = new Date();
+                const providedTime = new Date(dateString);
+                const diffMinutes = (now - providedTime) / (1000 * 60);
+
+                const status = document.getElementById("status");
+                const textStatus = document.getElementById("text-status");
+
+                if (!status || !textStatus) return;
+
+                if (diffMinutes < 15) {
+                    status.style.background = "green";
+                    textStatus.textContent = "Đang hoạt động";
+                    status.classList.add('blinking');
+                    setTimeout(() => status.classList.remove('blinking'), 3000);
+                } else {
+                    status.style.background = "red";
+                    textStatus.textContent = "Ngừng hoạt động";
+                }
+
+                if(value )
+
+                getCurrentTime(dateString); // (nếu cần dùng để log hoặc cập nhật ngoài)
+            }
+
+            function getBatteryStatus(voltage) {
+                if (voltage < 8) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="margin-right: 5px; color: red" fill="currentColor" class="bi bi-battery" viewBox="0 0 16 16">
+                        <path d="M0 6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm14 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8"/>
+                    </svg>`;
+                } else if (voltage < 10.8) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="margin-right: 5px; color: red" fill="currentColor" class="bi bi-battery-half" viewBox="0 0 16 16">
+                        <path d="M2 6h5v4H2z"/>
+                        <path d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8"/>
+                    </svg>`;
+                } else if (voltage < 12.4) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="margin-right: 5px; color: yellow" fill="currentColor" class="bi bi-battery-half" viewBox="0 0 16 16">
+                        <path d="M2 6h5v4H2z"/>
+                        <path d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8"/>
+                    </svg>`;
+                } else if (voltage > 12.4) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="margin-right: 5px; color: #21ae21" fill="currentColor" class="bi bi-battery-full" viewBox="0 0 16 16">
+                        <path d="M2 6h10v4H2z"/>
+                        <path d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8"/>
+                    </svg>`;
+                } else {
+                    return "Bình thường";
+                }
+            }
+
+            function handleNoRainVisual() {
+                const hour = new Date().getHours();
+                const glass = document.getElementById("glass");
+                const landscape = document.getElementById("landscape");
+
+                if (!glass) return;
+
+                if (hour >= 6 && hour < 18) {
+                    updateBackground("glass", "https://i.pinimg.com/736x/9d/1e/b3/9d1eb31563d0694c0eccd2724b5410a9.jpg");
+                } else {
+                    if (landscape) landscape.classList.add("d-none");
+                    updateBackground("glass", "https://i.pinimg.com/736x/43/d4/5d/43d45ddb855463920c7505f846bf2900.jpg");
+                }
+            }
+
 
             if (maTram != "") {
                 getDataMonitoring();
@@ -5313,6 +5380,7 @@
                     }
                 }
             }
+
             //call api GetDataWorkStation lấy dữ liệu của WorkStation được chỉ định
             function getDataStation(workstationID, domain) {
 
