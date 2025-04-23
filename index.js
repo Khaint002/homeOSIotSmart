@@ -12,6 +12,7 @@ setTimeout(() => {
     document.getElementById("LogoLoadScreen").classList.add("hidden");
     // document.getElementById("pickApp").classList.remove("hidden");
     // document.getElementById("guarantee").classList.remove("hidden");
+    console.log(1);
     
     getListDomain()
     $("#content-block").load("./pages/menu/menu.html");

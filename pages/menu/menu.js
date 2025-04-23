@@ -1,5 +1,7 @@
 var UserID = localStorage.getItem("userID");
 var DataUser = JSON.parse(localStorage.getItem("userInfo"));
+console.log('chạy');
+
 async function handleUser() {
     if (UserID) {
         try {
@@ -69,11 +71,11 @@ function WarrantyCheckUser(ROLE) {
 }
 
 var apps = [
-    { id: "mua", name: "Môi trường", version: "v1.1.4", description: "Khí tượng thuỷ văn", bgColor: "#17a2b8", icon: "bi-cloud-sun", visible: true },
+    { id: "KTTV", name: "Môi trường", version: "v1.1.4", description: "Khí tượng thuỷ văn", bgColor: "#17a2b8", icon: "bi-cloud-sun", visible: true },
     { id: "IOT", name: "Web OS", version: "v4.56 Pro", description: "IIoT", bgColor: "#da4a58", icon: "bi-pc-display-horizontal", visible: false },
     { id: "den", name: "Đèn", version: "v6.10.24", description: "Chiếu sáng thông minh", bgColor: "#28a745", icon: "bi-lightbulb-fill", visible: false },
     { id: "warranty", name: "Bảo hành", version: "v1.0.4", description: "Bảo hành sản phẩm", bgColor: "#e29038", icon: "bi-tools", visible: true },
-    { id: "condition", name: "Điều khiển", version: "v1.0.3", description: "Điều khiển, giám sát năng lượng", bgColor: "#17a2b8", icon: "bi-toggles", visible: true }
+    { id: "CONTROL", name: "Điều khiển", version: "v1.0.3", description: "Điều khiển, giám sát năng lượng", bgColor: "#17a2b8", icon: "bi-toggles", visible: true }
 ];
 
 function renderApps(apps, containerId) {
@@ -106,7 +108,8 @@ renderApps(apps, "app-list");
 
 async function pickApp(type) {
     switch (type) {
-        case 'MUA':
+        case 'KTTV':
+            localStorage.setItem("application", "KTTV");
             handleMuaApp();
             break;
 
@@ -132,7 +135,8 @@ async function pickApp(type) {
             hideElement("homePage");
             break;
 
-        case 'GUA':
+        case 'warranty':
+            localStorage.setItem("application", "warranty");
             await handleWarrantyApp();
             break;
 
@@ -140,7 +144,8 @@ async function pickApp(type) {
             await handleLogin();
             break;
 
-        case 'DK':
+        case 'CONTROL':
+            localStorage.setItem("application", "CONTROL");
             checkApp = type;
             showElement("history");
             hideElement("pickApp");
@@ -157,6 +162,22 @@ function handleMuaApp() {
     setTimeout(() => {
         hideElement("LoadScreen", "img-station");
         showElement("history");
+        $('#NameHistoryPage').text("Quan trắc:")
+        $('#descHistoryPage').text("Lịch sử truy cập")
+        $('#historySelect').removeClass("d-none");
+        $('#footerHistoryPage').text("thêm mới mã trạm hoặc chọn trạm đã lưu");
+
+        $('.workstation_access').removeClass("d-none");
+        $('.workstation_category').removeClass("d-none");
+        $('.warranty_scansQRcode').addClass("d-none");
+        $('.warranty_lot').addClass("d-none");
+        $('.warranty_scanQRcode').addClass("d-none");
+
+        // historyListDetail.empty();
+        // showAddWorkStationButton();
+        // checkTabHistory = 1;
+        // showHistory();
+        // pickApp('MUA');
     }, 2000);
 }
 
