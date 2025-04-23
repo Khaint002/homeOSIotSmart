@@ -10,7 +10,7 @@ async function handleUser() {
                 document.getElementById("PickApp-button-login").classList.add("d-none");
                 $(".userAvt").attr("src", DataUser.avatar);
                 document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
-                const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
+                const dataUserResponse = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                 console.log(dataUserResponse.data);
                 if (dataUserResponse.data.length == 0) {
                     const willInsertData = {
@@ -27,7 +27,7 @@ async function handleUser() {
                     localStorage.setItem('RoleUser', dataUserResponse.data[0].USER_ROLE);
                 }
             } else if (DataUser != undefined) {
-                const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
+                const dataUserResponse = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                 console.log(dataUserResponse.data);
                 if (dataUserResponse.data.length == 0) {
                     const willInsertData = {
@@ -206,7 +206,7 @@ async function handleLogin() {
         document.getElementById("PickApp-button-login").classList.add("d-none");
         document.getElementById("LogoPickScreen").style.paddingTop = '10vh';
 
-        const dataUserResponse = await getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
+        const dataUserResponse = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
         if (dataUserResponse.data.length === 0) {
             const willInsertData = {
                 USER_ID: DataUser.id,
@@ -230,53 +230,5 @@ function showElement(...ids) {
 function hideElement(...ids) {
     ids.forEach(id => {
         document.getElementById(id)?.classList.add("hidden", "d-none");
-    });
-}
-
-async function getDM(url, table_name, c, check) {
-    let user_id_getDm = 'admin';
-    let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
-    if(check == "NotCentral"){
-        const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
-        user_id_getDm = dataUser[0].StateName;
-        Sid_getDM = dataUser[0].StateId;
-    }
-    const d = {
-        // Uid: 'vannt',
-        // Sid: 'b99213e4-a8a5-45f4-bb5c-cf03ae90d8d7',
-        Uid: user_id_getDm,
-        Sid: Sid_getDM,
-        tablename: table_name,
-        c: c,
-        other: '',
-        cmd: ''
-    };
-    
-    // const Url = 'https://DEV.HOMEOS.vn/service/service.svc/';
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: url+"/getDm?callback=?",
-            type: "GET",
-            dataType: "jsonp",
-            data: d,
-            contentType: "application/json; charset=utf-8",
-            success: function (msg) {
-                try {
-                    let state = JSON.parse(msg);
-                    resolve(state);  // Trả về dữ liệu khi thành công
-                } catch (error) {
-                    reject(error);  // Bắt lỗi nếu JSON parse thất bại
-                }
-            },
-            complete: function (data) {
-                // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
-            },
-            error: function (e, t, x) {
-                HomeOS.Service.SetActionControl(true);
-                HomeOS.Service.ShowLabel('Lỗi dữ liệu');
-                reject(e);  // Trả về lỗi nếu thất bại
-            }
-        });
     });
 }

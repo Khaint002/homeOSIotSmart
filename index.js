@@ -1,3 +1,4 @@
+window.HOMEOSAPP = window.HOMEOSAPP || {};
 var typeQR;
 var listDomain = [];
 var checkTabHistory = 0;
@@ -54,7 +55,7 @@ async function getListDomain() {
 }
 
 
-async function getDM(url, table_name, c, check) {
+HOMEOSAPP.getDM = async function (url, table_name, c, check) {
     let user_id_getDm = 'admin';
     let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
     if(check == "NotCentral"){
@@ -102,4 +103,36 @@ async function getDM(url, table_name, c, check) {
     });
 }
 
-  
+HOMEOSAPP.getNewData = function (workstation, c, url) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url + "/GetNewData?w=" + workstation,
+            type: "GET",
+            dataType: "jsonp",
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                try {
+                    let state = JSON.parse(msg);
+                    resolve(state); // Trả về dữ liệu khi thành công
+                } catch (error) {
+                    reject(error); // Bắt lỗi nếu JSON parse thất bại
+                }
+            },
+            complete: function (data) {
+                // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
+            },
+            error: function (e, t, x) {
+                document.getElementById("result-form-total").classList.remove("d-none");
+                document.getElementById("result-condition").classList.add("d-none");
+                document.getElementById("result-form-loading").classList.add("d-none");
+                document.getElementById("result-form").classList.remove("d-none");
+                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                document.getElementById("result-form-title").classList.remove("d-none");
+                document.getElementById("result-form-stationID").classList.add("d-none");
+                document.getElementById("result-form-stationName").classList.add("d-none");
+                document.getElementById("result-truycap").classList.add("d-none");
+                //toastr.error("Vui lòng quét đúng mã QR!");
+            },
+        });
+    });
+}

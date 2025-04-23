@@ -1,6 +1,7 @@
 var application = localStorage.getItem("application");
 var historyListDetail = $('#history-detail');
 var checkTabHistory;
+var intervalId;
 async function pickApp(type) {
     showAddWorkStationButton();
     switch (type) {
@@ -158,8 +159,9 @@ function addItemHistory(item, type) {
 
         // Gắn sự kiện click cho phần tử chính
         element.on('click', function () {
-            document.getElementById("RD").textContent = '0 mm';
-            document.getElementById("lastTimeRain").textContent = '';
+
+            // document.getElementById("RD").textContent = '0 mm';
+            // document.getElementById("lastTimeRain").textContent = '';
             handleItemClick(item);
         });
 
@@ -170,12 +172,31 @@ function addItemHistory(item, type) {
 
 }
 
+function handleItemClick(item) {
+    stopInterval();
+    localStorage.setItem("URL", "https://" + item.domain + "/Service/Service.svc");
+    // document.getElementById("footer-stationName").textContent = item.CodeWorkStation + " - " + item.NameWorkStation;
+    localStorage.setItem("MATRAM", item.CodeWorkStation);
+    const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': getCurrentTime(), 'workstationType': item.workstationType }
+    localStorage.setItem('itemHistory', JSON.stringify(itemHistory));
+    $("#loading-popup").show()
+    truyCap();
+}
+
+function stopInterval() {
+    // Xóa interval nếu đang chạy
+    if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+    }
+}
+
 async function startInterval() {
     if (intervalId) return;
 
     for (let i = historyItems.length - 1; i >= 0; i--) {
         const station = historyItems[i];
-        const data = await getNewData(
+        const data = await HOMEOSAPP.getNewData(
             station.CodeWorkStation,
             `WORKSTATION_ID='${station.CodeWorkStation}'`,
             `https://${station.domain}/Service/Service.svc`
@@ -188,7 +209,7 @@ async function startInterval() {
 
         for (let i = historyItems.length - 1; i >= 0; i--) {
             const station = historyItems[i];
-            const data = await getNewData(
+            const data = await HOMEOSAPP.getNewData(
                 station.CodeWorkStation,
                 `WORKSTATION_ID='${station.CodeWorkStation}'`,
                 `https://${station.domain}/Service/Service.svc`
@@ -356,6 +377,46 @@ function showHistory(type) {
     startInterval();
 }
 
+function getIconWorkstation(type) {
+    switch (type) {
+        case "NAAM":
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: #fff;" fill="currentColor" viewBox="0 0 640 512"><path d="M294.2 1.2c5.1 2.1 8.7 6.7 9.6 12.1l10.4 62.4c-23.3 10.8-42.9 28.4-56 50.3c-14.6-9-31.8-14.1-50.2-14.1c-53 0-96 43-96 96c0 35.5 19.3 66.6 48 83.2c.8 31.8 13.2 60.7 33.1 82.7l-56 39.2c-4.5 3.2-10.3 3.8-15.4 1.6s-8.7-6.7-9.6-12.1L98.1 317.9 13.4 303.8c-5.4-.9-10-4.5-12.1-9.6s-1.5-10.9 1.6-15.4L52.5 208 2.9 137.2c-3.2-4.5-3.8-10.3-1.6-15.4s6.7-8.7 12.1-9.6L98.1 98.1l14.1-84.7c.9-5.4 4.5-10 9.6-12.1s10.9-1.5 15.4 1.6L208 52.5 278.8 2.9c4.5-3.2 10.3-3.8 15.4-1.6zM208 144c13.8 0 26.7 4.4 37.1 11.9c-1.2 4.1-2.2 8.3-3 12.6c-37.9 14.6-67.2 46.6-77.8 86.4C151.8 243.1 144 226.5 144 208c0-35.3 28.7-64 64-64zm69.4 276c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm96 0c11 7.4 14 22.3 6.7 33.3l-32 48c-7.4 11-22.3 14-33.3 6.7s-14-22.3-6.7-33.3l32-48c7.4-11 22.3-14 33.3-6.7zm74.5-116.1c0 44.2-35.8 80-80 80l-271.9 0c-53 0-96-43-96-96c0-47.6 34.6-87 80-94.6l0-1.3c0-53 43-96 96-96c34.9 0 65.4 18.6 82.2 46.4c13-9.1 28.8-14.4 45.8-14.4c44.2 0 80 35.8 80 80c0 5.9-.6 11.7-1.9 17.2c37.4 6.7 65.8 39.4 65.8 78.7z"/></svg>';
+        case "N":
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: #fff;" fill="currentColor" class="bi bi-moisture" viewBox="0 0 16 16"><path d="M13.5 0a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V7.5h-1.5a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V15h-1.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5zM7 1.5l.364-.343a.5.5 0 0 0-.728 0l-.002.002-.006.007-.022.023-.08.088a29 29 0 0 0-1.274 1.517c-.769.983-1.714 2.325-2.385 3.727C2.368 7.564 2 8.682 2 9.733 2 12.614 4.212 15 7 15s5-2.386 5-5.267c0-1.05-.368-2.169-.867-3.212-.671-1.402-1.616-2.744-2.385-3.727a29 29 0 0 0-1.354-1.605l-.022-.023-.006-.007-.002-.001zm0 0-.364-.343zm-.016.766L7 2.247l.016.019c.24.274.572.667.944 1.144.611.781 1.32 1.776 1.901 2.827H4.14c.58-1.051 1.29-2.046 1.9-2.827.373-.477.706-.87.945-1.144zM3 9.733c0-.755.244-1.612.638-2.496h6.724c.395.884.638 1.741.638 2.496C11 12.117 9.182 14 7 14s-4-1.883-4-4.267"/></svg>';
+        case "M":
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: #fff;" fill="currentColor" class="bi bi-cloud-lightning-rain" viewBox="0 0 16 16"><path d="M2.658 11.026a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m9.5 0a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m-7.5 1.5a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m9.5 0a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m-.753-8.499a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10H13a3 3 0 0 0 .405-5.973M8.5 1a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4 4 0 0 1 8.5 1M7.053 11.276A.5.5 0 0 1 7.5 11h1a.5.5 0 0 1 .474.658l-.28.842H9.5a.5.5 0 0 1 .39.812l-2 2.5a.5.5 0 0 1-.875-.433L7.36 14H6.5a.5.5 0 0 1-.447-.724z"/></svg>';
+        case "NNS":
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="48" style="color: #fff;" fill="currentColor" class="bi bi-droplet-half" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10c0 0 2.5 1.5 5 .5s5-.5 5-.5c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/><path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/></svg>';
+        default:
+            return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: #fff;" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16"><path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/></svg>';
+    }
+}
+
+function getDisplayValue(item, type) {
+    switch (type) {
+        case "NAAM":
+            return item.ZONE_VALUE / 10 + ZONE_UNIT;
+        case "N":
+            return item.ZONE_VALUE + " cm";
+        case "M":
+        case "MS":
+            return item.ZONE_VALUE / 10 + " mm";
+        case "NNS":
+            if (ZONE_PROPERTY_NNS === "SS") {
+                return (item.ZONE_VALUE / 10000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if (ZONE_PROPERTY_NNS === "EC") {
+                return (item.ZONE_VALUE / 1000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if(ZONE_PROPERTY_NNS === "RN") {
+                return item.ZONE_VALUE + ZONE_UNIT_NNS;
+            } else {
+                return item.ZONE_VALUE / 10 + ZONE_UNIT_NNS;
+            }
+        default:
+            return "-";
+    }
+}
 //-------------------------------------------------------------------------------
+
+
 
 pickApp(application);

@@ -5161,6 +5161,7 @@
 
                         case "RA":
                             updateText("energy", value + " V");
+                            updateText("lateDateTime", " " + getCurrentTime(DATE_CREATE) + "");
                             document.getElementById("statusBattery").innerHTML = getBatteryStatus(value);
                             handleStatus(DATE_CREATE);
                             break;
