@@ -4996,7 +4996,7 @@
                 if (historyItems) {
                     historyItems = historyItems.filter(item => item.CodeWorkStation !== code);
                     const item = JSON.parse(localStorage.getItem('itemHistory'));
-                    historyItems.push(item);
+                    historyItems.unshift(item);
                     if (historyItems.length > 20) {
                         historyItems.shift();
                     }
@@ -5091,7 +5091,7 @@
 
                 if (waranntyItems) {
                     waranntyItems = waranntyItems.filter(item => item.CodeWarranty !== itemW.CodeWarranty);
-                    waranntyItems.push(itemW);
+                    waranntyItems.unshift(itemW);
                     if (waranntyItems.length > 20) {
                         waranntyItems.shift();
                     }
@@ -5119,7 +5119,7 @@
 
                 if (waranntyItems) {
                     waranntyItems = waranntyItems.filter(item => item.CodeCondition !== itemW.CodeCondition);
-                    waranntyItems.push(itemW);
+                    waranntyItems.unshift(itemW);
                     if (waranntyItems.length > 20) {
                         waranntyItems.shift();
                     }
