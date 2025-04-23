@@ -1,4 +1,4 @@
-window.HOMEOSAPP = window.HOMEOSAPP || {};
+var HOMEOSAPP = {};
 var typeQR;
 var listDomain = [];
 var checkTabHistory = 0;
@@ -48,7 +48,7 @@ if (typeof HomeOS !== 'undefined') {
 }
 
 async function getListDomain() {
-    const datatest = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
+    const datatest = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
     for (let i = 0; i < datatest.data.length; i++) {
         listDomain.push(datatest.data[i].DOMAIN);
     }
