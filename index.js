@@ -1,4 +1,5 @@
 var HOMEOSAPP = {};
+HOMEOSAPP.application = "";
 var typeQR;
 var listDomain = [];
 var checkTabHistory = 0;

@@ -109,7 +109,7 @@ renderApps(apps, "app-list");
 async function pickApp(type) {
     switch (type) {
         case 'KTTV':
-            localStorage.setItem("application", "KTTV");
+            HOMEOSAPP.application = "KTTV";
             handleMuaApp();
             break;
 
@@ -136,7 +136,7 @@ async function pickApp(type) {
             break;
 
         case 'warranty':
-            localStorage.setItem("application", "warranty");
+            HOMEOSAPP.application = "warranty";
             await handleWarrantyApp();
             break;
 
@@ -145,7 +145,7 @@ async function pickApp(type) {
             break;
 
         case 'CONTROL':
-            localStorage.setItem("application", "CONTROL");
+            HOMEOSAPP.application = "CONTROL";
             checkApp = type;
             showElement("history");
             hideElement("pickApp");

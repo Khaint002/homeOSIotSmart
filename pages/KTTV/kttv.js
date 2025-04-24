@@ -1,10 +1,12 @@
-
 var matram;
+
 function truyCap() {
     document.getElementById("footer-instruct-scanQR").classList.add("d-none");
     document.getElementById("result-form").classList.add("d-none");
     $('#qr-popup').hide();
+    console.log(HOMEOSAPP.itemHistory);
     
+    document.getElementById("footer-stationName").textContent = HOMEOSAPP.itemHistory.CodeWorkStation + " - " + HOMEOSAPP.itemHistory.NameWorkStation;
     matram = localStorage.getItem("MATRAM");
     $("button-modal-loading").click();
     saveHistory(localStorage.getItem('MATRAM'));
@@ -277,6 +279,11 @@ function handleNoRainVisual() {
     }
 }
 
+$(".homepage-Pre-pickApp").click(function () {
+    HOMEOSAPP.stopInterval();
+    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
+});
+
 var xmlns = "http://www.w3.org/2000/svg",
 xlinkns = "http://www.w3.org/1999/xlink",
 select = function (s) {
@@ -310,30 +317,30 @@ event.preventDefault();
 });
 
 Draggable.create(dragger, {
-type: 'y',
-bounds: { minY: minDragY, maxY: 0 },
-onDrag: onUpdate,
-throwProps: true,
-throwResistance: 2300,
-onThrowUpdate: onUpdate,
-overshootTolerance: 0,
-snap: function (value) {
-    // Optional: snap to steps of 10
-    // return Math.round(value / snap) * snap;
-}
+    type: 'y',
+    bounds: { minY: minDragY, maxY: 0 },
+    onDrag: onUpdate,
+    throwProps: true,
+    throwResistance: 2300,
+    onThrowUpdate: onUpdate,
+    overshootTolerance: 0,
+    snap: function (value) {
+        // Optional: snap to steps of 10
+        // return Math.round(value / snap) * snap;
+    }
 });
 
 function onUpdate() {
 // Get the current y position of the dragger using gsap.getProperty
-var draggerY = gsap.getProperty(dragger, 'y');
-liquidId = Math.abs(Math.round(draggerY / step));
-label.textContent = liquidId + '°C';;
+    var draggerY = gsap.getProperty(dragger, 'y');
+    liquidId = Math.abs(Math.round(draggerY / step));
+    label.textContent = liquidId + '°C';;
 
-gsap.to(liquid, {
-    y: draggerY * 1.12,
-    ease: 'elastic.out(1, 0.4)',
-    duration: 1.3
-});
+    gsap.to(liquid, {
+        y: draggerY * 1.12,
+        ease: 'elastic.out(1, 0.4)',
+        duration: 1.3
+    });
 }
 
 gsap.to(follower, {

@@ -1,4 +1,3 @@
-var application = localStorage.getItem("application");
 var historyListDetail = $('#history-detail');
 var checkTabHistory;
 var intervalId;
@@ -6,6 +5,7 @@ async function pickApp(type) {
     showAddWorkStationButton();
     switch (type) {
         case 'KTTV':
+            HOMEOSAPP.application = "KTTV";
             checkTabHistory = 1;
             showHistory();
             break;
@@ -17,12 +17,12 @@ async function pickApp(type) {
             break;
 
         case 'warranty':
-            localStorage.setItem("application", "warranty");
+            HOMEOSAPP.application = "warranty";
             await handleWarrantyApp();
             break;
 
         case 'CONTROL':
-            localStorage.setItem("application", "CONTROL");
+            HOMEOSAPP.application = "CONTROL";
             checkApp = type;
             showElement("history");
             hideElement("pickApp");
@@ -174,18 +174,16 @@ function addItemHistory(item, type) {
 }
 
 function handleItemClick(item) {
-    stopInterval();
+    HOMEOSAPP.stopInterval();
     localStorage.setItem("URL", "https://" + item.domain + "/Service/Service.svc");
-    // document.getElementById("footer-stationName").textContent = item.CodeWorkStation + " - " + item.NameWorkStation;
     localStorage.setItem("MATRAM", item.CodeWorkStation);
     const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': HOMEOSAPP.getCurrentTime(), 'workstationType': item.workstationType }
     localStorage.setItem('itemHistory', JSON.stringify(itemHistory));
     $("#loading-popup").show();
     $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
-    // truyCap();
 }
 
-function stopInterval() {
+HOMEOSAPP.stopInterval = function() {
     // Xóa interval nếu đang chạy
     if (intervalId) {
         clearInterval(intervalId);
@@ -421,4 +419,4 @@ function getDisplayValue(item, type) {
 
 
 
-pickApp(application);
+pickApp(HOMEOSAPP.application);
