@@ -162,6 +162,7 @@ function addItemHistory(item, type) {
 
             // document.getElementById("RD").textContent = '0 mm';
             // document.getElementById("lastTimeRain").textContent = '';
+            HOMEOSAPP.itemHistory = item;
             handleItemClick(item);
         });
 
@@ -177,10 +178,11 @@ function handleItemClick(item) {
     localStorage.setItem("URL", "https://" + item.domain + "/Service/Service.svc");
     // document.getElementById("footer-stationName").textContent = item.CodeWorkStation + " - " + item.NameWorkStation;
     localStorage.setItem("MATRAM", item.CodeWorkStation);
-    const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': getCurrentTime(), 'workstationType': item.workstationType }
+    const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': HOMEOSAPP.getCurrentTime(), 'workstationType': item.workstationType }
     localStorage.setItem('itemHistory', JSON.stringify(itemHistory));
-    $("#loading-popup").show()
-    truyCap();
+    $("#loading-popup").show();
+    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
+    // truyCap();
 }
 
 function stopInterval() {

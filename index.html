@@ -7589,20 +7589,20 @@
                         wss.send("Website/" + cabinetID + "/00d37cb1-eee8-42ce-9564-91687f9de0dd");
                     };
                     // var checkOnOff = 'ON';
-                    // setTimeout(() => {
-                    //     let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
-                    //     wss.send(JSON.stringify(cmd));
+                    setTimeout(() => {
+                        let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'REFRESH;' }];
+                        wss.send(JSON.stringify(cmd));
                         
-                    //     setInterval(() => {
-                    //         let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_' + (checkOnOff) + '_1;' }];
-                    //         wss.send(JSON.stringify(cmd));
-                    //         if(checkOnOff == 'ON'){
-                    //             checkOnOff = 'OFF';
-                    //         } else {
-                    //             checkOnOff = 'ON';
-                    //         }
-                    //     }, 1000);
-                    // }, 500);
+                        // setInterval(() => {
+                        //     let cmd = [{ CHIP_ID: cabinetID, COMMAND: 'CALL BATCH LGS_' + (checkOnOff) + '_1;' }];
+                        //     wss.send(JSON.stringify(cmd));
+                        //     if(checkOnOff == 'ON'){
+                        //         checkOnOff = 'OFF';
+                        //     } else {
+                        //         checkOnOff = 'ON';
+                        //     }
+                        // }, 1000);
+                    }, 500);
                     $("#loading-popup").hide();
                     saveCondition(JSON.parse(localStorage.getItem('itemCondition')));
                 } catch (e) {
@@ -8431,17 +8431,17 @@
                 var linkbase;
                 var nameReport;
                 if(checkReport == 'KTTV'){
-                    linkbase = 'https://'+data.domain+'/Service/Service.svc/'
-                    c = [{"ID":data.CodeWorkStation,"NAME":data.NameWorkStation,"IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":reportType,"NAME":"","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}]
+                    linkbase = 'https://'+data.domain+'/Service/Service.svc/';
+                    c = [{"ID":data.CodeWorkStation,"NAME":data.NameWorkStation,"IDFIELD":"WORKSTATION_ID","NAMETABLE":"DM_WORKSTATION","REPORT_ID":"RPT_API_MOBILE"},{"ID":reportType,"NAME":"","IDFIELD":"ZONE_PROPERTY","NAMETABLE":"VW_COMMAND","REPORT_ID":"RPT_API_MOBILE"}];
                     nameReport = 'RPT_API_MOBILE';
                 } else {
-                    linkbase = 'https://namdinh.homeos.vn/Service/Service.svc/';
+                    linkbase = 'https://central.homeos.vn/service_XD/service.svc/';
+                    nameReport = reportType;
                 }
                 const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), linkbase);
                 console.log(dataUser);
                 
                 var val = [];
-                console.log(1);
                 
                 // val.url = 'https://central.homeos.vn/service_XD/service.svc/' + "GenerateReportOther";
                 val.url = linkbase + "GenerateReportOther";
@@ -8505,7 +8505,7 @@
                             }
                         }
                         else {
-                            const urlservice = 'https://namdinh.homeos.vn/Service/service.svc/'
+                            const urlservice = linkbase
                             // const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
