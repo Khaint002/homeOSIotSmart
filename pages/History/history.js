@@ -54,10 +54,10 @@ function showAddWorkStationButton() {
 
 // App history 
 
-let ZONE_PROPERTY = 'RD';
-let ZONE_UNIT = ' mm';
-let ZONE_PROPERTY_NNS = 'RT';
-let ZONE_UNIT_NNS = ' °C';
+var ZONE_PROPERTY = 'RD';
+var ZONE_UNIT = ' mm';
+var ZONE_PROPERTY_NNS = 'RT';
+var ZONE_UNIT_NNS = ' °C';
 
 function getColorByTimeDiff(dateStr) {
     const now = new Date();
