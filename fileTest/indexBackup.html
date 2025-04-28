@@ -8992,7 +8992,7 @@
                     }
                     const customHTML = `
                         <div class="marker-wrapper marker-${loc.code}">
-                            <div class="marker-label marker-label-${loc.code}"></div>
+                            <div class="marker-label marker-label-${loc.code}" style="font-size: 13px;"></div>
                             <svg class="marker-pin" viewBox="0 0 24 24">
                                 <path d="M12 0C8.1 0 5 3.1 5 7c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7z" fill="#4285f4" stroke="rgb(66, 133, 244)" stroke-width="2"/>
                                 <circle cx="12" cy="8.5" r="3.5" fill="white"/>
@@ -9263,14 +9263,14 @@
                     const formattedData = {};
 
                     // Format từng giá trị theo kiểu đẹp
-                    if (item.RA != null) formattedData.RA = (item.RA / 10) + " v";  // ắc quy
-                    if (item.RD != null) formattedData.RD = (item.RD / 10) + " mm";  // Lượng mưa
-                    if (item.RT != null) formattedData.RT = (item.RT / 10) + " °C";  // Nhiệt độ
-                    if (item.RH != null) formattedData.RH = (item.RH / 10) + " %";   // Độ ẩm
-                    if (item.RP != null) formattedData.RP = (item.RP / 10) + " hPa"; // Áp suất
-                    if (item.RN != null) formattedData.RN = (item.RN) + " cm"; // Áp suất
-                    if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + " ppt"; // Áp suất
-                    if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + " μs/cm"; // Áp suất
+                    if (item.RA != null) formattedData.RA = (item.RA / 10) + "v";  // ắc quy
+                    if (item.RD != null) formattedData.RD = (item.RD / 10) + "mm";  // Lượng mưa
+                    if (item.RT != null) formattedData.RT = (item.RT / 10) + "°C";  // Nhiệt độ
+                    if (item.RH != null) formattedData.RH = (item.RH / 10) + "%";   // Độ ẩm
+                    if (item.RP != null) formattedData.RP = (item.RP / 10) + "hPa"; // Áp suất
+                    if (item.RN != null) formattedData.RN = (item.RN) + "cm"; // Áp suất
+                    if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + "ppt"; // Áp suất
+                    if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + "μs/cm"; // Áp suất
                     formattedData.lastTime = dateTimeRA;
                     
                     updatePopupData(code, formattedData);
