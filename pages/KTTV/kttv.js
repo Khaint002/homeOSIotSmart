@@ -1,5 +1,5 @@
 var matram;
-
+var setIntervalMonitoring;
 function truyCap() {
     document.getElementById("footer-instruct-scanQR").classList.add("d-none");
     document.getElementById("result-form").classList.add("d-none");
@@ -109,7 +109,7 @@ async function getDataMonitoring() {
     }
 
     changeDataHomePage(data.D);
-    setInterval(async () => {
+    setIntervalMonitoring = setInterval(async () => {
         const data = await HOMEOSAPP.getNewData(
             localStorage.getItem("MATRAM"),
             "WORKSTATION_ID='" + localStorage.getItem("MATRAM") + "'",
@@ -117,6 +117,14 @@ async function getDataMonitoring() {
         );
         changeDataHomePage(data.D);
     }, 10000);
+}
+
+stopIntervalMonitoring = function() {
+    // Xóa interval nếu đang chạy
+    if (setIntervalMonitoring) {
+        clearInterval(setIntervalMonitoring);
+        setIntervalMonitoring = null;
+    }
 }
 
 function getDayMessage(type) {
@@ -281,8 +289,102 @@ function handleNoRainVisual() {
 
 $(".homepage-Pre-pickApp").click(function () {
     HOMEOSAPP.stopInterval();
+    stopIntervalMonitoring();
     $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
 });
+
+$("#share-qrcode-workstation").click(function () {
+    // Hiển thị popup với hiệu ứng modal
+    $("#share-popup").show()
+
+    // Xóa nội dung mã QR cũ
+    $('#qrcode').empty();
+
+    // Dữ liệu để tạo mã QR
+    const text = localStorage.getItem("URL") + "$" + localStorage.getItem("MATRAM");
+    document.getElementById("text-content-QRcode").textContent =
+        localStorage.getItem("MATRAM") + " - " + JSON.parse(localStorage.getItem('itemHistory')).NameWorkStation;
+    // Tạo mã QR
+    QRCode.toCanvas(text, { width: 200 }, function (error, canvas) {
+        if (error) {
+            console.error("Lỗi khi tạo mã QR:", error);
+            alert('Lỗi khi tạo mã QR!');
+            return;
+        }
+
+        // Thêm canvas QR vào DOM
+        $('#qrcode').append(canvas);
+
+        // Tạo ảnh ẩn từ canvas (tùy chọn)
+        const image = canvas.toDataURL('image/png');
+        const img = $('<img>')
+            .attr('src', image)
+            .css({ display: 'none' }) // Ẩn ảnh đi
+            .attr('id', 'hidden-image');
+        $('#qrcode').append(img);
+    });
+});
+
+$("#BackCodeQR").click(function () {
+    $('#share-popup').hide();
+});
+
+$(".ScanQRNext").click(function () {
+    stopIntervalMonitoring()
+    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
+});
+
+$("#button-list-ngay").click(function () {
+    clickGetData('NGAY')
+});
+$("#button-list-tuan").click(function () {
+    clickGetData('TUAN')
+});
+$("#button-list-thang").click(function () {
+    clickGetData('THANG')
+});
+$("#button-list-nam").click(function () {
+    clickGetData('NAM')
+});
+
+const buttons = document.querySelectorAll(".btn-chart");
+buttons.forEach((button) => {
+    button.addEventListener("click", function () {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        this.classList.add("active");
+    });
+});
+
+$("#button-list-ngay").click(() => clickGetData("NGAY"));
+$("#button-list-tuan").click(() => clickGetData("TUAN"));
+$("#button-list-thang").click(() => clickGetData("THANG"));
+$("#button-list-nam").click(() => clickGetData("NAM"));
+
+async function clickGetData(type) {
+    if (lineBarChart != null) {
+        document.getElementById("loading-spinner").classList.remove("d-none");
+    }
+
+    const item = JSON.parse(localStorage.getItem("itemHistory"));
+    const TypeWorkstation = getDayMessage(item.workstationType);
+    const matram = localStorage.getItem("MATRAM");
+    const url = localStorage.getItem("URL");
+
+    let fromDate = "";
+    let toDate = "";
+
+    if (type === "NAM") {
+        const year = new Date().getFullYear();
+        fromDate = `${year}-01-01 00$00$00`;
+        toDate = `${year}-12-31 23$59$59`;
+    }
+
+    const dataChart = await HOMEOSAPP.getDataChart(type, fromDate, toDate, TypeWorkstation, matram, url);
+
+    if (Array.isArray(dataChart) && dataChart.length > 0) {
+        HOMEOSAPP.createChartData(dataChart, "RD", type);
+    }
+}
 
 var xmlns = "http://www.w3.org/2000/svg",
 xlinkns = "http://www.w3.org/1999/xlink",
