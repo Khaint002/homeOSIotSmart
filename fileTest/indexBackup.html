@@ -5090,6 +5090,7 @@
                 historyListDetail.empty();
                 locations = [];
                 for (const item of historyItems) {
+                    console.log(item);
                     addItemHistory(item);
                     const dataWorkstation = await getDM(
                         "https://" + item.domain + "/service/service.svc",
