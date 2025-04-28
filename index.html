@@ -12,7 +12,9 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <!-- <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
@@ -418,11 +420,20 @@
             border-top: none;
         }
 
+        .tab-content-history {
+            display: none;
+            border-top: none;
+        }
+
         .tab-content.active {
             display: block;
         }
 
         .tab-content-guarantee.active {
+            display: block;
+        }
+
+        .tab-content-history.active {
             display: block;
         }
 
@@ -1519,6 +1530,160 @@
         .spin-loading {
             animation: spin 1s linear infinite;
         }
+
+        .marker-wrapper {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* animation: bounce 1s infinite ease-in-out; */
+            transform-origin: bottom center;
+        }
+
+            .marker-label {
+                min-width: 40px;
+                min-height: 12px;
+                font-size: 14px;
+                font-weight: bold;
+                color: black;
+                margin-bottom: 4px;
+                line-height: 1;
+                transition: transform 0.2s;
+            }
+
+            .marker-pin {
+                width: 28px;
+                height: 28px;
+                transition: transform 0.2s;
+                position: relative;
+                z-index: 1;  /* Place marker-pin below mePin-wrapper */
+            }
+
+            .mePin-wrapper {
+                position: absolute;
+                top: 25px;  /* Adjust to make mePin-wrapper overlap marker-pin */
+                right: -10px;
+                z-index: 1;  /* Ensure mePin-wrapper is below the "R" text */
+            }
+
+            .mePin-child{
+                position: relative;
+            }
+
+            .mePin-wrapper b {
+                position: absolute;
+                top: 2px;  /* Adjust to make "R" appear above the mePin */
+                right: 10px;
+                color: #dc3545;
+                font-weight: bold;
+                z-index: 2;  /* Ensure "R" text is above mePin */
+                font-size: 12px;
+            }
+
+            #mePin {
+                width: 33.3px;
+                height: 32.4px;
+                position: relative;
+                opacity: 1; /* Initially visible */
+                animation: fadeInBoth 4s infinite ease-in-out;
+                animation-delay: 1s; /* Delay the start of the animation by 1 second */
+            }
+
+            .ring_outer {
+                opacity: 1; /* Initially visible */
+                animation: fadeOutRingOuter 4s infinite ease-in-out;
+                animation-delay: 1s; /* Delay the start of the outer ring's animation by 1 second */
+            }
+
+            .ring_inner {
+                opacity: 1; /* Initially visible */
+                animation: fadeOutRingInner 4s infinite ease-in-out;
+                animation-delay: 1s; /* Delay the start of the inner ring's animation by 1 second */
+            }
+
+
+            @keyframes fadeOutRingOuter {
+                0% {
+                    opacity: 1; /* Fully visible at the start */
+                }
+                50% {
+                    opacity: 0; /* Fades out at the midpoint */
+                }
+                100% {
+                    opacity: 0; /* Stays hidden after fading out */
+                }
+            }
+
+            @keyframes fadeOutRingInner {
+                0% {
+                    opacity: 1; /* Fully visible at the start */
+                }
+                50% {
+                    opacity: 1; /* Stays visible until the midpoint */
+                }
+                100% {
+                    opacity: 0; /* Fades out at the end */
+                }
+            }
+
+            @keyframes fadeInBoth {
+                0%, 50% {
+                    opacity: 1; /* Both rings are visible at the start and midpoint */
+                }
+                100% {
+                    opacity: 1; /* Both rings reappear at the end */
+                }
+            }
+
+
+
+            @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) scale(1, 1);
+            }
+            50% {
+                transform: translateY(-18px) scale(1, 1);
+            }
+            70% {
+                transform: translateY(0) scale(1.2, 0.5); /* ép mạnh hơn: cao thấp méo ngang */
+            }
+            85% {
+                transform: translateY(0) scale(0.95, 1.05); /* dội lại */
+            }
+            }
+
+        .bounce-animation {
+            animation: bounce 1s infinite ease-in-out;
+        }
+        .custom-marker {
+            margin-left: -16px;
+            margin-top: -16px;
+            width: 20px;
+            height: 20px;
+            transform: translate3d(321px, 41px, 0px);
+            outline: none;
+            --pos-x: 321px;
+            --pos-y: 41px;
+            --pos-y-jump: 26px;
+            --pos-y-contract: 53px;
+            --scale-contract: 0.4;
+            --duration-jump: 211ms;
+            --duration-contract: 199ms;
+            --delays: 0ms, 211ms, 422ms, 621ms;
+            opacity: 1;
+            z-index: 41;
+        }
+        #mappingWorkstation {
+            height: 100%; /* hoặc 500px, tùy layout */
+            width: 100%;
+            z-index: 1;
+        }
+        .leaflet-marker-pane {
+            margin-top: 18px !important;
+        }
+        .leaflet-popup {
+            bottom: -35px !important;
+        }
     </style>
 </head>
 
@@ -1679,7 +1844,7 @@
                         </div>
                     </div>
                     <div id="category-back" class="d-none">
-                        <button id="backCategory" style="height: 50px; border: none; background-color: #1E2833;">
+                        <button id="backCategory" style="height: 50px; border: none; background-color: #1E2833;" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                                 style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
@@ -1799,34 +1964,40 @@
                 </div>
                 <div id="history-homePage">
                     <div class="history-body" style="padding: 20px 10px 0 10px;">
-                        <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200"
-                            style="margin-bottom: 30px; margin-top: 20px; display: none;">
-                        <div class="d-flex" style="color: #fff; padding-left: 10px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                                class="bi bi-pc-horizontal" viewBox="0 0 16 16">
-                                <path
-                                    d="M1 6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm11.5 1a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1m2 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1M1 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5M1.25 9h5.5a.25.25 0 0 1 0 .5h-5.5a.25.25 0 0 1 0-.5" />
-                            </svg>
-                            <h5 id="NameHistoryPage" style="padding-left: 10px; padding-left: 10px;">Quan trắc:</h5>
-                        </div>
-                        <div class="d-flex justify-content-between" style="width: 100%; padding-left: 10px;">
-                            <p id="descHistoryPage" style="color: #fff; text-align: left;">Lịch sử truy cập:</p>
-                            <div>
-                                <select id="historySelect" class="form-select bg-dark text-white border-secondary"
-                                    style="font-size: 14px;" aria-label="Default select example">
-                                    <option selected>Hiển thị tất cả...</option>
-                                </select>
+                        <div id="listTabMap" style="margin-bottom: 10px;">
+                            <div class="tab">
+                                <button id="tab-historys" class="tablinks tablinkHistory active">Quan trắc</button>
+                                <button id="tab-map" class="tablinks tablinkHistory">Map</button>
                             </div>
                         </div>
-                        <div id="history-detail" style="overflow-y: auto; height: 450px; padding: 10px 10px 0 10px;">
-                            <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
-                                <button id="addWorkStation" style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                                    </svg>
-                                    Thêm mới
-                                </button>
+                        <div id="tabHistory" class="tab-content-history active">
+                            <div id="nameHistory" class="d-flex d-none" style="color: #fff; padding-left: 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pc-horizontal" viewBox="0 0 16 16">
+                                    <path d="M1 6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm11.5 1a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1m2 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1M1 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5M1.25 9h5.5a.25.25 0 0 1 0 .5h-5.5a.25.25 0 0 1 0-.5" />
+                                </svg>
+                                <h5 id="NameHistoryPage" style="padding-left: 10px; padding-left: 10px;">Quan trắc:</h5>
                             </div>
+                            <div class="d-flex justify-content-between" style="width: 100%; padding-left: 10px;">
+                                <p id="descHistoryPage" style="color: #fff; text-align: left;">Lịch sử truy cập:</p>
+                                <div>
+                                    <select id="historySelect" class="form-select bg-dark text-white border-secondary" style="font-size: 14px;" aria-label="Default select example">
+                                        <option selected>Hiển thị tất cả...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="history-detail" style="overflow-y: auto; height: 450px; padding: 10px 10px 0 10px;">
+                                <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
+                                    <button id="addWorkStation" style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                        </svg>
+                                        Thêm mới
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabMap" class="tab-content-history">
+                            <div id="mappingWorkstation"></div>
                         </div>
                     </div>
                     <div id="footer-instruct" class="footer-instruct">
@@ -3597,8 +3768,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-
         $(document).ready(function () {
             let historyStack = ['pickApp'];
 
@@ -3636,6 +3807,7 @@
             var DataUser;
             var typeQR;
             var listDomain = [];
+            var locations = [];
             var checkTabHistory = 0;
             var checkReport = '';
             // Gọi hàm GetUser từ script chính
@@ -3743,6 +3915,7 @@
                 document.getElementById(tabName).classList.add("active");
                 evt.currentTarget.classList.add("active");
             }
+
             function openTabGuarantee(evt, tabName) {
                 // Ẩn tất cả nội dung tab
 
@@ -3762,10 +3935,36 @@
                 evt.currentTarget.classList.add("active");
             }
 
+            function openTabHistory(evt, tabName) {
+                // Ẩn tất cả nội dung tab
+
+                var tabContent = document.getElementsByClassName("tab-content-history");
+                console.log(tabContent);
+                
+                for (var i = 0; i < tabContent.length; i++) {
+                    tabContent[i].classList.remove("active");
+                }
+
+                // Xóa class 'active' trên tất cả các nút
+                var tabLinks = document.getElementsByClassName("tablinkHistory");
+                for (var i = 0; i < tabLinks.length; i++) {
+                    tabLinks[i].classList.remove("active");
+                }
+
+                // Hiển thị tab được chọn và thêm class 'active' cho nút đã nhấn
+                document.getElementById(tabName).classList.add("active");
+                evt.currentTarget.classList.add("active");
+                if (map) {
+                    map.invalidateSize();
+                }
+            }
+
             function checkHeight() {
                 const viewportHeight = window.innerHeight;
                 const historyDetail = document.getElementById('history-detail');
-                historyDetail.style.height = (viewportHeight - 240) + 'px';
+                historyDetail.style.height = (viewportHeight - 260) + 'px';
+                const mappingWorkstation = document.getElementById('tabMap');
+                mappingWorkstation.style.height = (viewportHeight - 230) + 'px';
                 const categoryDetail = document.getElementById('list-history-detail');
                 categoryDetail.style.height = (viewportHeight - 530) + 'px';
                 const category = document.getElementById('history-setting-detail');
@@ -3775,7 +3974,9 @@
             window.addEventListener('resize', function () {
                 const viewportHeight = window.innerHeight;
                 const historyDetail = document.getElementById('history-detail');
-                historyDetail.style.height = (viewportHeight - 240) + 'px'; // 80% chiều cao của thiết bị
+                historyDetail.style.height = (viewportHeight - 260) + 'px'; // 80% chiều cao của thiết bị
+                const mappingWorkstation = document.getElementById('tabMap');
+                mappingWorkstation.style.height = (viewportHeight - 230) + 'px';
                 const categoryDetail = document.getElementById('list-history-detail');
                 categoryDetail.style.height = (viewportHeight - 530) + 'px'; // 80% chiều cao của thiết bị
                 const category = document.getElementById('history-setting-detail');
@@ -3887,6 +4088,9 @@
                 }
             })
             $("#PickApp-button-mua").click(function () {
+                $('#nameHistory').addClass("d-none");
+                $('#nameHistory').removeClass("d-flex");
+                $('#listTabMap').removeClass("d-none");
                 $('#NameHistoryPage').text("Quan trắc:")
                 $('#descHistoryPage').text("Lịch sử truy cập")
                 $('#historySelect').removeClass("d-none");
@@ -3906,11 +4110,15 @@
             });
 
             $("#PickApp-button-warranty").click(function () {
+                $('#nameHistory').removeClass("d-none");
+                $('#nameHistory').addClass("d-flex");
+                $('#listTabMap').addClass("d-none");
                 $('#NameHistoryPage').text("Sản phẩm:")
                 $('#descHistoryPage').text("Lịch sử sản phẩm đã xem")
                 $('#historySelect').addClass("d-none");
                 $('#footerHistoryPage').text("Chọn sản phẩm đã xem hoặc thêm mới")
 
+                openTabHistory(event, 'tabHistory');
                 $('.workstation_access').addClass("d-none");
                 $('.workstation_category').addClass("d-none");
                 $('.warranty_scansQRcode').removeClass("d-none");
@@ -3924,11 +4132,15 @@
                 pickApp('GUA');
             });
             $("#PickApp-button-condition").click(function () {
+                $('#nameHistory').removeClass("d-none");
+                $('#nameHistory').addClass("d-flex");
+                $('#listTabMap').addClass("d-none");
                 $('#NameHistoryPage').text("Tủ điều khiển:");
                 $('#descHistoryPage').text("Lịch sử tủ đã truy cập:");
                 $('#historySelect').addClass("d-none");
                 $('#footerHistoryPage').text("chọn tủ đã truy cập hoặc thêm mới");
 
+                openTabHistory(event, 'tabHistory');
                 $('.workstation_access').addClass("d-none");
                 $('.workstation_category').addClass("d-none");
                 $('.warranty_scansQRcode').addClass("d-none");
@@ -4043,6 +4255,7 @@
             $("#tab-text").click(function (event) {
                 openTab(event, 'tab2')
             });
+
             $("#tab-scan").click(function (event) {
                 checkTab = false;
                 openTabGuarantee(event, 'tab3')
@@ -4050,6 +4263,18 @@
             $("#tab-history").click(function (event) {
                 openTabGuarantee(event, 'tab4')
             });
+
+            $("#tab-historys").click(function (event) {
+                console.log(1);
+                
+                checkTab = false;
+                openTabHistory(event, 'tabHistory')
+            });
+            $("#tab-map").click(function (event) {
+                
+                openTabHistory(event, 'tabMap');
+            });
+
             $("#truycap").click(function () {
                 getInputValue()
             });
@@ -4635,14 +4860,14 @@
             }
 
             // click ở trang lịch sử để truy cập
-            function handleItemClick(item) {
-                stopInterval()
+            window.handleItemClick = function(item) {
+                stopInterval();
                 localStorage.setItem("URL", "https://" + item.domain + "/Service/Service.svc");
                 document.getElementById("footer-stationName").textContent = item.CodeWorkStation + " - " + item.NameWorkStation;
                 localStorage.setItem("MATRAM", item.CodeWorkStation);
                 const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': getCurrentTime(), 'workstationType': item.workstationType }
                 localStorage.setItem('itemHistory', JSON.stringify(itemHistory));
-                $("#loading-popup").show()
+                $("#loading-popup").show();
                 truyCap();
             }
 
@@ -4791,6 +5016,7 @@
                         `WORKSTATION_ID='${station.CodeWorkStation}'`,
                         `https://${station.domain}/Service/Service.svc`
                     );
+                    processAndUpdate(data);
                     await updateWorkstationUI(station, data);
                 }
 
@@ -4804,6 +5030,7 @@
                             `WORKSTATION_ID='${station.CodeWorkStation}'`,
                             `https://${station.domain}/Service/Service.svc`
                         );
+                        processAndUpdate(data);
                         await updateWorkstationUI(station, data);
                     }
                 }, 10000);
@@ -4822,7 +5049,7 @@
                 showHistoryCategory(searchValue)
             });
             // hiển thị dữ liệu lịch sử truy cập 
-            function showHistory(type) {
+            async function showHistory(type) {
                 const historySetting = document.getElementById("history-setting");
                 const historyHomePage = document.getElementById("history-homePage");
                 const historySelect = document.getElementById("historySelect");
@@ -4861,13 +5088,24 @@
 
                 // Làm sạch và hiển thị danh sách
                 historyListDetail.empty();
-                historyItems.forEach(item => {
+                locations = [];
+                for (const item of historyItems) {
+                    console.log(item);
                     addItemHistory(item);
+                    const dataWorkstation = await getDM(
+                        "https://" + item.domain + "/service/service.svc",
+                        "DM_WORKSTATION",
+                        "WORKSTATION_ID = '" + item.CodeWorkStation + "'",
+                        "NotCentral"
+                    );
+                    addDataLocation(dataWorkstation.data[0], dataWorkstation.dataSet.DM_TOOLTIP_TEMPLATE, item);
                     if (!arrayCategory.includes(item.workstationType)) {
                         arrayCategory.push(item.workstationType);
                     }
-                });
 
+                    await delay(10); // đợi 100ms trước khi xử lý item tiếp theo
+                }
+                addMarkers(locations, "mappingWorkstation");
                 arrayCategory.push("ALL");
 
                 // Chỉ tạo select nếu chưa có type (tức là lần đầu vào)
@@ -4919,6 +5157,9 @@
                 startInterval();
             }
 
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
 
             function showHistoryCategory(type) {
                 historyItems = JSON.parse(localStorage.getItem('dataHistory'));
@@ -5408,61 +5649,6 @@
                     });
                 });
             }
-
-            // function checkTypeWorkstation() {
-            //     document.getElementById("box-RT").classList.add("d-none");
-            //     document.getElementById("box-RH").classList.add("d-none");
-            //     document.getElementById("box-RD").classList.add("d-none");
-            //     document.getElementById("box-RD").classList.add("col-6");
-            //     document.getElementById("box-RD").classList.remove("col-12");
-            //     document.getElementById("box-RP").classList.add("d-none");
-            //     document.getElementById("box-RN").classList.add("d-none");
-            //     document.getElementById("box-RN").classList.add("col-6");
-            //     document.getElementById("box-RN").classList.remove("col-12");
-            //     document.getElementById("chart-RT").classList.add("d-none");
-            //     document.getElementById("chart-RH").classList.add("d-none");
-            //     document.getElementById("chart-RD").classList.add("d-none");
-            //     document.getElementById("chart-RP").classList.add("d-none");
-            //     document.getElementById("chart-RN").classList.add("d-none");
-            //     document.getElementById("box-SS").classList.add("d-none");
-            //     document.getElementById("box-SS").classList.add("col-6");
-            //     document.getElementById("box-SS").classList.remove("col-12");
-            //     document.getElementById("chart-SS").classList.add("d-none");
-            //     const item = JSON.parse(localStorage.getItem('itemHistory'));
-            //     document.getElementById("titleRT").textContent = "Nhiệt độ";
-            //     document.getElementById("titleChartRT").textContent = "biểu đồ nhiệt độ";
-            //     if (item.workstationType == "NAAM") {
-            //         document.getElementById("box-RT").classList.remove("d-none");
-            //         document.getElementById("box-RH").classList.remove("d-none");
-            //         document.getElementById("box-RD").classList.remove("d-none");
-            //         document.getElementById("box-RP").classList.remove("d-none");
-            //         document.getElementById("chart-RT").classList.remove("d-none");
-            //         document.getElementById("chart-RH").classList.remove("d-none");
-            //         document.getElementById("chart-RD").classList.remove("d-none");
-            //         document.getElementById("chart-RP").classList.remove("d-none");
-            //     } else if (item.workstationType == "N") {
-            //         document.getElementById("box-RN").classList.remove("d-none");
-            //         document.getElementById("chart-RN").classList.remove("d-none");
-            //         document.getElementById("box-RN").classList.remove("col-6");
-            //         document.getElementById("box-RN").classList.add("col-12");
-            //     } else if (item.workstationType == "M" || item.workstationType == "MS") {
-            //         document.getElementById("box-RD").classList.remove("d-none");
-            //         document.getElementById("chart-RD").classList.remove("d-none");
-            //         document.getElementById("box-RD").classList.remove("col-6");
-            //         document.getElementById("box-RD").classList.add("col-12");
-            //     } else if (item.workstationType == "NNS") {
-            //         document.getElementById("box-RN").classList.remove("d-none");
-            //         document.getElementById("chart-RN").classList.remove("d-none");
-            //         document.getElementById("box-RT").classList.remove("d-none");
-            //         document.getElementById("chart-RT").classList.remove("d-none");
-            //         document.getElementById("box-SS").classList.remove("d-none");
-            //         document.getElementById("chart-SS").classList.remove("d-none");
-            //         document.getElementById("box-SS").classList.remove("col-6");
-            //         document.getElementById("box-SS").classList.add("col-12");
-            //         document.getElementById("titleRT").textContent = "Nhiệt độ nước";
-            //         document.getElementById("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
-            //     }
-            // }
 
             function checkTypeWorkstation() {
                 const $ = (id) => document.getElementById(id);
@@ -6733,7 +6919,15 @@
                 let user_id_getDm = 'admin';
                 let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
                 if(check == "NotCentral"){
-                    const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    let dataUser;
+                    if(url == "https://cctl-dongthap.homeos.vn/service/service.svc" || url == "https://pctthn.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else if(url == "https://thanthongnhat.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else {
+                        dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    }
+                     
                     user_id_getDm = dataUser[0].StateName;
                     Sid_getDM = dataUser[0].StateId;
                 }
@@ -8775,7 +8969,317 @@
                 const sha1hash = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
                 return sha1hash.toLowerCase();
             }
+
+            // map
+            var map = null;
+            const markerMap = new Map();
+            // ✅ Hàm thêm các marker từ danh sách
+            function addMarkers(locations, mapContainerId) {
+                if (map) {
+                    map.remove(); // Xóa bản đồ cũ
+                }
+                map = L.map(mapContainerId).setView([16.4501, 105.5234], 6);
+
+                const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                }).addTo(map);
+                locations.forEach(loc => {
+                    let typeName = '';
+                    if(loc.type == "N"){
+                        typeName = 'N';
+                    } else if(loc.type == "M" || loc.type == "MS"){
+                        typeName = 'R';
+                    }
+                    const customHTML = `
+                        <div class="marker-wrapper marker-${loc.code}">
+                            <div class="marker-label marker-label-${loc.code}"></div>
+                            <svg class="marker-pin" viewBox="0 0 24 24">
+                                <path d="M12 0C8.1 0 5 3.1 5 7c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7z" fill="#4285f4" stroke="rgb(66, 133, 244)" stroke-width="2"/>
+                                <circle cx="12" cy="8.5" r="3.5" fill="white"/>
+                            </svg>
+                            <div class="mePin-wrapper">
+                                <div class="mePin-child">
+                                    <b>${typeName}</b>
+                                    <svg id="mePin" xmlns="http://www.w3.org/2000/svg" width="33.3" height="32.4" viewBox="0 0 43.3 42.4">
+                                        <path class="ring_outer mePin bounceInDown" fill="#dc3545" d="M28.6 23c6.1 1.4 10.4 4.4 10.4 8 0 4.7-7.7 8.6-17.3 8.6-9.6 0-17.4-3.9-17.4-8.6 0-3.5 4.2-6.5 10.3-7.9.7-.1-.4-1.5-1.3-1.3C5.5 23.4 0 27.2 0 31.7c0 6 9.7 10.7 21.7 10.7s21.6-4.8 21.6-10.7c0-4.6-5.7-8.4-13.7-10-.8-.2-1.8 1.2-1 1.4z"></path>
+                                        <path class="ring_inner" fill="#dc3545" d="M27 25.8c2 .7 3.3 1.8 3.3 3 0 2.2-3.7 3.9-8.3 3.9-4.6 0-8.3-1.7-8.3-3.8 0-1 .8-1.9 2.2-2.6.6-.3-.3-2-1-1.6-2.8 1-4.6 2.7-4.6 4.6 0 3.2 5.1 5.7 11.4 5.7 6.2 0 11.3-2.5 11.3-5.7 0-2-2.1-3.9-5.4-5-.7-.1-1.2 1.3-.7 1.5z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    const icon = L.divIcon({
+                        className: `custom-marker custom-${loc.code}`,
+                        html: customHTML,
+                        iconSize: [40, 40],
+                        iconAnchor: [20, 40],
+                        popupAnchor: [0, -40]
+                    });
+
+                    const marker = L.marker(loc.coords, { icon, customData: loc }).addTo(map);
+                    marker.options.customData = {
+                        type: loc.type, // Loại của trạm (NAAM, N, M, v.v.)
+                        name: loc.name,
+                        code: loc.code,
+                        item: loc.item
+                    };
+                    marker.bindPopup(loc.popup);
+                    markerMap.set(loc.code, marker);
+                });
+
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }
+// setInterval(() => {
+                //     const markerElement = document.querySelector(`.marker-067010`);
+                //     markerElement.classList.add('bounce-animation');
+                    
+                //     // Dừng hiệu ứng sau 2 giây
+                //     setTimeout(() => {
+                //     markerElement.classList.remove('bounce-animation');
+                //     }, 2000);
+                // }, 4000);
+            function getFieldsByType(type) {
+                switch (type) {
+                    case "NAAM":
+                        return ['RD', 'RT', 'RH', 'RP'];
+                    case "N":
+                        return ['RN'];
+                    case "M":
+                        return ['RD'];
+                    case "MS":
+                        return ['RD'];
+                    case "NNS":
+                        return ['RT', 'RN', 'SS', 'EC'];
+                    default:
+                        return [];
+                }
+            }
+
+            // Dữ liệu mẫu cho các yếu tố
+            const defaultValues = {
+                RD: '0mm',   // Lượng mưa
+                RT: '0°C',   // Nhiệt độ
+                RH: '0%',    // Độ ẩm
+                RP: '0hPa',  // Áp suất
+                RN: '0mm',   // Mưa
+                SS: '0w',    // Ánh sáng/Năng lượng
+                EC: '0mS/cm' // Độ dẫn điện
+            };
+
+            function generatePopupHTML(name, code, type, item) {
+                const fields = getFieldsByType(type);
+
+                let dynamicRows = '';
+
+                fields.forEach(field => {
+                    let label = '';
+                    switch (field) {
+                        case 'RD': label = 'Lượng mưa'; break;
+                        case 'RT': label = 'Nhiệt độ'; break;
+                        case 'RH': label = 'Độ ẩm'; break;
+                        case 'RP': label = 'Áp suất khí quyển'; break;
+                        case 'RN': label = 'Mực nước'; break;
+                        case 'SS': label = 'Độ mặn'; break;
+                        case 'EC': label = 'Độ dẫn điện'; break;
+                    }
+
+                    dynamicRows += `
+                        <tr style="height:22px">
+                            <td><b>${label}: <span id="popup-${code}-${field}">0</span></b></td>
+                        </tr>
+                    `;
+                });
+
+                return `
+                    <table style="width:400px;">
+                        <tbody>
+                            <tr style="height:25px">
+                                <td>
+                                    <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;">
+                                        ${name}-${code}
+                                    </h4>
+                                </td>
+                            </tr>
+                            ${dynamicRows}
+                            <tr style="height:22px;border-top:solid 1px #ccc">
+                                <td>Năng lượng: <span id="popup-${code}-Energy">0v</span></td>
+                            </tr>
+                            <tr style="height:22px;max-width:300px;word-break:break-word;">
+                                <td>Hoạt động cuối lúc: <span id="popup-${code}-LastTime">@LASTTIME</span></td>
+                            </tr>
+                            <tr style="height:22px">
+                                <td><div><button>Chi tiết</button></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            function generatePopupValueHTML(loc) {
+                let extraContent = '';
+
+                switch (loc.type) {
+                    case "NAAM":
+                        extraContent = `
+                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm</td></tr>
+                            <tr><td>Nhiệt độ: ${loc.RT ?? 0} °C</td></tr>
+                            <tr><td>Độ ẩm: ${loc.RH ?? 0} %</td></tr>
+                            <tr><td>Áp suất khí quyển: ${loc.RP ?? 0} hPa</td></tr>
+                        `;
+                        break;
+                    case "N":
+                        extraContent = `
+                            <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+                        `;
+                        break;
+                    case "M":
+                    case "MS":
+                        extraContent = `
+                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm</td></tr>
+                        `;
+                        break;
+                    case "NNS":
+                        extraContent = `
+                            <tr><td>Nhiệt độ: ${loc.RT ?? 0} °C</td></tr>
+                            <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+                            <tr><td>Độ mặn: ${loc.SS ?? 0} ppt</td></tr>
+                            <tr><td>Độ dẫn điện: ${loc.EC ?? 0} μs/cm</td></tr>
+                        `;
+                        break;
+                    default:
+                        extraContent = `<tr><td>Không có dữ liệu</td></tr>`;
+                }
+                const itemStr = JSON.stringify(loc.item).replace(/"/g, '&quot;');
+                return `
+                    <table style="width:400px;">
+                        <tbody>
+                            <tr style="height:25px">
+                                <td>
+                                    <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;">
+                                        ${loc.name}
+                                    </h4>
+                                </td>
+                            </tr>
+                            ${extraContent}
+                            <tr style="height:22px;border-top:solid 1px #ccc">
+                                <td>Năng lượng: <span id="popup-${loc.code}-Energy">${loc.RA}v</span></td>
+                            </tr>
+                            <tr style="height:22px;max-width:300px;word-break:break-word;">
+                                <td>Hoạt động cuối lúc: <span id="popup-${loc.code}-LastTime">${loc.lastTime}</span></td>
+                            </tr>
+                            <tr style="height:22px">
+                                <td><div><button id="tooltip" class="btn btn-warning" style="margin-top: 20px; background-color: #f39c12;border: solid 1px #f39c12; width: 75%; height: 35px; color: #fff; padding: 3px 10px;" onclick="handleItemClick(${itemStr});">Xem chi tiết</button></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            async function addDataLocation(item, tooltip, itemW) {
+                const itemLocation = {
+                    name: item.WORKSTATION_NAME+'-'+item.WORKSTATION_ID,
+                    coords: [item.LONGITUDE, item.LATITUDE],
+                    type: item.TEMPLATE_TOOLTIP,
+                    code: item.WORKSTATION_ID,
+                    item: itemW,
+                    popup: generatePopupHTML(item.WORKSTATION_NAME, item.WORKSTATION_ID, item.TEMPLATE_TOOLTIP, item)
+                }
+                locations.push(itemLocation);
+            }
+
+            function updatePopupData(code, newZoneData) {
+                const marker = markerMap.get(code);
+                if (!marker) return;
+
+                const oldData = marker.options.customData || {};
+                const mergedData = { ...oldData };
+                
+                
+                // 🎯 Chỉ update những field phù hợp với type
+                switch (oldData.type) {
+                    case "NAAM":
+                        mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa (nếu có)
+                        mergedData.RT = parseValue(newZoneData.RT); // Nhiệt độ
+                        mergedData.RH = parseValue(newZoneData.RH); // Độ ẩm
+                        mergedData.RP = parseValue(newZoneData.RP); // Áp suất
+                        break;
+                    case "N":
+                        $(".marker-label-"+code).text(newZoneData.RN)
+                        mergedData.RN = parseValue(newZoneData.RN); // Lượng mưa
+                        break;
+                    case "M":
+                    case "MS":
+                        $(".marker-label-"+code).text(newZoneData.RD)
+                        mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa
+                        break;
+                    case "NNS":
+                        mergedData.RT = parseValue(newZoneData.RT);
+                        mergedData.RN = parseValue(newZoneData.RN);
+                        mergedData.SS = parseValue(newZoneData.SS);
+                        mergedData.EC = parseValue(newZoneData.EC);
+                        break;
+                    default:
+                        console.warn(`Không biết cách update cho type: ${oldData.type}`);
+                }
+                mergedData.RA = parseValue(newZoneData.RA);
+                mergedData.lastTime = formatDateTime(newZoneData.lastTime); // Cập nhật thời gian hiện tại
+
+                const updatedHTML = generatePopupValueHTML(mergedData);
+                marker.setPopupContent(updatedHTML);
+
+                // Update lại dữ liệu trong marker
+                marker.options.customData = mergedData;
+            }
+
+            // ✅ Hàm phụ: bỏ đơn vị (°C, %, hPa, mm...) để lấy số
+            function parseValue(str) {
+                if (typeof str !== "string") return str;
+                return parseFloat(str.replace(/[^\d.-]/g, ''));
+            }
+
+            function processAndUpdate(data) {
+                const items = data.D;
+                const grouped = {};
+                let dateTimeRA;
+                // Gom nhóm theo code
+                items.forEach(item => {
+                    const code = item.ZONE_ADDRESS;
+                    if(item.ZONE_PROPERTY == 'RA'){
+                        dateTimeRA = item.DATE_CREATE;
+                    }
+                    if (!grouped[code]) grouped[code] = {};
+
+                    // Gán dữ liệu theo field
+                    grouped[code][item.ZONE_PROPERTY] = item.ZONE_VALUE;
+                });
+
+                // Update dữ liệu
+                for (const code in grouped) {
+                    const item = grouped[code];
+
+                    const formattedData = {};
+
+                    // Format từng giá trị theo kiểu đẹp
+                    if (item.RA != null) formattedData.RA = (item.RA / 10) + " v";  // ắc quy
+                    if (item.RD != null) formattedData.RD = (item.RD / 10) + " mm";  // Lượng mưa
+                    if (item.RT != null) formattedData.RT = (item.RT / 10) + " °C";  // Nhiệt độ
+                    if (item.RH != null) formattedData.RH = (item.RH / 10) + " %";   // Độ ẩm
+                    if (item.RP != null) formattedData.RP = (item.RP / 10) + " hPa"; // Áp suất
+                    if (item.RN != null) formattedData.RN = (item.RN) + " cm"; // Áp suất
+                    if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + " ppt"; // Áp suất
+                    if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + " μs/cm"; // Áp suất
+                    formattedData.lastTime = dateTimeRA;
+                    
+                    updatePopupData(code, formattedData);
+                }
+            }
             
+            // Gọi hàm
+        
+            // ------------------------------------------------------
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",

@@ -5103,7 +5103,7 @@
                         arrayCategory.push(item.workstationType);
                     }
 
-                    await delay(50); // đợi 100ms trước khi xử lý item tiếp theo
+                    await delay(10); // đợi 100ms trước khi xử lý item tiếp theo
                 }
                 addMarkers(locations, "mappingWorkstation");
                 arrayCategory.push("ALL");
@@ -6919,7 +6919,15 @@
                 let user_id_getDm = 'admin';
                 let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
                 if(check == "NotCentral"){
-                    const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    let dataUser;
+                    if(url == "https://cctl-dongthap.homeos.vn/service/service.svc" || url == "https://pctthn.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else if(url == "https://thanthongnhat.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else {
+                        dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    }
+                     
                     user_id_getDm = dataUser[0].StateName;
                     Sid_getDM = dataUser[0].StateId;
                 }
