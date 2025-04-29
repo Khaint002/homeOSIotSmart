@@ -14,7 +14,6 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script> -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
@@ -1684,6 +1683,9 @@
         .leaflet-popup {
             bottom: -35px !important;
         }
+        .leaflet-control-attribution {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -1725,8 +1727,7 @@
                         </div>
                     </div>
                 </div>
-                <img id="LogoPickScreen" src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200"
-                    style="padding-bottom: 3rem;">
+                <img id="LogoPickScreen" src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200" style="padding-bottom: 3rem;">
                 <div style="text-align: start; color: white;">
                     <h5>Ứng dụng:</h5>
                 </div>
@@ -1745,7 +1746,7 @@
                             <div class="info-box-content">
                                 <div class="d-flex justify-content-between">
                                     <span class="app-text">Môi trường</span>
-                                    <span class="app-text">v1.1.4</span>
+                                    <span class="app-text">v1.1.5</span>
                                 </div>
                                 <span class="app-text-number">Khí tượng thuỷ văn</span>
                             </div>
@@ -1772,10 +1773,8 @@
                     <div class="col-12 d-none" style="padding: 5px 10px;">
                         <div class="iconApp">
                             <div class="icon" style="background-color: #28a745!important;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: white;"
-                                    fill="currentColor" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" style="color: white;" fill="currentColor" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+                                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5" />
                                 </svg>
                             </div>
                             <div class="info-box-content">
@@ -1824,12 +1823,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-instruct">
+                <!-- <div class="footer-instruct">
                     <div class="step">
                         <div class="circle">01</div>
                     </div>
                     <p>Chọn ứng dụng muốn xem</p>
-                </div>
+                </div> -->
             </div>
         </div>
         <div id="history" class="hidden h-100">
@@ -1891,17 +1890,6 @@
                                         thông minh</span>
                                 </div>
                             </li>
-                            <li>
-                                <div class="d-flex menu-item" style="color: #fff; padding-left: 10px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                        style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z" />
-                                    </svg>
-                                    <span style="padding-left: 10px; padding-left: 10px;">Thông tin công ty</span>
-                                </div>
-                            </li>
                             <li class="workstation_category">
                                 <div class="d-flex menu-item" style="color: #fff; padding-left: 10px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -1959,6 +1947,17 @@
                                     <span style="padding-left: 10px; padding-left: 10px;">Quản lý và xuất lô hàng</span>
                                 </div>
                             </li>
+                            <li>
+                                <div class="d-flex menu-item" style="color: #fff; padding-left: 10px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z" />
+                                    </svg>
+                                    <span style="padding-left: 10px; padding-left: 10px;">Thông tin công ty</span>
+                                </div>
+                            </li>
                         </ul>
                     </aside>
                 </div>
@@ -2000,7 +1999,7 @@
                             <div id="mappingWorkstation"></div>
                         </div>
                     </div>
-                    <div id="footer-instruct" class="footer-instruct">
+                    <!-- <div id="footer-instruct" class="footer-instruct">
                         <div class="step" style="margin: 0;">
                             <div class="circle">02</div>
                         </div>
@@ -2009,25 +2008,20 @@
                                 style="width: 30px; height: 35px; margin: 0 5px 20px 0;" alt="">
                             <p id="footerHistoryPage">Thêm mới mã trạm hoặc chọn trạm đã lưu</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div id="history-setting" class="history-body d-none" style="padding: 0 10px 0 10px; margin-top: 20px;">
                     <!-- <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200" style="margin-bottom: 30px; margin-top: 20px;"> -->
                     <div id="list-category">
                         <div>
                             <div class="d-flex" style="color: #fff; padding-left: 10px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                    class="bi bi-gear" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
-                                    <path
-                                        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                                    <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
                                 </svg>
                                 <h6 style="padding-left: 10px; padding-left: 10px;">Quản lý danh mục trạm:</h6>
                             </div>
                         </div>
-
-
                         <ul id="history-setting-detail"
                             style="overflow-y: auto; max-height: 500px; padding: 10px 10px 0 10px;">
                             <div class="col-12"
@@ -2186,7 +2180,7 @@
                 </div>
 
 
-                <div id="footer-instruct-text" class="footer-instruct">
+                <!-- <div id="footer-instruct-text" class="footer-instruct">
                     <div class="step" style="margin: 0;">
                         <div class="circle">03</div>
                     </div>
@@ -2196,7 +2190,7 @@
                         <p>Nhấn nút quét hoặc nhập thông tin</p>
                     </div>
 
-                </div>
+                </div> -->
             </div>
         </div>
         <div id="ScanQRWarranty" class="hidden h-100">
@@ -2414,12 +2408,12 @@
                     <ul id="lot-warranty-detail" style="overflow-y: auto; max-height: 538px; padding: 10px 0 0px;">
                     </ul>
                 </div>
-                <div id="footer-instruct-warranty" class="footer-instruct">
+                <!-- <div id="footer-instruct-warranty" class="footer-instruct">
                     <div class="step">
                         <div class="circle">02</div>
                     </div>
                     <p>Nhấn nút để quét QRcode của thiết bị</p>
-                </div>
+                </div> -->
             </div>
         </div>
         <div id="homePage" class="hidden">
@@ -3400,12 +3394,12 @@
                     <p style="margin-top: 10px;">Tải hình ảnh lên</p>
                 </div>
             </div>
-            <div id="footer-instruct-scanQR" class="d-none footer-instruct">
+            <!-- <div id="footer-instruct-scanQR" class="d-none footer-instruct">
                 <div class="step">
                     <div class="circle">04</div>
                 </div>
                 <p>Truy cập xem thông tin hoặc nhấn quét lại</p>
-            </div>
+            </div> -->
             <input type="file" id="file-input" accept="image/*">
         </div>
         <div id="loading-popup" class="modal">
@@ -3962,9 +3956,9 @@
             function checkHeight() {
                 const viewportHeight = window.innerHeight;
                 const historyDetail = document.getElementById('history-detail');
-                historyDetail.style.height = (viewportHeight - 260) + 'px';
+                historyDetail.style.height = (viewportHeight - 180) + 'px';
                 const mappingWorkstation = document.getElementById('tabMap');
-                mappingWorkstation.style.height = (viewportHeight - 230) + 'px';
+                mappingWorkstation.style.height = (viewportHeight - 130) + 'px';
                 const categoryDetail = document.getElementById('list-history-detail');
                 categoryDetail.style.height = (viewportHeight - 530) + 'px';
                 const category = document.getElementById('history-setting-detail');
@@ -3974,9 +3968,9 @@
             window.addEventListener('resize', function () {
                 const viewportHeight = window.innerHeight;
                 const historyDetail = document.getElementById('history-detail');
-                historyDetail.style.height = (viewportHeight - 260) + 'px'; // 80% chiều cao của thiết bị
+                historyDetail.style.height = (viewportHeight - 180) + 'px'; // 80% chiều cao của thiết bị
                 const mappingWorkstation = document.getElementById('tabMap');
-                mappingWorkstation.style.height = (viewportHeight - 230) + 'px';
+                mappingWorkstation.style.height = (viewportHeight - 130) + 'px';
                 const categoryDetail = document.getElementById('list-history-detail');
                 categoryDetail.style.height = (viewportHeight - 530) + 'px'; // 80% chiều cao của thiết bị
                 const category = document.getElementById('history-setting-detail');
@@ -4014,7 +4008,7 @@
                 document.getElementById("save-category").classList.remove("d-none");
             }
             function truyCap() {
-                document.getElementById("footer-instruct-scanQR").classList.add("d-none");
+                // document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 $('#qr-popup').hide();
                 document.getElementById("ScanQR").classList.add("hidden");
@@ -4023,11 +4017,11 @@
                 matram = localStorage.getItem("MATRAM");
                 $("button-modal-loading").click();
                 saveHistory(localStorage.getItem('MATRAM'));
-                checkTypeWorkstation()
+                checkTypeWorkstation();
                 getDataMonitoring();
             }
             function DetailProduct() {
-                document.getElementById("footer-instruct-scanQR").classList.add("d-none");
+                // document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 document.getElementById("result-product").classList.add("d-none");
                 document.getElementById("tab-0").classList.remove("active");
@@ -4041,7 +4035,7 @@
                 console.log('hide');
             }
             function DetailCondition() {
-                document.getElementById("footer-instruct-scanQR").classList.add("d-none");
+                // document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 document.getElementById("result-product").classList.add("d-none");
                 document.getElementById("tab-0").classList.remove("active");
@@ -4054,7 +4048,7 @@
             }
             function scanAgain() {
                 console.log("scan2");
-                document.getElementById("footer-instruct-scanQR").classList.add("d-none");
+                // document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 document.getElementById("file-input").value = '';
                 startQRcode();
@@ -4425,7 +4419,7 @@
                     document.getElementById("guarantee").classList.add("hidden");
                     document.getElementById("ScanQRWarranty").classList.add("hidden");
                     document.getElementById("menu-warranty").classList.add("d-none");
-                    document.getElementById("footer-instruct-warranty").classList.add("d-none");
+                    // document.getElementById("footer-instruct-warranty").classList.add("d-none");
                 } else if (type == 'HISTORY') {
                     showHistory()
                     document.getElementById("history").classList.remove("hidden");
@@ -4443,7 +4437,7 @@
                     // document.getElementById("ScanQRWarranty").classList.remove("hidden");
 
                     document.getElementById("pickApp").classList.add("hidden");
-                    document.getElementById("footer-instruct-warranty").classList.remove("d-none");
+                    // document.getElementById("footer-instruct-warranty").classList.remove("d-none");
 
                     // document.querySelector(".tablinkGuarantee").click();
 
@@ -5526,7 +5520,7 @@
                             document.getElementById("result-condition").classList.add("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
-                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-form-title").classList.remove("d-none");
                             document.getElementById("result-form-stationID").classList.add("d-none");
                             document.getElementById("result-form-stationName").classList.add("d-none");
@@ -5951,7 +5945,7 @@
                 html5QrCode.stop().then(ignore => {
                     isScannerRunning = false;  // Đánh dấu scanner đã dừng
                     document.getElementById("result-form").classList.remove("d-none");
-                    document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                    // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                 }).catch(err => {
                     console.error("Lỗi khi dừng camera sau khi quét thành công: ", err);
                 });
@@ -5994,7 +5988,7 @@
                             document.getElementById("result-product").classList.remove("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
-                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-product-truycap").disabled = false;
                             document.getElementById("result-form-productName").value = checkQRcode[1];
                             document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
@@ -6025,7 +6019,7 @@
                                         document.getElementById("result-condition").classList.remove("d-none");
                                         document.getElementById("result-form-loading").classList.add("d-none");
                                         document.getElementById("result-form").classList.remove("d-none");
-                                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                         document.getElementById("result-condition-truycap").disabled = false;
                                         document.getElementById("result-form-conditionName").value = checkQRcode[1];
                                         document.getElementById("result-form-conditionCode").value = checkQRcode[3];
@@ -6042,7 +6036,7 @@
                             document.getElementById("result-condition").classList.remove("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
-                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-condition-truycap").disabled = false;
                             document.getElementById("result-form-conditionName").value = checkQRcode[1];
                             document.getElementById("result-form-conditionCode").value = checkQRcode[3];
@@ -6112,7 +6106,7 @@
                                             document.getElementById("result-product").classList.remove("d-none");
                                             document.getElementById("result-form-loading").classList.add("d-none");
                                             document.getElementById("result-form").classList.remove("d-none");
-                                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                             document.getElementById("result-product-truycap").disabled = false;
                                             document.getElementById("result-form-productName").value = checkQRcode[1];
                                             document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
@@ -6137,7 +6131,7 @@
                                 });
                             } else {
                                 document.getElementById("result-form").classList.remove("d-none");
-                                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                 document.getElementById("result-form-total").classList.remove("d-none");
                                 document.getElementById("result-condition").classList.add("d-none");
                                 document.getElementById("result-form-loading").classList.add("d-none");
@@ -6163,7 +6157,7 @@
                         document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form").classList.remove("d-none");
-                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                     } else if (decodedText.length == 6) {
                         domain = await getDomain(decodedText, 'domain');
                         const url = "https://" + domain + "/service/service.svc/"
@@ -6178,7 +6172,7 @@
                         document.getElementById("result-condition").classList.add("d-none");
                         document.getElementById("result-form-loading").classList.add("d-none");
                         document.getElementById("result-form").classList.remove("d-none");
-                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                     } else {
                         document.getElementById("result-form-total").classList.remove("d-none");
                         document.getElementById("result-condition").classList.add("d-none");
@@ -6238,7 +6232,7 @@
                                     // Quét QR từ hình ảnh đã tải lên
                                     html5QrCode.scanFile(file).then(async decodedText => {  // Sửa tại đây
                                         document.getElementById("result-form").classList.remove("d-none");
-                                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                         let data;
                                         let domain;
                                         let workstation;
@@ -6283,7 +6277,7 @@
                                                     document.getElementById("result-product").classList.remove("d-none");
                                                     document.getElementById("result-form-loading").classList.add("d-none");
                                                     document.getElementById("result-form").classList.remove("d-none");
-                                                    document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                    // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                     document.getElementById("result-product-truycap").disabled = false;
                                                     document.getElementById("result-form-productName").value = checkQRcode[1];
                                                     document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
@@ -6314,7 +6308,7 @@
                                                                 document.getElementById("result-condition").classList.remove("d-none");
                                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                                 document.getElementById("result-form").classList.remove("d-none");
-                                                                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                                // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                                 document.getElementById("result-condition-truycap").disabled = false;
                                                                 document.getElementById("result-form-conditionName").value = checkQRcode[1];
                                                                 document.getElementById("result-form-conditionCode").value = checkQRcode[3];
@@ -6331,7 +6325,7 @@
                                                     document.getElementById("result-condition").classList.remove("d-none");
                                                     document.getElementById("result-form-loading").classList.add("d-none");
                                                     document.getElementById("result-form").classList.remove("d-none");
-                                                    document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                    // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                     document.getElementById("result-condition-truycap").disabled = false;
                                                     document.getElementById("result-form-conditionName").value = checkQRcode[1];
                                                     document.getElementById("result-form-conditionCode").value = checkQRcode[3];
@@ -6405,7 +6399,7 @@
                                                                     document.getElementById("result-product").classList.remove("d-none");
                                                                     document.getElementById("result-form-loading").classList.add("d-none");
                                                                     document.getElementById("result-form").classList.remove("d-none");
-                                                                    document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                                    // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                                     document.getElementById("result-product-truycap").disabled = false;
                                                                     document.getElementById("result-form-productName").value = checkQRcode[1];
                                                                     document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
@@ -6432,7 +6426,7 @@
 
                                                     } else {
                                                         document.getElementById("result-form").classList.remove("d-none");
-                                                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                                         document.getElementById("result-form-total").classList.remove("d-none");
                                                         document.getElementById("result-condition").classList.add("d-none");
                                                         document.getElementById("result-form-loading").classList.add("d-none");
@@ -6461,7 +6455,7 @@
                                                 document.getElementById("result-condition").classList.add("d-none");
                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                 document.getElementById("result-form").classList.remove("d-none");
-                                                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                             } else if (decodedText.length == 6) {
                                                 domain = await getDomain(decodedText, 'domain');
                                                 const url = "https://" + domain + "/service/service.svc/"
@@ -6476,7 +6470,7 @@
                                                 document.getElementById("result-condition").classList.add("d-none");
                                                 document.getElementById("result-form-loading").classList.add("d-none");
                                                 document.getElementById("result-form").classList.remove("d-none");
-                                                document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                                // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                             } else {
                                                 document.getElementById("result-form-total").classList.remove("d-none");
                                                 document.getElementById("result-condition").classList.add("d-none");
@@ -6500,7 +6494,7 @@
                                         }
                                     }).catch(err => {
                                         document.getElementById("result-form").classList.remove("d-none");
-                                        document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                                        // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                                         document.getElementById("result-form-total").classList.remove("d-none");
                                         document.getElementById("result-condition").classList.add("d-none");
                                         document.getElementById("result-form-loading").classList.add("d-none");
@@ -6550,25 +6544,25 @@
             }
 
             // ẩn phần bước khi bật bàn phí trên mobile
-            function adjustFooter() {
-                const footer = document.querySelector('.footer-instruct');
-                const windowHeight = window.innerHeight;
+            // function adjustFooter() {
+            //     // const footer = document.querySelector('.footer-instruct');
+            //     const windowHeight = window.innerHeight;
 
-                window.addEventListener('resize', () => {
-                    if (window.innerHeight < windowHeight) {
-                        // Keyboard is visible, hide or adjust footer
-                        document.getElementById("footer-instruct-text")?.classList.add("d-none");
-                        document.getElementById("footer-instruct-warranty")?.classList.add("d-none");
-                        footer.style.display = 'none'; // You can also reposition it instead of hiding
-                    } else {
-                        // Keyboard is hidden, show footer
-                        document.getElementById("footer-instruct-text")?.classList.remove("d-none");
-                        document.getElementById("footer-instruct-warranty")?.classList.remove("d-none");
-                        footer.style.display = 'block';
-                    }
-                });
-            }
-            adjustFooter();
+            //     window.addEventListener('resize', () => {
+            //         if (window.innerHeight < windowHeight) {
+            //             // Keyboard is visible, hide or adjust footer
+            //             document.getElementById("footer-instruct-text")?.classList.add("d-none");
+            //             document.getElementById("footer-instruct-warranty")?.classList.add("d-none");
+            //             // footer.style.display = 'none'; // You can also reposition it instead of hiding
+            //         } else {
+            //             // Keyboard is hidden, show footer
+            //             document.getElementById("footer-instruct-text")?.classList.remove("d-none");
+            //             document.getElementById("footer-instruct-warranty")?.classList.remove("d-none");
+            //             // footer.style.display = 'block';
+            //         }
+            //     });
+            // }
+            // adjustFooter();
             // Sidebar toggle logic
             const menuToggle = $(".menuToggle");
             const sidebar = $(".sidebar");
@@ -6719,7 +6713,7 @@
                             // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             // toastr.error("Vui lòng quét đúng mã QR của trạm mưa");
                             document.getElementById("result-form").classList.remove("d-none");
-                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-form-total").classList.remove("d-none");
                             document.getElementById("result-condition").classList.add("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
@@ -7606,7 +7600,7 @@
                             document.getElementById("result-product").classList.remove("d-none");
                             document.getElementById("result-form-loading").classList.add("d-none");
                             document.getElementById("result-form").classList.remove("d-none");
-                            document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
+                            // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             document.getElementById("result-product-truycap").disabled = false;
                             document.getElementById("result-form-productName").value = checkQRcode[1];
                             document.getElementById("result-form-productCode").value = checkQRcode[2].substring(1);
@@ -8667,6 +8661,7 @@
                             // const urlservice = 'https://central.homeos.vn/service_XD/service.svc/'
                             var link = urlservice.replace('service.svc/', '') + '' + msg;
                             link = link.replace('service.svc/', '');
+                            link = link.replace('Service.svc/', '');
                             // link = link.replace('pdf', 'xls');
                             if(window.downloadFileToDevice){
                                 window.downloadFileToDevice(link);
