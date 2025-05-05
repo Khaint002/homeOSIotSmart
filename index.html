@@ -1573,7 +1573,8 @@
                 position: absolute;
                 top: 2px;  /* Adjust to make "R" appear above the mePin */
                 right: 10px;
-                color: #dc3545;
+                /*color: #dc3545;*/
+                color: #5984ff;
                 font-weight: bold;
                 z-index: 2;  /* Ensure "R" text is above mePin */
                 font-size: 12px;
@@ -8967,7 +8968,26 @@
                 if (map) {
                     map.remove(); // Xóa bản đồ cũ
                 }
-                map = L.map(mapContainerId).setView([16.4501, 105.5234], 6);
+                const bounds = L.latLngBounds(
+                    L.latLng(8.2, 102.1),  // Góc dưới trái
+                    L.latLng(23.4, 110.0)  // Góc trên phải
+                );
+                map = L.map(mapContainerId, {
+                    maxBounds: bounds,       // Giới hạn vùng
+                    maxBoundsViscosity: 1.0,
+                }).setView([16.4501, 105.5234], 6);
+
+                map.on('moveend', function () {
+                    if (!bounds.contains(map.getCenter())) {
+                        map.panInsideBounds(bounds, { animate: true });
+                    }
+                });
+
+                map.on('zoomend', function () {
+                    if (!bounds.contains(map.getBounds().getNorthWest()) || !bounds.contains(map.getBounds().getSouthEast())) {
+                        map.fitBounds(bounds, { animate: true });
+                    }
+                });
 
                 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19
@@ -9021,15 +9041,9 @@
                     map.invalidateSize();
                 }, 100);
             }
-// setInterval(() => {
-                //     const markerElement = document.querySelector(`.marker-067010`);
-                //     markerElement.classList.add('bounce-animation');
+            // setInterval(() => {
                     
-                //     // Dừng hiệu ứng sau 2 giây
-                //     setTimeout(() => {
-                //     markerElement.classList.remove('bounce-animation');
-                //     }, 2000);
-                // }, 4000);
+            //     }, 4000);
             function getFieldsByType(type) {
                 switch (type) {
                     case "NAAM":
@@ -9109,14 +9123,18 @@
 
             function generatePopupValueHTML(loc) {
                 let extraContent = '';
-
+                let lastTimeRain = '';
+                if(loc.lastTimeRD){
+                    lastTimeRain = "("+loc.lastTimeRD.split(" ")[1]+")";
+                }
+                
                 switch (loc.type) {
                     case "NAAM":
                         extraContent = `
-                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm</td></tr>
-                            <tr><td>Nhiệt độ: ${loc.RT ?? 0} °C</td></tr>
-                            <tr><td>Độ ẩm: ${loc.RH ?? 0} %</td></tr>
-                            <tr><td>Áp suất khí quyển: ${loc.RP ?? 0} hPa</td></tr>
+                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm ${lastTimeRain}</td></tr>
+                            <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT) ?? 0} °C</b></td></tr>
+                            <tr><td><b>Độ ẩm: ${WarningHumidity(loc.RH) ?? 0} %</b></td></tr>
+                            <tr><td><b>Áp suất khí quyển: ${loc.RP ?? 0} hPa</b></td></tr>
                         `;
                         break;
                     case "N":
@@ -9127,15 +9145,15 @@
                     case "M":
                     case "MS":
                         extraContent = `
-                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm</td></tr>
+                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm ${lastTimeRain}</td></tr>
                         `;
                         break;
                     case "NNS":
                         extraContent = `
-                            <tr><td>Nhiệt độ: ${loc.RT ?? 0} °C</td></tr>
                             <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
-                            <tr><td>Độ mặn: ${loc.SS ?? 0} ppt</td></tr>
-                            <tr><td>Độ dẫn điện: ${loc.EC ?? 0} μs/cm</td></tr>
+                            <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT)} °C</b></td></tr>
+                            <tr><td><b>Độ mặn: ${loc.SS ?? 0} ppt</b></td></tr>
+                            <tr><td><b>Độ dẫn điện: ${loc.EC ?? 0} μs/cm</b></td></tr>
                         `;
                         break;
                     default:
@@ -9147,17 +9165,17 @@
                         <tbody>
                             <tr style="height:25px">
                                 <td>
-                                    <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;">
+                                    <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;color:#0078A8">
                                         ${loc.name}
                                     </h4>
                                 </td>
                             </tr>
                             ${extraContent}
                             <tr style="height:22px;border-top:solid 1px #ccc">
-                                <td>Năng lượng: <span id="popup-${loc.code}-Energy">${loc.RA}v</span></td>
+                                <td>Năng lượng: <span id="popup-${loc.code}-Energy">${WarningEnergy(loc.RA)} v</span></td>
                             </tr>
                             <tr style="height:22px;max-width:300px;word-break:break-word;">
-                                <td>Hoạt động cuối lúc: <span id="popup-${loc.code}-LastTime">${loc.lastTime}</span></td>
+                                <td>Hoạt động cuối lúc: <span id="popup-${loc.code}-LastTime">${formatDateTime(loc.lastTime)}</span></td>
                             </tr>
                             <tr style="height:22px">
                                 <td><div><button id="tooltip" class="btn btn-warning" style="margin-top: 20px; background-color: #f39c12;border: solid 1px #f39c12; width: 75%; height: 35px; color: #fff; padding: 3px 10px;" onclick="handleItemClick(${itemStr});">Xem chi tiết</button></div></td>
@@ -9186,11 +9204,29 @@
                 const oldData = marker.options.customData || {};
                 const mergedData = { ...oldData };
                 
+                const newTimeFormatted = newZoneData.lastTime;
+                const isNewTime = newTimeFormatted !== oldData.lastTime;
+
+                if (isNewTime) {
+                    const markerElement = document.querySelector(`.marker-${code}`);
+                    if (markerElement) {
+                        markerElement.classList.add('bounce-animation');
+                        setTimeout(() => {
+                            markerElement.classList.remove('bounce-animation');
+                        }, 5000);
+                    }
+                }
                 
                 // 🎯 Chỉ update những field phù hợp với type
                 switch (oldData.type) {
                     case "NAAM":
                         mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa (nếu có)
+                        if(newZoneData.RD){
+                            mergedData.lastTimeRD = formatDateTime(newZoneData.lastTimeRD);
+                            $(".marker-label-"+code).html(WarningRain(parseValue(newZoneData.RD)))
+                            $(".marker-"+code+" .marker-pin circle").attr("fill", "red");
+                            $(".marker-"+code+" .mePin-wrapper .mePin-child b").css("color", "red");
+                        }
                         mergedData.RT = parseValue(newZoneData.RT); // Nhiệt độ
                         mergedData.RH = parseValue(newZoneData.RH); // Độ ẩm
                         mergedData.RP = parseValue(newZoneData.RP); // Áp suất
@@ -9201,7 +9237,12 @@
                         break;
                     case "M":
                     case "MS":
-                        $(".marker-label-"+code).text(newZoneData.RD)
+                        if(newZoneData.RD){
+                            mergedData.lastTimeRD = formatDateTime(newZoneData.lastTimeRD);
+                            $(".marker-label-"+code).html(WarningRain(parseValue(newZoneData.RD)))
+                            $(".marker-"+code+" .marker-pin circle").attr("fill", "red");
+                            $(".marker-"+code+" .mePin-wrapper .mePin-child b").css("color", "red");
+                        }
                         mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa
                         break;
                     case "NNS":
@@ -9214,7 +9255,7 @@
                         console.warn(`Không biết cách update cho type: ${oldData.type}`);
                 }
                 mergedData.RA = parseValue(newZoneData.RA);
-                mergedData.lastTime = formatDateTime(newZoneData.lastTime); // Cập nhật thời gian hiện tại
+                mergedData.lastTime = newZoneData.lastTime; // Cập nhật thời gian hiện tại
 
                 const updatedHTML = generatePopupValueHTML(mergedData);
                 marker.setPopupContent(updatedHTML);
@@ -9223,7 +9264,7 @@
                 marker.options.customData = mergedData;
             }
 
-            // ✅ Hàm phụ: bỏ đơn vị (°C, %, hPa, mm...) để lấy số
+            // Hàm phụ: bỏ đơn vị (°C, %, hPa, mm...) để lấy số
             function parseValue(str) {
                 if (typeof str !== "string") return str;
                 return parseFloat(str.replace(/[^\d.-]/g, ''));
@@ -9233,11 +9274,15 @@
                 const items = data.D;
                 const grouped = {};
                 let dateTimeRA;
+                let dateTimeRD;
                 // Gom nhóm theo code
                 items.forEach(item => {
                     const code = item.ZONE_ADDRESS;
                     if(item.ZONE_PROPERTY == 'RA'){
                         dateTimeRA = item.DATE_CREATE;
+                    }
+                    if(item.ZONE_PROPERTY == 'RD'){
+                        dateTimeRD = item.DATE_CREATE;
                     }
                     if (!grouped[code]) grouped[code] = {};
 
@@ -9254,12 +9299,14 @@
                     // Format từng giá trị theo kiểu đẹp
                     if (item.RA != null) formattedData.RA = (item.RA / 10) + "v";  // ắc quy
                     if (item.RD != null) formattedData.RD = (item.RD / 10) + "mm";  // Lượng mưa
+                    if (item.RD != null) formattedData.lastTimeRD = dateTimeRD;  // Thời gian mưa
                     if (item.RT != null) formattedData.RT = (item.RT / 10) + "°C";  // Nhiệt độ
                     if (item.RH != null) formattedData.RH = (item.RH / 10) + "%";   // Độ ẩm
                     if (item.RP != null) formattedData.RP = (item.RP / 10) + "hPa"; // Áp suất
-                    if (item.RN != null) formattedData.RN = (item.RN) + "cm"; // Áp suất
-                    if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + "ppt"; // Áp suất
-                    if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + "μs/cm"; // Áp suất
+                    if (item.RN != null) formattedData.RN = (item.RN) + "cm"; // Mực nước
+                    if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + "ppt"; // Độ mặn
+                    if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + "μs/cm"; // Độ dẫn điện
+
                     formattedData.lastTime = dateTimeRA;
                     
                     updatePopupData(code, formattedData);
@@ -9268,6 +9315,46 @@
             
             // Gọi hàm
         
+            const WarningRain = function (value) {
+                var energy = "<b><font>" + value + "</font></b>";
+                if (value >= 0 && value < 5) energy = "<b><font color='#1a6985'>" + value + "mm</font></b>";
+                if (value >= 5 && value < 10) energy = "<b><font color='#0f3c4c'>" + value + "mm</font></b>";
+                if (value >= 10 && value < 20) energy = "<b><font color='#0084FF'>" + value + "mm</font></b>";
+                if (value >= 20 && value < 50) energy = "<b><font color='#6766ff'>" + value + "mm</font></b>";
+                if (value >= 50 && value < 100) energy = "<b><font color='#cc6600'>" + value + "mm</font></b>";
+                if (value >= 100 && value < 150) energy = "<b><font color='#006600'>" + value + "mm</font></b>";
+                if (value >= 150 && value < 200) energy = "<b><font color='#00FFFF'>" + value + "mm</font></b>";
+                if (value >= 200 && value < 300) energy = "<b><font color='#99004d'>" + value + "mm</font></b>";
+                if (value >= 300 && value < 400) energy = "<b><font color='#7b7b7b'>" + value + "mm</font></b>";
+                if (value >= 400) energy = "<b><font color='#A00BA0'>" + value + "mm</font></b>";
+                console.log(energy);
+                
+                return energy;
+            }
+            const WarningTemperature = function (value) {
+                var energy = '0';
+                if (value > 27.0 && value <= 30.0) energy = "<b><font color='green'>" + value + "</font></b>";
+                if (value > 30.0 && value <= 36.0) energy = "<b><font color='orange'>" + value + "</font></b>";
+                if (value >= 11.0 && value <= 27) energy = "<b><font color='blue'>" + value + "</font></b>";
+                if (value > 36) energy = "<b><font color='red'>" + value + "</font></b>";
+                if (value < 11.0) energy = "<b><font color='yellow'>" + value + "</font></b>";
+                return energy;
+            }
+            const WarningHumidity = function (value) {
+                var energy = '';
+                if (value >= 55.0 && value <= 65.0) energy = "<b><font color='green'>" + value + "</font></b>";
+                if (value > 65.0 && value <= 80.0) energy = "<b><font color='orange'>" + value + "</font></b>";
+                if (value > 80.0) energy = "<b><font color='red'>" + value + "</font></b>";
+                if (value < 55.0) energy = "<b><font color='yellow'>" + value + "</font></b>";
+                return energy;
+            }
+            const WarningEnergy = function (value) {
+                var energy = "<b><font>" + value + "</font></b>";
+                if (value >= 11.5 && value <= 15.0) energy = "<b><font color='green'>" + value + "</font></b>";
+                if (value >= 11.0 && value < 11.5) energy = "<b><font color='orange'>" + value + "</font></b>";
+                if (value < 11.0) energy = "<b><font color='red'>" + value + "</font></b>";
+                return energy;
+            }
             // ------------------------------------------------------
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
