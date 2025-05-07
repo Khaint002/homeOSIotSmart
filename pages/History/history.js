@@ -415,8 +415,19 @@ function getDisplayValue(item, type) {
             return "-";
     }
 }
+
+function checkHeight() {
+    const vh = $(window).height();
+    $('#history-detail').height(vh - 180);
+    $('#tabMap').height(vh - 130);
+    $('#list-history-detail').height(vh - 530);
+    $('#history-setting-detail').css('max-height', vh - 200);
+}
+
+
+$(window).on('resize', checkHeight);
 //-------------------------------------------------------------------------------
 
 
-
+checkHeight();
 pickApp(HOMEOSAPP.application);
