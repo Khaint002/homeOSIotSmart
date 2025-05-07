@@ -119,6 +119,17 @@ async function getDataMonitoring() {
     }, 10000);
 }
 
+function checkHeight() {
+    const vh = $(window).height();
+    $('#history-detail').height(vh - 180);
+    $('#tabMap').height(vh - 130);
+    $('#list-history-detail').height(vh - 530);
+    $('#history-setting-detail').css('max-height', vh - 200);
+}
+
+checkHeight();
+$(window).on('resize', checkHeight);
+
 stopIntervalMonitoring = function() {
     // Xóa interval nếu đang chạy
     if (setIntervalMonitoring) {
@@ -143,8 +154,6 @@ function getDayMessage(type) {
             return "";
     }
 }
-
-
 
 function changeDataHomePage(data) {
     if (!data || data.length === 0) return;

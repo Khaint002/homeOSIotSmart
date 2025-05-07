@@ -9,7 +9,7 @@
             </div>
         </div>
         <div id="category-back" class="d-none">
-            <button id="backCategory" style="height: 50px; border: none; background-color: #1E2833;">
+            <button id="backCategory" style="height: 50px; border: none; background-color: #1E2833;" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                     style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -54,17 +54,6 @@
                         </svg>
                         <span class="Pre-pickApp" style="padding-left: 10px; padding-left: 10px;">Giải pháp
                             thông minh</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex menu-item" style="color: #fff; padding-left: 10px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                            style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill"
-                            viewBox="0 0 16 16">
-                            <path
-                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z" />
-                        </svg>
-                        <span style="padding-left: 10px; padding-left: 10px;">Thông tin công ty</span>
                     </div>
                 </li>
                 <li class="workstation_category">
@@ -124,47 +113,59 @@
                         <span style="padding-left: 10px; padding-left: 10px;">Quản lý và xuất lô hàng</span>
                     </div>
                 </li>
+                <li>
+                    <div class="d-flex menu-item" style="color: #fff; padding-left: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                            style="color: #fff; padding-top: 5px;" class="bi bi-question-circle-fill"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z" />
+                        </svg>
+                        <span style="padding-left: 10px; padding-left: 10px;">Thông tin công ty</span>
+                    </div>
+                </li>
             </ul>
         </aside>
     </div>
     <div id="history-homePage">
         <div class="history-body" style="padding: 20px 10px 0 10px;">
-            <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200"
-                style="margin-bottom: 30px; margin-top: 20px; display: none;">
-            <div class="d-flex" style="color: #fff; padding-left: 10px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-pc-horizontal" viewBox="0 0 16 16">
-                    <path
-                        d="M1 6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm11.5 1a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1m2 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1M1 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5M1.25 9h5.5a.25.25 0 0 1 0 .5h-5.5a.25.25 0 0 1 0-.5" />
-                </svg>
-                <h5 id="NameHistoryPage" style="padding-left: 10px; padding-left: 10px;">Quan trắc:</h5>
-            </div>
-            <div class="d-flex justify-content-between" style="width: 100%; padding-left: 10px;">
-                <p id="descHistoryPage" style="color: #fff; text-align: left;">Lịch sử truy cập:</p>
-                <div>
-                    <select id="historySelect" class="form-select bg-dark text-white border-secondary"
-                        style="font-size: 14px;" aria-label="Default select example">
-                        <option selected>Hiển thị tất cả...</option>
-                    </select>
+            <div id="listTabMap" style="margin-bottom: 10px;">
+                <div class="tab">
+                    <button id="tab-historys" class="tablinks tablinkHistory active">Quan trắc</button>
+                    <button id="tab-map" class="tablinks tablinkHistory">Map</button>
                 </div>
             </div>
-
-            <div id="history-detail" style="overflow-y: auto; height: 450px; padding: 10px 10px 0 10px;">
-                <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
-                    <button id="addWorkStation"
-                        style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
-                            style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus"
-                            viewBox="0 0 16 16">
-                            <path
-                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                        </svg>
-                        Thêm mới
-                    </button>
+            <div id="tabHistory" class="tab-content-history active">
+                <div id="nameHistory" class="d-flex d-none" style="color: #fff; padding-left: 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pc-horizontal" viewBox="0 0 16 16">
+                        <path d="M1 6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm11.5 1a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1m2 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1M1 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5M1.25 9h5.5a.25.25 0 0 1 0 .5h-5.5a.25.25 0 0 1 0-.5" />
+                    </svg>
+                    <h5 id="NameHistoryPage" style="padding-left: 10px; padding-left: 10px;">Quan trắc:</h5>
                 </div>
+                <div class="d-flex justify-content-between" style="width: 100%; padding-left: 10px;">
+                    <p id="descHistoryPage" style="color: #fff; text-align: left;">Lịch sử truy cập:</p>
+                    <div>
+                        <select id="historySelect" class="form-select bg-dark text-white border-secondary" style="font-size: 14px;" aria-label="Default select example">
+                            <option selected>Hiển thị tất cả...</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="history-detail" style="overflow-y: auto; height: 450px; padding: 10px 10px 0 10px;">
+                    <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
+                        <button id="addWorkStation" style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                            </svg>
+                            Thêm mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="tabMap" class="tab-content-history">
+                <div id="mappingWorkstation"></div>
             </div>
         </div>
-        <div id="footer-instruct" class="footer-instruct">
+        <!-- <div id="footer-instruct" class="footer-instruct">
             <div class="step" style="margin: 0;">
                 <div class="circle">02</div>
             </div>
@@ -173,36 +174,25 @@
                     style="width: 30px; height: 35px; margin: 0 5px 20px 0;" alt="">
                 <p id="footerHistoryPage">Thêm mới mã trạm hoặc chọn trạm đã lưu</p>
             </div>
-        </div>
+        </div> -->
     </div>
     <div id="history-setting" class="history-body d-none" style="padding: 0 10px 0 10px; margin-top: 20px;">
         <!-- <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200" style="margin-bottom: 30px; margin-top: 20px;"> -->
         <div id="list-category">
             <div>
                 <div class="d-flex" style="color: #fff; padding-left: 10px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-gear" viewBox="0 0 16 16">
-                        <path
-                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
-                        <path
-                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
                     </svg>
                     <h6 style="padding-left: 10px; padding-left: 10px;">Quản lý danh mục trạm:</h6>
                 </div>
             </div>
-
-
-            <ul id="history-setting-detail"
-                style="overflow-y: auto; max-height: 500px; padding: 10px 10px 0 10px;">
-                <div class="col-12"
-                    style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
-                    <button id="addCategory"
-                        style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
-                            style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus"
-                            viewBox="0 0 16 16">
-                            <path
-                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+            <ul id="history-setting-detail" style="overflow-y: auto; max-height: 500px; padding: 10px 10px 0 10px;">
+                <div class="col-12" style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
+                    <button id="addCategory" style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                         </svg>
                         Tạo mới danh mục trạm.
                     </button>
