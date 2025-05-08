@@ -1732,7 +1732,6 @@
                 <div style="text-align: start; color: white;">
                     <h5>Ứng dụng:</h5>
                 </div>
-                <button  id="testShareQR">test</button>
                 <div class="row">
                     <div class="col-12" style="padding: 5px 10px;">
                         <div id="PickApp-button-mua" class="iconApp">
@@ -3420,9 +3419,7 @@
                                 d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                         </svg>
                     </button>
-                    <p
-                        style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                        Chia sẻ trạm</p>
+                    <p style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Chia sẻ trạm</p>
                 </div>
                 <img src="https://central.homeos.vn/images/Logo_HomeOS_White.png" alt="" width="200"
                     style="padding-bottom: 3rem;">
@@ -3430,15 +3427,10 @@
                     <p id="text-content-QRcode" style="color: #fff;"></p>
                 </div>
                 <div id="qrcode"></div>
-                <button id="download-QRcode" class="d-none btn btn-warning"
-                    style="margin-top: 20px; background-color: #f39c12;border: solid 1px #f39c12; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-                        class="bi bi-download" viewBox="0 0 16 16">
-                        <path
-                            d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-                        <path
-                            d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
-                    </svg> Tải ảnh QR
+                <button id="share-workStation" class="btn btn-warning" style="margin-top: 20px; background-color: #1f87a3;border: solid 1px #1f87a3; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                        <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                    </svg> Chia sẻ trạm cho bạn bè
                 </button>
             </div>
 
@@ -3774,8 +3766,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         $(document).ready(function () {
-            $("#testShareQR").click(function () {
-                window.shareWorkStation("chia sẻ trạm", 'https://central.homeos.vn/images/MiniAppLoadingScreen.png', '024011');
+            $("#share-workStation").click(function () {
+                const item = JSON.parse(localStorage.getItem("itemHistory"));
+                window.shareWorkStation("Trạm quan trắc "+ item.NameWorkStation, 'https://central.homeos.vn/images/MiniAppLoadingScreen.png', item.CodeWorkStation);
             });
             let historyStack = ['pickApp'];
 
@@ -3972,8 +3965,24 @@
                 document.getElementById("pickApp").classList.remove("hidden");
                 // document.getElementById("guarantee").classList.remove("hidden");
                 if(window.workstationID){
+                    $('#nameHistory').addClass("d-none");
+                    $('#nameHistory').removeClass("d-flex");
+                    $('#listTabMap').removeClass("d-none");
+                    $('#NameHistoryPage').text("Quan trắc:")
+                    $('#descHistoryPage').text("Lịch sử truy cập")
+                    $('#historySelect').removeClass("d-none");
+                    $('#footerHistoryPage').text("thêm mới mã trạm hoặc chọn trạm đã lưu");
+
+                    $('.workstation_access').removeClass("d-none");
+                    $('.workstation_category').removeClass("d-none");
+                    $('.warranty_scansQRcode').addClass("d-none");
+                    $('.warranty_lot').addClass("d-none");
+                    $('.warranty_scanQRcode').addClass("d-none");
+
+                    $("#PickApp-button-mua").click();
                     getInputValue(window.workstationID);
                     document.getElementById("pickApp").classList.add("hidden");
+                    document.getElementById("history").classList.add("hidden");
                 }
             }, 2000);
 
