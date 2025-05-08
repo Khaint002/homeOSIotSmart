@@ -3971,6 +3971,9 @@
                 document.getElementById("LogoLoadScreen").classList.add("hidden");
                 document.getElementById("pickApp").classList.remove("hidden");
                 // document.getElementById("guarantee").classList.remove("hidden");
+                if(window.workstationID){
+                    getInputValue(window.workstationID);
+                }
             }, 2000);
 
             var maTram = '';
@@ -6587,13 +6590,17 @@
 
 
             //lấy value khi nhập mã trạm thủ công.
-            async function getInputValue() {
+            async function getInputValue(checkW) {
                 var inputValue = document.getElementById("device_name").value;
-                if (inputValue == null || inputValue == "") {
-                    toastr.error("Vui lòng nhập mã trạm!");
+                if(checkW){
+
                 } else {
-                    $("#loading-popup").show()
-                    CheckWorkStation(inputValue)
+                    if (inputValue == null || inputValue == "") {
+                        toastr.error("Vui lòng nhập mã trạm!");
+                    } else {
+                        $("#loading-popup").show()
+                        CheckWorkStation(inputValue)
+                    }
                 }
             }
 
