@@ -159,10 +159,6 @@ function addItemHistory(item, type) {
 
         // Gắn sự kiện click cho phần tử chính
         element.on('click', function () {
-
-            // document.getElementById("RD").textContent = '0 mm';
-            // document.getElementById("lastTimeRain").textContent = '';
-            HOMEOSAPP.itemHistory = item;
             handleItemClick(item);
         });
 
@@ -174,6 +170,7 @@ function addItemHistory(item, type) {
 }
 
 function handleItemClick(item) {
+    HOMEOSAPP.itemHistory = item;
     HOMEOSAPP.stopInterval();
     localStorage.setItem("URL", "https://" + item.domain + "/Service/Service.svc");
     localStorage.setItem("MATRAM", item.CodeWorkStation);
@@ -201,6 +198,7 @@ async function startInterval() {
             `WORKSTATION_ID='${station.CodeWorkStation}'`,
             `https://${station.domain}/Service/Service.svc`
         );
+        processAndUpdate(data);
         await updateWorkstationUI(station, data);
     }
 
@@ -214,6 +212,7 @@ async function startInterval() {
                 `WORKSTATION_ID='${station.CodeWorkStation}'`,
                 `https://${station.domain}/Service/Service.svc`
             );
+            processAndUpdate(data);
             await updateWorkstationUI(station, data);
         }
     }, 10000);
@@ -280,7 +279,7 @@ async function updateWorkstationUI(station, data) {
     }
 }
 
-function showHistory(type) {
+async function showHistory(type) {
     const historySetting = document.getElementById("history-setting");
     const historyHomePage = document.getElementById("history-homePage");
     const historySelect = document.getElementById("historySelect");
@@ -319,13 +318,24 @@ function showHistory(type) {
 
     // Làm sạch và hiển thị danh sách
     historyListDetail.empty();
-    historyItems.forEach(item => {
+    locations = [];
+    for (const item of historyItems) {
+        console.log(item);
         addItemHistory(item);
+        const dataWorkstation = await HOMEOSAPP.getDM(
+            "https://" + item.domain + "/service/service.svc",
+            "DM_WORKSTATION",
+            "WORKSTATION_ID = '" + item.CodeWorkStation + "'",
+            "NotCentral"
+        );
+        addDataLocation(dataWorkstation.data[0], dataWorkstation.dataSet.DM_TOOLTIP_TEMPLATE, item);
         if (!arrayCategory.includes(item.workstationType)) {
             arrayCategory.push(item.workstationType);
         }
-    });
 
+        await delay(10); // đợi 100ms trước khi xử lý item tiếp theo
+    }
+    addMarkers(locations, "mappingWorkstation");
     arrayCategory.push("ALL");
 
     // Chỉ tạo select nếu chưa có type (tức là lần đầu vào)
@@ -377,6 +387,12 @@ function showHistory(type) {
     startInterval();
 }
 
+
+    
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getIconWorkstation(type) {
     switch (type) {
         case "NAAM":
@@ -416,6 +432,27 @@ function getDisplayValue(item, type) {
     }
 }
 
+$("#tab-historys").click(function (event) {
+    openTabHistory(event, 'tabHistory')
+});
+$("#tab-map").click(function (event) {
+    openTabHistory(event, 'tabMap');
+});
+
+function openTabHistory(evt, tabName) {
+    // Ẩn tất cả nội dung tab và bỏ class 'active'
+    $('.tab-content-history').removeClass('active');
+    $('.tablinkHistory').removeClass('active');
+
+    // Hiển thị tab được chọn và thêm class 'active' cho nút đã nhấn
+    $('#' + tabName).addClass('active');
+    $(evt.currentTarget).addClass('active');
+
+    if (typeof map !== 'undefined' && map) {
+        map.invalidateSize();
+    }
+}
+
 function checkHeight() {
     const vh = $(window).height();
     $('#history-detail').height(vh - 180);
@@ -428,6 +465,628 @@ function checkHeight() {
 $(window).on('resize', checkHeight);
 //-------------------------------------------------------------------------------
 
+var map = null;
+var markerMap = new Map();
+// ✅ Hàm thêm các marker từ danh sách
+function addMarkers(locations, mapContainerId) {
+    if (map) {
+        map.remove(); // Xóa bản đồ cũ
+    }
+    const bounds = L.latLngBounds(
+        L.latLng(8.2, 102.1),  // Góc dưới trái
+        L.latLng(23.4, 110.0)  // Góc trên phải
+    );
+    map = L.map(mapContainerId, {
+        maxBounds: bounds,       // Giới hạn vùng
+        maxBoundsViscosity: 1.0,
+    }).setView([16.4501, 105.5234], 6);
+
+    map.on('moveend', function () {
+        if (!bounds.contains(map.getCenter())) {
+            map.panInsideBounds(bounds, { animate: true });
+        }
+    });
+
+    map.on('zoomend', function () {
+        if (!bounds.contains(map.getBounds().getNorthWest()) || !bounds.contains(map.getBounds().getSouthEast())) {
+            map.fitBounds(bounds, { animate: true });
+        }
+    });
+
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
+    locations.forEach(loc => {
+        let typeName = '';
+        if(loc.type == "N"){
+            typeName = 'N';
+        } else if(loc.type == "M" || loc.type == "MS"){
+            typeName = 'R';
+        }
+        const customHTML = `
+            <div class="marker-wrapper marker-${loc.code}">
+                <div class="marker-label marker-label-${loc.code}" style="font-size: 13px;"></div>
+                <svg class="marker-pin" viewBox="0 0 24 24">
+                    <path d="M12 0C8.1 0 5 3.1 5 7c0 5.3 7 13 7 13s7-7.7 7-13c0-3.9-3.1-7-7-7z" fill="#4285f4" stroke="rgb(66, 133, 244)" stroke-width="2"/>
+                    <circle cx="12" cy="8.5" r="3.5" fill="white"/>
+                </svg>
+                <div class="mePin-wrapper">
+                    <div class="mePin-child">
+                        <b>${typeName}</b>
+                        <svg id="mePin" xmlns="http://www.w3.org/2000/svg" width="33.3" height="32.4" viewBox="0 0 43.3 42.4">
+                            <path class="ring_outer mePin bounceInDown" fill="#dc3545" d="M28.6 23c6.1 1.4 10.4 4.4 10.4 8 0 4.7-7.7 8.6-17.3 8.6-9.6 0-17.4-3.9-17.4-8.6 0-3.5 4.2-6.5 10.3-7.9.7-.1-.4-1.5-1.3-1.3C5.5 23.4 0 27.2 0 31.7c0 6 9.7 10.7 21.7 10.7s21.6-4.8 21.6-10.7c0-4.6-5.7-8.4-13.7-10-.8-.2-1.8 1.2-1 1.4z"></path>
+                            <path class="ring_inner" fill="#dc3545" d="M27 25.8c2 .7 3.3 1.8 3.3 3 0 2.2-3.7 3.9-8.3 3.9-4.6 0-8.3-1.7-8.3-3.8 0-1 .8-1.9 2.2-2.6.6-.3-.3-2-1-1.6-2.8 1-4.6 2.7-4.6 4.6 0 3.2 5.1 5.7 11.4 5.7 6.2 0 11.3-2.5 11.3-5.7 0-2-2.1-3.9-5.4-5-.7-.1-1.2 1.3-.7 1.5z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const icon = L.divIcon({
+            className: `custom-marker custom-${loc.code}`,
+            html: customHTML,
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40]
+        });
+
+        const marker = L.marker(loc.coords, { icon, customData: loc }).addTo(map);
+        marker.options.customData = {
+            type: loc.type, // Loại của trạm (NAAM, N, M, v.v.)
+            name: loc.name,
+            code: loc.code,
+            item: loc.item
+        };
+        marker.bindPopup(loc.popup);
+        markerMap.set(loc.code, marker);
+    });
+    console.log(1);
+    
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 10);
+}
+// setInterval(() => {
+        
+//     }, 4000);
+function getFieldsByType(type) {
+    switch (type) {
+        case "NAAM":
+            return ['RD', 'RT', 'RH', 'RP'];
+        case "N":
+            return ['RN'];
+        case "M":
+            return ['RD'];
+        case "MS":
+            return ['RD'];
+        case "NNS":
+            return ['RT', 'RN', 'SS', 'EC'];
+        default:
+            return [];
+    }
+}
+
+// Dữ liệu mẫu cho các yếu tố
+var defaultValues = {
+    RD: '0mm',   // Lượng mưa
+    RT: '0°C',   // Nhiệt độ
+    RH: '0%',    // Độ ẩm
+    RP: '0hPa',  // Áp suất
+    RN: '0mm',   // Mưa
+    SS: '0w',    // Ánh sáng/Năng lượng
+    EC: '0mS/cm' // Độ dẫn điện
+};
+
+function generatePopupHTML(name, code, type, item) {
+    const fields = getFieldsByType(type);
+
+    let dynamicRows = '';
+
+    fields.forEach(field => {
+        let label = '';
+        switch (field) {
+            case 'RD': label = 'Lượng mưa'; break;
+            case 'RT': label = 'Nhiệt độ'; break;
+            case 'RH': label = 'Độ ẩm'; break;
+            case 'RP': label = 'Áp suất khí quyển'; break;
+            case 'RN': label = 'Mực nước'; break;
+            case 'SS': label = 'Độ mặn'; break;
+            case 'EC': label = 'Độ dẫn điện'; break;
+        }
+
+        dynamicRows += `
+            <tr style="height:22px">
+                <td><b>${label}: <span id="popup-${code}-${field}">0</span></b></td>
+            </tr>
+        `;
+    });
+
+    return `
+        <table style="width:400px;">
+            <tbody>
+                <tr style="height:25px">
+                    <td>
+                        <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;">
+                            ${name}-${code}
+                        </h4>
+                    </td>
+                </tr>
+                ${dynamicRows}
+                <tr style="height:22px;border-top:solid 1px #ccc">
+                    <td>Năng lượng: <span id="popup-${code}-Energy">0v</span></td>
+                </tr>
+                <tr style="height:22px;max-width:300px;word-break:break-word;">
+                    <td>Hoạt động cuối lúc: <span id="popup-${code}-LastTime">@LASTTIME</span></td>
+                </tr>
+                <tr style="height:22px">
+                    <td><div><button>Chi tiết</button></div></td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+}
+
+function generatePopupValueHTML(loc) {
+    let extraContent = '';
+    let lastTimeRain = '';
+    if(loc.lastTimeRD){
+        lastTimeRain = "("+loc.lastTimeRD.split(" ")[1]+")";
+    }
+    
+    switch (loc.type) {
+        case "NAAM":
+            extraContent = `
+                <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm ${lastTimeRain}</td></tr>
+                <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT) ?? 0} °C</b></td></tr>
+                <tr><td><b>Độ ẩm: ${WarningHumidity(loc.RH) ?? 0} %</b></td></tr>
+                <tr><td><b>Áp suất khí quyển: ${loc.RP ?? 0} hPa</b></td></tr>
+            `;
+            break;
+        case "N":
+            extraContent = `
+                <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+            `;
+            break;
+        case "M":
+        case "MS":
+            extraContent = `
+                <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm ${lastTimeRain}</td></tr>
+            `;
+            break;
+        case "NNS":
+            extraContent = `
+                <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+                <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT)} °C</b></td></tr>
+                <tr><td><b>Độ mặn: ${loc.SS ?? 0} ppt</b></td></tr>
+                <tr><td><b>Độ dẫn điện: ${loc.EC ?? 0} μs/cm</b></td></tr>
+            `;
+            break;
+        default:
+            extraContent = `<tr><td>Không có dữ liệu</td></tr>`;
+    }
+    const itemStr = JSON.stringify(loc.item).replace(/"/g, '&quot;');
+    return `
+        <table style="width:400px;">
+            <tbody>
+                <tr style="height:25px">
+                    <td>
+                        <h4 style="clear:both;border-bottom:solid 1px #ccc;max-width:300px;word-break:break-word;color:#0078A8">
+                            ${loc.name}
+                        </h4>
+                    </td>
+                </tr>
+                ${extraContent}
+                <tr style="height:22px;border-top:solid 1px #ccc">
+                    <td>Năng lượng: <span id="popup-${loc.code}-Energy">${WarningEnergy(loc.RA)} v</span></td>
+                </tr>
+                <tr style="height:22px;max-width:300px;word-break:break-word;">
+                    <td>Hoạt động cuối lúc: <span id="popup-${loc.code}-LastTime">${HOMEOSAPP.formatDateTime(loc.lastTime)}</span></td>
+                </tr>
+                <tr style="height:22px">
+                    <td><div><button id="tooltip" class="btn btn-warning" style="margin-top: 20px; background-color: #f39c12;border: solid 1px #f39c12; width: 75%; height: 35px; color: #fff; padding: 3px 10px;" onclick="handleItemClick(${itemStr});">Xem chi tiết</button></div></td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+}
+
+async function addDataLocation(item, tooltip, itemW) {
+    const itemLocation = {
+        name: item.WORKSTATION_NAME+'-'+item.WORKSTATION_ID,
+        coords: [item.LONGITUDE, item.LATITUDE],
+        type: item.TEMPLATE_TOOLTIP,
+        code: item.WORKSTATION_ID,
+        item: itemW,
+        popup: generatePopupHTML(item.WORKSTATION_NAME, item.WORKSTATION_ID, item.TEMPLATE_TOOLTIP, item)
+    }
+    locations.push(itemLocation);
+}
+
+function updatePopupData(code, newZoneData) {
+    const marker = markerMap.get(code);
+    if (!marker) return;
+
+    const oldData = marker.options.customData || {};
+    const mergedData = { ...oldData };
+    
+    const newTimeFormatted = newZoneData.lastTime;
+    const isNewTime = newTimeFormatted !== oldData.lastTime;
+
+    if (isNewTime) {
+        const markerElement = document.querySelector(`.marker-${code}`);
+        if (markerElement) {
+            markerElement.classList.add('bounce-animation');
+            setTimeout(() => {
+                markerElement.classList.remove('bounce-animation');
+            }, 5000);
+        }
+    }
+    
+    // 🎯 Chỉ update những field phù hợp với type
+    switch (oldData.type) {
+        case "NAAM":
+            mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa (nếu có)
+            if(newZoneData.RD){
+                mergedData.lastTimeRD = HOMEOSAPP.formatDateTime(newZoneData.lastTimeRD);
+                $(".marker-label-"+code).html(WarningRain(parseValue(newZoneData.RD)))
+                $(".marker-"+code+" .marker-pin circle").attr("fill", "red");
+                $(".marker-"+code+" .mePin-wrapper .mePin-child b").css("color", "red");
+            }
+            mergedData.RT = parseValue(newZoneData.RT); // Nhiệt độ
+            mergedData.RH = parseValue(newZoneData.RH); // Độ ẩm
+            mergedData.RP = parseValue(newZoneData.RP); // Áp suất
+            break;
+        case "N":
+            $(".marker-label-"+code).text(newZoneData.RN)
+            mergedData.RN = parseValue(newZoneData.RN); // Lượng mưa
+            break;
+        case "M":
+        case "MS":
+            if(newZoneData.RD){
+                mergedData.lastTimeRD = HOMEOSAPP.formatDateTime(newZoneData.lastTimeRD);
+                $(".marker-label-"+code).html(WarningRain(parseValue(newZoneData.RD)))
+                $(".marker-"+code+" .marker-pin circle").attr("fill", "red");
+                $(".marker-"+code+" .mePin-wrapper .mePin-child b").css("color", "red");
+            }
+            mergedData.RD = parseValue(newZoneData.RD); // Lượng mưa
+            break;
+        case "NNS":
+            mergedData.RT = parseValue(newZoneData.RT);
+            mergedData.RN = parseValue(newZoneData.RN);
+            mergedData.SS = parseValue(newZoneData.SS);
+            mergedData.EC = parseValue(newZoneData.EC);
+            break;
+        default:
+            console.warn(`Không biết cách update cho type: ${oldData.type}`);
+    }
+    mergedData.RA = parseValue(newZoneData.RA);
+    mergedData.lastTime = newZoneData.lastTime; // Cập nhật thời gian hiện tại
+
+    const updatedHTML = generatePopupValueHTML(mergedData);
+    marker.setPopupContent(updatedHTML);
+
+    // Update lại dữ liệu trong marker
+    marker.options.customData = mergedData;
+}
+
+// Hàm phụ: bỏ đơn vị (°C, %, hPa, mm...) để lấy số
+function parseValue(str) {
+    if (typeof str !== "string") return str;
+    return parseFloat(str.replace(/[^\d.-]/g, ''));
+}
+
+function processAndUpdate(data) {
+    const items = data.D;
+    const grouped = {};
+    let dateTimeRA;
+    let dateTimeRD;
+    // Gom nhóm theo code
+    items.forEach(item => {
+        const code = item.ZONE_ADDRESS;
+        if(item.ZONE_PROPERTY == 'RA'){
+            dateTimeRA = item.DATE_CREATE;
+        }
+        if(item.ZONE_PROPERTY == 'RD'){
+            dateTimeRD = item.DATE_CREATE;
+        }
+        if (!grouped[code]) grouped[code] = {};
+
+        // Gán dữ liệu theo field
+        grouped[code][item.ZONE_PROPERTY] = item.ZONE_VALUE;
+    });
+
+    // Update dữ liệu
+    for (const code in grouped) {
+        const item = grouped[code];
+
+        const formattedData = {};
+
+        // Format từng giá trị theo kiểu đẹp
+        if (item.RA != null) formattedData.RA = (item.RA / 10) + "v";  // ắc quy
+        if (item.RD != null) formattedData.RD = (item.RD / 10) + "mm";  // Lượng mưa
+        if (item.RD != null) formattedData.lastTimeRD = dateTimeRD;  // Thời gian mưa
+        if (item.RT != null) formattedData.RT = (item.RT / 10) + "°C";  // Nhiệt độ
+        if (item.RH != null) formattedData.RH = (item.RH / 10) + "%";   // Độ ẩm
+        if (item.RP != null) formattedData.RP = (item.RP / 10) + "hPa"; // Áp suất
+        if (item.RN != null) formattedData.RN = (item.RN) + "cm"; // Mực nước
+        if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + "ppt"; // Độ mặn
+        if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + "μs/cm"; // Độ dẫn điện
+
+        formattedData.lastTime = dateTimeRA;
+        
+        updatePopupData(code, formattedData);
+    }
+}
+
+// Gọi hàm
+
+function WarningRain(value) {
+    var energy = "<b><font>" + value + "</font></b>";
+    if (value >= 0 && value < 5) energy = "<b><font color='#1a6985'>" + value + "mm</font></b>";
+    if (value >= 5 && value < 10) energy = "<b><font color='#0f3c4c'>" + value + "mm</font></b>";
+    if (value >= 10 && value < 20) energy = "<b><font color='#0084FF'>" + value + "mm</font></b>";
+    if (value >= 20 && value < 50) energy = "<b><font color='#6766ff'>" + value + "mm</font></b>";
+    if (value >= 50 && value < 100) energy = "<b><font color='#cc6600'>" + value + "mm</font></b>";
+    if (value >= 100 && value < 150) energy = "<b><font color='#006600'>" + value + "mm</font></b>";
+    if (value >= 150 && value < 200) energy = "<b><font color='#00FFFF'>" + value + "mm</font></b>";
+    if (value >= 200 && value < 300) energy = "<b><font color='#99004d'>" + value + "mm</font></b>";
+    if (value >= 300 && value < 400) energy = "<b><font color='#7b7b7b'>" + value + "mm</font></b>";
+    if (value >= 400) energy = "<b><font color='#A00BA0'>" + value + "mm</font></b>";
+    console.log(energy);
+    
+    return energy;
+}
+function WarningTemperature(value) {
+    var energy = '0';
+    if (value > 27.0 && value <= 30.0) energy = "<b><font color='green'>" + value + "</font></b>";
+    if (value > 30.0 && value <= 36.0) energy = "<b><font color='orange'>" + value + "</font></b>";
+    if (value >= 11.0 && value <= 27) energy = "<b><font color='blue'>" + value + "</font></b>";
+    if (value > 36) energy = "<b><font color='red'>" + value + "</font></b>";
+    if (value < 11.0) energy = "<b><font color='yellow'>" + value + "</font></b>";
+    return energy;
+}
+function WarningHumidity(value) {
+    var energy = '';
+    if (value >= 55.0 && value <= 65.0) energy = "<b><font color='green'>" + value + "</font></b>";
+    if (value > 65.0 && value <= 80.0) energy = "<b><font color='orange'>" + value + "</font></b>";
+    if (value > 80.0) energy = "<b><font color='red'>" + value + "</font></b>";
+    if (value < 55.0) energy = "<b><font color='yellow'>" + value + "</font></b>";
+    return energy;
+}
+function WarningEnergy(value) {
+    var energy = "<b><font>" + value + "</font></b>";
+    if (value >= 11.5 && value <= 15.0) energy = "<b><font color='green'>" + value + "</font></b>";
+    if (value >= 11.0 && value < 11.5) energy = "<b><font color='orange'>" + value + "</font></b>";
+    if (value < 11.0) energy = "<b><font color='red'>" + value + "</font></b>";
+    return energy;
+}
+
+// QR code 
+$("#PickApp-button-scanQR").click(function () {
+    if (HOMEOSAPP.checkTabHistory == 1) {
+        HOMEOSAPP.stopInterval();
+        $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/ScanQR/scanQR.html");
+    } else if (HOMEOSAPP.checkTabHistory == 2) {
+        $(".WarrantyScanNext").click();
+    }
+});
+// danh mục
+var listCategory = $('#history-setting-detail');
+document.getElementById("historySelect").addEventListener("change", function () {
+    const selectedValue = this.value; // Lấy giá trị đã chọn
+    const selectedText = this.options[this.selectedIndex].text; // Lấy văn bản đã chọn
+    showHistory(selectedValue);
+});
+
+function showCategory(type) {
+    DataCategory = JSON.parse(localStorage.getItem('dataCategory'));
+    if (DataCategory) {
+        if (DataCategory.length > 0) {
+            document.getElementById("btnAddCategory").classList.remove("d-none");
+            listCategory.empty();
+            for (let i = DataCategory.length - 1; i >= 0; i--) {
+                addItemCategory(DataCategory[i], 'category');
+            }
+        }
+    }
+}
+
+function addItemCategory(item, type) {
+    let element = ''
+    for (let i = 0; i < item.itemCategory.length; i++) {
+        element += '<li>' +
+            '<div style="position: relative;" class="history-item" data-code="' + item.itemCategory[i].CodeWorkStation + '">' +
+            '<div class="iconApp">' +
+            '<div id="App' + item.itemCategory[i].CodeWorkStation + '" class="icon" style="background-color: #28a745 !important;">' +
+            getIconWorkstation(item.itemCategory[i].workstationType) +
+            '</div>' +
+            '<div class="info-box-content" style="padding-right: 0">' +
+            '<div class="d-flex justify-content-between">' +
+            '<span class="app-text">' + item.itemCategory[i].CodeWorkStation + '</span>' +
+            '<span class="app-text" style="padding-right: 0">' + item.itemCategory[i].date + '</span>' +
+            '</div>' +
+            '<span class="app-text-number" style="padding-right: 0">' + item.itemCategory[i].NameWorkStation + '</span>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</li>'
+    }
+
+    element += '<li>' +
+        '<div  style="width: 100%;">' +
+        '<button class="btnRemoveCategory btn btn-danger" style="width: 100%; height: 35px; color: #fff; padding: 3px 10px;">Xoá danh mục</button>' +
+        '</div>' +
+        '</li>'
+    // Tạo phần tử bao bọc với nút X
+    const totalElement = $(
+        '<li class="parent-item">' +
+        '<button class="toggle-button">' +
+        '<div>' +
+        '<h4 style="margin: 0;">' + item.NameCategory + '</h4>' +
+        '<p style="margin: 10px 0 0 0; font-size: 14px; font-weight: 300;">Danh mục có ' + item.itemCategory.length + ' trạm</p>' +
+        '</div>' +
+        '<span class="arrow-icon">▶</span>' +
+        '</button>' +
+        '<ul class="child-list">' +
+        element +
+        '</ul>' +
+        '</li>'
+    );
+
+    // Thêm phần tử chính vào phần tử bao bọc
+    // totalElement.append(element);
+
+    // Gắn sự kiện click cho nút X
+    // totalElement.find('.close-icon').on('click', function (e) {
+    //     e.stopPropagation(); // Ngăn chặn sự kiện click lan đến phần tử chính
+
+    //     // Hiển thị popup xác nhận
+    //     const confirmDelete = confirm(`Bạn có chắc chắn muốn xóa danh mục "${item.NameCategory}" không?`);
+    //     if (confirmDelete) {
+    //         totalElement.remove(); // Xóa phần tử nếu người dùng chọn "Có"
+    //         DataCategory = DataCategory.filter(i => i.NameCategory !== item.NameCategory);
+    //         localStorage.setItem('dataCategory', JSON.stringify(DataCategory));
+    //         toastr.success(`Danh mục "${item.NameCategory}" đã bị xóa!`);
+    //         if (DataCategory.length == 0) {
+    //             showAddCategoryButton();
+    //         }
+    //     }
+    // }); 
+
+    totalElement.find('.toggle-button').on('click', function (e) {
+        e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+        // Lấy danh sách con gần nhất (nếu có)
+        const childList = $(this).siblings(".child-list");
+
+        // Toggle hiển thị/ẩn danh sách con
+        childList.slideToggle(200);
+
+        // Xoay icon mũi tên
+        const arrowIcon = $(this).find(".arrow-icon");
+        arrowIcon.toggleClass("expanded");
+
+        if (arrowIcon.hasClass("expanded")) {
+            arrowIcon.css("transform", "rotate(90deg)");
+        } else {
+            arrowIcon.css("transform", "rotate(0deg)");
+        }
+    });
+
+    totalElement.find('.btnRemoveCategory').on('click', function (e) {
+        e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+        const confirmDelete = confirm(`Bạn có chắc chắn muốn xóa danh mục "${item.NameCategory}" không?`);
+        if (confirmDelete) {
+            totalElement.remove(); // Xóa phần tử nếu người dùng chọn "Có"
+            DataCategory = DataCategory.filter(i => i.NameCategory !== item.NameCategory);
+            localStorage.setItem('dataCategory', JSON.stringify(DataCategory));
+            toastr.success(`Danh mục "${item.NameCategory}" đã bị xóa!`);
+            if (DataCategory.length == 0) {
+                showAddCategoryButton();
+            }
+        }
+    });
+
+    // Gắn sự kiện click cho phần tử chính
+    // element.on('click', function () {
+    //     // handleItemClick(item);
+    // });
+
+    // Thêm phần tử vào danh sách lịch sử
+
+    listCategory.append(totalElement);
+}
+
+// menu
+var menuToggle = $(".menuToggle");
+var sidebar = $(".sidebar");
+
+// Toggle the sidebar visibility
+menuToggle.on("click", (e) => {
+    e.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
+    sidebar.toggleClass("open");
+});
+
+// Detect clicks outside the sidebar
+$(document).on("click", (e) => {
+    if (sidebar.hasClass("open") && !$(e.target).closest(".sidebar").length) {
+        sidebar.removeClass("open");
+    }
+});
+
+
+// Handle menu item clicks
+var menuItems = document.querySelectorAll(".menu-item, .submenu li");
+menuItems.forEach((item) => {
+    item.addEventListener("click", async (e) => {
+        e.stopPropagation(); // Prevent the click from propagating to the document
+
+        // Detect which menu item was clicked
+        const menuText = item.innerText.trim(); // Get the text of the menu item
+
+        if (menuText == "Giải pháp thông minh") {
+            HOMEOSAPP.stopInterval();
+            $("#content-block").load("./pages/menu/menu.html");
+        } else if (menuText == "Quản lý danh mục") {
+            document.getElementById("history-setting").classList.remove("d-none");
+            document.getElementById("history-homePage").classList.add("d-none");
+            document.getElementById("list-category").classList.remove("d-none");
+            document.getElementById("save-category").classList.add("d-none");
+            $(".history-avt").removeClass("d-none");
+            document.getElementById("category-back").classList.add("d-none");
+            showCategory()
+            // document.querySelector(".tablink-history").click();
+        } else if (menuText == "Truy cập Trạm") {
+            document.getElementById("history-setting").classList.add("d-none");
+            document.getElementById("history-homePage").classList.remove("d-none");
+            localStorage.setItem('listItemCategory', JSON.stringify([]));
+            showHistory()
+        } else if (menuText == "Thông tin công ty") {
+            window.location.href = "https://homeos.com.vn/";
+        } else if (menuText == "Thông tin sản phẩm") {
+            $("#history").addClass("hidden");
+            $("#ScanQRWarranty").removeClass("hidden");
+            $(".warrantyDetailProduct").removeClass("d-none");
+            document.querySelector(".tablinkGuarantee").click();
+            $("#ScanAllQRcode").addClass("d-none");
+            $("#lotProduct").addClass("d-none");
+            checkTab = false;
+        } else if (menuText == "Quét lô sản phẩm") {
+            $("#history").addClass("hidden");
+            $("#ScanQRWarranty").removeClass("hidden");
+            $(".warrantyDetailProduct").addClass("d-none");
+            $("#ScanAllQRcode").removeClass("d-none");
+            $("#lotProduct").addClass("d-none");
+            $('#lot-number').empty();
+            const Data = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_LOT', "1=1");
+            const newOption = $('<option>', {
+                value: '0', // Giá trị của option
+                text: 'Chọn lô sản phẩm' // Nội dung hiển thị
+            });
+            // Thêm vào select
+            $('#lot-number').append(newOption);
+            Data.data.forEach(item => {
+                console.log(item);
+                const newOption = $('<option>', {
+                    value: item.PR_KEY, // Giá trị của option
+                    text: item.LOT_NAME // Nội dung hiển thị
+                });
+                // Thêm vào select
+                $('#lot-number').append(newOption);
+            });
+            checkTab = true;
+        } else if (menuText == "Quản lý và xuất lô hàng") {
+            $("#history").addClass("hidden");
+            $("#ScanQRWarranty").removeClass("hidden");
+            $(".warrantyDetailProduct").addClass("d-none");
+            $("#ScanAllQRcode").addClass("d-none");
+            $("#lotProduct").removeClass("d-none");
+            addItemLotproduct();
+        }
+        // Close the sidebar after selection (optional)
+        sidebar.removeClass("open");
+    });
+});
 
 checkHeight();
 pickApp(HOMEOSAPP.application);

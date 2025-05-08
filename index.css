@@ -1,3 +1,4 @@
+
 body {
     font-family: 'Roboto', sans-serif;
     align-items: center;
@@ -400,11 +401,20 @@ h1 {
     border-top: none;
 }
 
+.tab-content-history {
+    display: none;
+    border-top: none;
+}
+
 .tab-content.active {
     display: block;
 }
 
 .tab-content-guarantee.active {
+    display: block;
+}
+
+.tab-content-history.active {
     display: block;
 }
 
@@ -1500,4 +1510,162 @@ h1 {
 
 .spin-loading {
     animation: spin 1s linear infinite;
+}
+
+.marker-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* animation: bounce 1s infinite ease-in-out; */
+    transform-origin: bottom center;
+}
+
+    .marker-label {
+        min-width: 40px;
+        min-height: 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        margin-bottom: 4px;
+        line-height: 1;
+        transition: transform 0.2s;
+    }
+
+    .marker-pin {
+        width: 28px;
+        height: 28px;
+        transition: transform 0.2s;
+        position: relative;
+        z-index: 1;  /* Place marker-pin below mePin-wrapper */
+    }
+
+    .mePin-wrapper {
+        position: absolute;
+        top: 25px;  /* Adjust to make mePin-wrapper overlap marker-pin */
+        right: -10px;
+        z-index: 1;  /* Ensure mePin-wrapper is below the "R" text */
+    }
+
+    .mePin-child{
+        position: relative;
+    }
+
+    .mePin-wrapper b {
+        position: absolute;
+        top: 2px;  /* Adjust to make "R" appear above the mePin */
+        right: 10px;
+        /*color: #dc3545;*/
+        color: #5984ff;
+        font-weight: bold;
+        z-index: 2;  /* Ensure "R" text is above mePin */
+        font-size: 12px;
+    }
+
+    #mePin {
+        width: 33.3px;
+        height: 32.4px;
+        position: relative;
+        opacity: 1; /* Initially visible */
+        animation: fadeInBoth 4s infinite ease-in-out;
+        animation-delay: 1s; /* Delay the start of the animation by 1 second */
+    }
+
+    .ring_outer {
+        opacity: 1; /* Initially visible */
+        animation: fadeOutRingOuter 4s infinite ease-in-out;
+        animation-delay: 1s; /* Delay the start of the outer ring's animation by 1 second */
+    }
+
+    .ring_inner {
+        opacity: 1; /* Initially visible */
+        animation: fadeOutRingInner 4s infinite ease-in-out;
+        animation-delay: 1s; /* Delay the start of the inner ring's animation by 1 second */
+    }
+
+
+    @keyframes fadeOutRingOuter {
+        0% {
+            opacity: 1; /* Fully visible at the start */
+        }
+        50% {
+            opacity: 0; /* Fades out at the midpoint */
+        }
+        100% {
+            opacity: 0; /* Stays hidden after fading out */
+        }
+    }
+
+    @keyframes fadeOutRingInner {
+        0% {
+            opacity: 1; /* Fully visible at the start */
+        }
+        50% {
+            opacity: 1; /* Stays visible until the midpoint */
+        }
+        100% {
+            opacity: 0; /* Fades out at the end */
+        }
+    }
+
+    @keyframes fadeInBoth {
+        0%, 50% {
+            opacity: 1; /* Both rings are visible at the start and midpoint */
+        }
+        100% {
+            opacity: 1; /* Both rings reappear at the end */
+        }
+    }
+
+
+
+    @keyframes bounce {
+    0%, 100% {
+        transform: translateY(0) scale(1, 1);
+    }
+    50% {
+        transform: translateY(-18px) scale(1, 1);
+    }
+    70% {
+        transform: translateY(0) scale(1.2, 0.5); /* ép mạnh hơn: cao thấp méo ngang */
+    }
+    85% {
+        transform: translateY(0) scale(0.95, 1.05); /* dội lại */
+    }
+    }
+
+.bounce-animation {
+    animation: bounce 1s infinite ease-in-out;
+}
+.custom-marker {
+    margin-left: -16px;
+    margin-top: -16px;
+    width: 20px;
+    height: 20px;
+    transform: translate3d(321px, 41px, 0px);
+    outline: none;
+    --pos-x: 321px;
+    --pos-y: 41px;
+    --pos-y-jump: 26px;
+    --pos-y-contract: 53px;
+    --scale-contract: 0.4;
+    --duration-jump: 211ms;
+    --duration-contract: 199ms;
+    --delays: 0ms, 211ms, 422ms, 621ms;
+    opacity: 1;
+    z-index: 41;
+}
+#mappingWorkstation {
+    height: 100%; /* hoặc 500px, tùy layout */
+    width: 100%;
+    z-index: 1;
+}
+.leaflet-marker-pane {
+    margin-top: 18px !important;
+}
+.leaflet-popup {
+    bottom: -35px !important;
+}
+.leaflet-control-attribution {
+    display: none !important;
 }

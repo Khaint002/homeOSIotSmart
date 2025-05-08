@@ -1958,7 +1958,7 @@
                         <div id="listTabMap" style="margin-bottom: 10px;">
                             <div class="tab">
                                 <button id="tab-historys" class="tablinks tablinkHistory active">Quan trắc</button>
-                                <button id="tab-map" class="tablinks tablinkHistory">Map</button>
+                                <button id="tab-map" class="tablinks tablinkHistory">Bản đồ</button>
                             </div>
                         </div>
                         <div id="tabHistory" class="tab-content-history active">
@@ -3938,25 +3938,15 @@
             }
 
             function openTabHistory(evt, tabName) {
-                // Ẩn tất cả nội dung tab
-
-                var tabContent = document.getElementsByClassName("tab-content-history");
-                console.log(tabContent);
-                
-                for (var i = 0; i < tabContent.length; i++) {
-                    tabContent[i].classList.remove("active");
-                }
-
-                // Xóa class 'active' trên tất cả các nút
-                var tabLinks = document.getElementsByClassName("tablinkHistory");
-                for (var i = 0; i < tabLinks.length; i++) {
-                    tabLinks[i].classList.remove("active");
-                }
+                // Ẩn tất cả nội dung tab và bỏ class 'active'
+                $('.tab-content-history').removeClass('active');
+                $('.tablinkHistory').removeClass('active');
 
                 // Hiển thị tab được chọn và thêm class 'active' cho nút đã nhấn
-                document.getElementById(tabName).classList.add("active");
-                evt.currentTarget.classList.add("active");
-                if (map) {
+                $('#' + tabName).addClass('active');
+                $(evt.currentTarget).addClass('active');
+
+                if (typeof map !== 'undefined' && map) {
                     map.invalidateSize();
                 }
             }
@@ -4151,6 +4141,7 @@
                 showHistory();
                 pickApp('PICK');
             });
+            
             $("#PickApp-button-login").click(function () {
                 pickApp('LOGIN');
             });

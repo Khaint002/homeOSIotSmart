@@ -1,7 +1,7 @@
 var HOMEOSAPP = {};
 HOMEOSAPP.application = "";
 var typeQR;
-var listDomain = [];
+HOMEOSAPP.listDomain = [];
 var checkTabHistory = 0;
 var checkReport = '';
 let historyStack = ['pickApp'];
@@ -51,7 +51,7 @@ if (typeof HomeOS !== 'undefined') {
 async function getListDomain() {
     const datatest = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
     for (let i = 0; i < datatest.data.length; i++) {
-        listDomain.push(datatest.data[i].DOMAIN);
+        HOMEOSAPP.listDomain.push(datatest.data[i].DOMAIN);
     }
 }
 
@@ -60,7 +60,15 @@ HOMEOSAPP.getDM = async function (url, table_name, c, check) {
     let user_id_getDm = 'admin';
     let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
     if(check == "NotCentral"){
-        const dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        let dataUser;
+        if(url == "https://cctl-dongthap.homeos.vn/service/service.svc" || url == "https://pctthn.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else if(url == "https://thanthongnhat.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else {
+            dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        }
+         
         user_id_getDm = dataUser[0].StateName;
         Sid_getDM = dataUser[0].StateId;
     }
@@ -88,6 +96,62 @@ HOMEOSAPP.getDM = async function (url, table_name, c, check) {
                 try {
                     let state = JSON.parse(msg);
                     resolve(state);  // Trả về dữ liệu khi thành công
+                } catch (error) {
+                    reject(error);  // Bắt lỗi nếu JSON parse thất bại
+                }
+            },
+            complete: function (data) {
+                // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
+            },
+            error: function (e, t, x) {
+                HomeOS.Service.SetActionControl(true);
+                HomeOS.Service.ShowLabel('Lỗi dữ liệu');
+                reject(e);  // Trả về lỗi nếu thất bại
+            }
+        });
+    });
+}
+
+HOMEOSAPP.WorkstationStatistics = async function(url, c, check, code) {
+    let user_id_getDm = 'admin';
+    let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
+    if(check == "NotCentral"){
+        let dataUser;
+        if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else {
+            dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        }
+        
+        user_id_getDm = dataUser[0].StateName;
+        Sid_getDM = dataUser[0].StateId;
+    }
+    const maTram = localStorage.getItem("MATRAM");
+    const d = {
+        // Uid: 'vannt',
+        // Sid: 'b99213e4-a8a5-45f4-bb5c-cf03ae90d8d7',
+        Uid: user_id_getDm,
+        Sid: Sid_getDM,
+        c: c
+    };
+    
+    // const Url = 'https://DEV.HOMEOS.vn/service/service.svc/';
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url+"/WorkstationStatistics?callback=?",
+            type: "GET",
+            dataType: "jsonp",
+            data: d,
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                try {
+                    let state = JSON.parse(msg);
+                    const result = state.DATA.find(obj => obj.hasOwnProperty("DN"+maTram+"3"));
+                    const dataArray = result["DN"+maTram+"3"];
+                    resolve(dataArray);  // Trả về dữ liệu khi thành công
                 } catch (error) {
                     reject(error);  // Bắt lỗi nếu JSON parse thất bại
                 }
@@ -187,6 +251,62 @@ HOMEOSAPP.getDataChart = function(typeTime, start, end, type, zone, url) {
             error: function (e, t, x) {
                 toastr.error("Lấy dữ liệu bị lỗi vui lòng thử lại sau!");
             },
+        });
+    });
+}
+
+function checkRoleUser(user_id, password, url, check) {
+    let sessionItems = JSON.parse(localStorage.getItem('dataSession')) || [];
+
+    if (check === "Export") {
+        sessionItems = sessionItems.filter(item => item.url !== url);
+        localStorage.setItem('dataSession', JSON.stringify(sessionItems));
+    }
+    // Tìm session trùng với URL
+    const existingSession = sessionItems.find(item => item.url === url);
+
+    if (existingSession) {
+        // Nếu đã có session → trả về luôn
+        return Promise.resolve([{
+            StateName: user_id,
+            StateId: existingSession.sid // giả sử bạn lưu `sid` ở đây
+        }]);
+    }
+
+    // Nếu chưa có session, gọi API
+    const d = {
+        Uid: user_id,
+        p: password,
+        ip: '0.0.0.0',
+        a: '6fba9a59-46f1-42e6-baea-b2479fa1eb3b'
+    };
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url + "GetSessionId?callback=?",
+            type: "GET",
+            dataType: "jsonp",
+            data: d,
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                try {
+                    const state = JSON.parse(msg);
+                    const newSession = {
+                        url: url,
+                        sid: state[0]?.StateId || '', // lưu sid nếu có
+                        name: state[0]?.StateName || user_id
+                    };
+                    // Cập nhật localStorage
+                    sessionItems.push(newSession);
+                    localStorage.setItem('dataSession', JSON.stringify(sessionItems));
+                    resolve(state);
+                } catch (error) {
+                    reject(error);
+                }
+            },
+            error: function (e, t, x) {
+                reject(e);
+            }
         });
     });
 }
@@ -321,3 +441,154 @@ HOMEOSAPP.createChart = function (type, Label, Data, Unit, LabelData, dataSet, l
         }
     }
 }
+
+HOMEOSAPP.formatDateTime = function(date) {
+    const now = new Date(date);
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    return formattedDatetime
+}
+
+function sha1Encode(message) {
+    function rotate_left(n, s) {
+        return (n << s) | (n >>> (32 - s));
+    }
+
+    function cvt_hex(val) {
+        let str = "";
+        let i;
+        let v;
+        for (i = 7; i >= 0; i--) {
+            v = (val >>> (i * 4)) & 0x0f;
+            str += v.toString(16);
+        }
+        return str;
+    }
+
+    function utf8_encode(str) {
+        return unescape(encodeURIComponent(str));
+    }
+
+    let blockstart;
+    let i, j;
+    const W = new Array(80);
+    let H0 = 0x67452301;
+    let H1 = 0xEFCDAB89;
+    let H2 = 0x98BADCFE;
+    let H3 = 0x10325476;
+    let H4 = 0xC3D2E1F0;
+    let A, B, C, D, E;
+    let temp;
+
+    message = utf8_encode(message);
+    const msg_len = message.length;
+
+    const word_array = [];
+    for (i = 0; i < msg_len - 3; i += 4) {
+        j = (message.charCodeAt(i) << 24) |
+            (message.charCodeAt(i + 1) << 16) |
+            (message.charCodeAt(i + 2) << 8) |
+            message.charCodeAt(i + 3);
+        word_array.push(j);
+    }
+
+    switch (msg_len % 4) {
+        case 0:
+            i = 0x080000000;
+            break;
+        case 1:
+            i = (message.charCodeAt(msg_len - 1) << 24) | 0x0800000;
+            break;
+        case 2:
+            i = (message.charCodeAt(msg_len - 2) << 24) |
+                (message.charCodeAt(msg_len - 1) << 16) |
+                0x08000;
+            break;
+        case 3:
+            i = (message.charCodeAt(msg_len - 3) << 24) |
+                (message.charCodeAt(msg_len - 2) << 16) |
+                (message.charCodeAt(msg_len - 1) << 8) |
+                0x80;
+            break;
+    }
+
+    word_array.push(i);
+
+    while ((word_array.length % 16) !== 14) word_array.push(0);
+
+    word_array.push(msg_len >>> 29);
+    word_array.push((msg_len << 3) & 0x0ffffffff);
+
+    for (blockstart = 0; blockstart < word_array.length; blockstart += 16) {
+        for (i = 0; i < 16; i++) W[i] = word_array[blockstart + i];
+        for (i = 16; i <= 79; i++) W[i] = rotate_left(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+
+        A = H0;
+        B = H1;
+        C = H2;
+        D = H3;
+        E = H4;
+
+        for (i = 0; i <= 19; i++) {
+            temp = (rotate_left(A, 5) + ((B & C) | (~B & D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 20; i <= 39; i++) {
+            temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 40; i <= 59; i++) {
+            temp = (rotate_left(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        for (i = 60; i <= 79; i++) {
+            temp = (rotate_left(A, 5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
+            E = D;
+            D = C;
+            C = rotate_left(B, 30);
+            B = A;
+            A = temp;
+        }
+
+        H0 = (H0 + A) & 0x0ffffffff;
+        H1 = (H1 + B) & 0x0ffffffff;
+        H2 = (H2 + C) & 0x0ffffffff;
+        H3 = (H3 + D) & 0x0ffffffff;
+        H4 = (H4 + E) & 0x0ffffffff;
+    }
+
+    const sha1hash = cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4);
+    return sha1hash.toLowerCase();
+}
+
+$("#result-scanagain").click(function () {
+    document.getElementById("result-form-total").classList.add("d-none");
+    document.getElementById("result-form-loading").classList.remove("d-none");
+    document.getElementById("result-form-title").classList.add("d-none");
+    document.getElementById("result-form-stationID").classList.remove("d-none");
+    document.getElementById("result-form-stationName").classList.remove("d-none");
+    document.getElementById("result-truycap").classList.remove("d-none");
+    scanAgain();
+});
