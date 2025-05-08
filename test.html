@@ -6595,7 +6595,8 @@
             async function getInputValue(checkW) {
                 var inputValue = document.getElementById("device_name").value;
                 if(checkW){
-
+                    $("#loading-popup").show();
+                    CheckWorkStation(checkW)
                 } else {
                     if (inputValue == null || inputValue == "") {
                         toastr.error("Vui lòng nhập mã trạm!");
