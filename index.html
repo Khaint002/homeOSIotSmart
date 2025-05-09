@@ -3846,6 +3846,14 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         $(document).ready(function () {
+            var listDomain = [];
+            async function getListDomain() {
+                const datatest = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
+                for (let i = 0; i < datatest.data.length; i++) {
+                    listDomain.push(datatest.data[i].DOMAIN);
+                }
+            }
+            getListDomain()
             $("#share-workStation").click(function () {
                 const item = JSON.parse(localStorage.getItem("itemHistory"));
                 window.shareWorkStation("Trạm quan trắc "+ item.NameWorkStation, 'https://central.homeos.vn/images/MiniAppLoadingScreen.png', item.CodeWorkStation);
@@ -3885,7 +3893,7 @@
 
             var DataUser;
             var typeQR;
-            var listDomain = [];
+            
             var locations = [];
             var checkTabHistory = 0;
             var checkReport = '';
@@ -3943,14 +3951,7 @@
                 WarrantyCheckUser(localStorage.getItem("RoleUser"));
             }
 
-            async function getListDomain() {
-                const datatest = await getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");
-                for (let i = 0; i < datatest.data.length; i++) {
-                    listDomain.push(datatest.data[i].DOMAIN);
-                }
-            }
-
-            getListDomain()
+            
             handleUser();
             var historyItems = [];
             var waranntyItems = [];
