@@ -452,6 +452,7 @@ $("#file-input").change(function (event) {
                         
                         // Quét QR từ hình ảnh đã tải lên
                         html5QrCode.scanFile(file).then(async decodedText => {  // Sửa tại đây
+                            console.log(decodedText);
                             document.getElementById("result-form").classList.remove("d-none");
                             // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
                             let data;
