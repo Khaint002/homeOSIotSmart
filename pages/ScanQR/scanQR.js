@@ -439,6 +439,8 @@ $("#file-input").change(function (event) {
     var file = event.target.files[0];  // Đảm bảo lấy file đúng
     if (file) {
         // Dừng quét camera trước khi quét file
+        console.log('test');
+        
         if (isScannerRunning) {
             html5QrCode.stop().then(function () {
                 isScannerRunning = false;  // Đánh dấu scanner đã dừng
@@ -446,6 +448,8 @@ $("#file-input").change(function (event) {
                 reader.onload = function (e) {
                     var img = new Image();
                     img.onload = function () {
+                        console.log('oke');
+                        
                         // Quét QR từ hình ảnh đã tải lên
                         html5QrCode.scanFile(file).then(async decodedText => {  // Sửa tại đây
                             document.getElementById("result-form").classList.remove("d-none");
@@ -454,7 +458,8 @@ $("#file-input").change(function (event) {
                             let domain;
                             let workstation;
                             let checkQRcode = decodedText.split(',');
-
+                            console.log(1);
+                            
                             // if(checkQRcode[0].substring(0, 3) == "T20"){
                             if (typeQR == 2 || typeQR == 3) {
                                 console.log(2);
