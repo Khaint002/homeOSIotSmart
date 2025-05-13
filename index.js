@@ -112,6 +112,52 @@ HOMEOSAPP.getDM = async function (url, table_name, c, check) {
     });
 }
 
+HOMEOSAPP.add = async function (table, data, URL, check) {
+    // const d = {Uid: "vannt", Sid:'3d798037-9bd9-4195-8673-a4794547d2fd', tablename:table, jd:JSON.stringify(data), ex:''};
+    let user_id_getDm = 'admin';
+    let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
+    let url = 'https://central.homeos.vn/service_XD/service.svc';
+    if(check == "NotCentral"){
+        url = URL;
+        let dataUser;
+        if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else {
+            dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        }
+        
+        user_id_getDm = dataUser[0].StateName;
+        Sid_getDM = dataUser[0].StateId;
+    }
+    
+    const d = { Uid: user_id_getDm, Sid: Sid_getDM, tablename: table, jd: JSON.stringify(data), ex: '' };
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            // url: "https://DEV.HOMEOS.vn/service/service.svc/ExecuteData?callback=?",
+            url: url+"/ExecuteData?callback=?",
+            type: "GET",
+            dataType: "jsonp",
+            data: d,
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                try {
+                    let state = JSON.parse(msg);
+                    resolve(state);  // Trả về dữ liệu khi thành công
+                } catch (error) {
+                    reject(error);  // Bắt lỗi nếu JSON parse thất bại
+                }
+            },
+            complete: function (data) {
+            },
+            error: function (e, t, x) {
+            }
+        });
+    });
+}
+
 HOMEOSAPP.WorkstationStatistics = async function(url, c, check, code) {
     let user_id_getDm = 'admin';
     let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';

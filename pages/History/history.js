@@ -2,6 +2,7 @@ var historyListDetail = $('#history-detail');
 var checkTabHistory;
 var intervalId;
 async function pickApp(type) {
+    console.log(1);
     showAddWorkStationButton();
     switch (type) {
         case 'KTTV':
@@ -43,9 +44,10 @@ function showAddWorkStationButton() {
         '</div>'
     );
     buttonHTML.on('click', function () {
-        if (checkTabHistory == 1) {
-            changeQRcode()
-        } else if (checkTabHistory == 2) {
+        if (HOMEOSAPP.checkTabHistory == 1) {
+            HOMEOSAPP.stopInterval();
+            $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/ScanQR/scanQR.html");
+        } else if (HOMEOSAPP.checkTabHistory == 2) {
             $(".WarrantyScanNext").click();
         }
     });
@@ -1013,7 +1015,6 @@ $(document).on("click", (e) => {
         sidebar.removeClass("open");
     }
 });
-
 
 // Handle menu item clicks
 var menuItems = document.querySelectorAll(".menu-item, .submenu li");
