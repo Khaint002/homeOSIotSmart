@@ -105,7 +105,9 @@ function renderApps(apps, containerId) {
 }
 handleUser();
 renderApps(apps, "app-list");
-
+$("#PickApp-button-login").click(function () {
+    pickApp('LOGIN');
+});
 async function pickApp(type) {
     switch (type) {
         case 'KTTV':

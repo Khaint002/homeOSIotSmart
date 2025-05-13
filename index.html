@@ -2773,7 +2773,7 @@
                             </svg>
                             <small>Xuất báo cáo</small>
                         </button>
-                        <button id="scanUpload" class="btn d-flex flex-column align-items-center text-white p-0" style="margin-right: 10px;">
+                        <button id="scanUpload" class="btn d-none flex-column align-items-center text-white p-0" style="margin-right: 10px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" style="color: #fff;" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
                                 <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
                                 <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
@@ -2796,15 +2796,11 @@
                 <div class="homePage-header history-header" style="background-color: #282d31;">
                     <div style="line-height: 50px; justify-content: flex-start;" class="d-flex">
                         <button class="WarrantyScanNext" style="height: 40px; border: none; background-color: #282d31;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" style="color: #fff; margin-right: 10px;" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                             </svg>
                         </button>
-                        <p id="header-productName"
-                            style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            -</p>
+                        <p id="header-productName" style="width: 250px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">-</p>
                     </div>
                     <div class="d-flex" style="line-height: 50px;">
                         <button id="errorWarranty"
@@ -3771,57 +3767,50 @@
                             <div class="mr-3 d-flex flex-column w-100">
                                 <div class="card mw-100 mh-100 m-0 p-3">
                                     <div class="form-group content-detail">
-                                        <label class="form-label content-label" for="startTime">Kì báo cáo:</label>
-                                        <select name="" class="form-control content-input" id="dateTimeReport">
-                                        
+                                        <label class="form-label content-label" for="startTime">Yếu tố cần thông báo:</label>
+                                        <select name="" class="form-control content-input" id="device_ID_alert">
+                                            
                                         </select>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group content-detail col-6">
-                                            <label class="form-label content-label" for="startTime">Ngày bắt đầu:</label>
-                                            <input type="date" id="startDate" class="form-control content-input w-100">
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Tần suất nhận cảnh báo:</label>
+                                        <select name="" class="form-control content-input" id="timeAlert">
+                                            <option value="10">10 phút</option>
+                                            <option value="30">30 phút</option>
+                                            <option value="60">1 giờ</option>
+                                            <option value="180">3 giờ</option>
+                                            <option value="360">6 giờ</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" for="startTime">Ngưỡng cảnh báo:</label>
+                                        <div class="row">
+                                            <div class="col-6 form-group content-detail">
+                                                <!-- <label class="form-label content-label" for="startTime">Ngưỡng thấp</label> -->
+                                                <input type="text" id="warningMin" class="form-control content-input w-100" placeholder="Ngưỡng thấp">
+                                            </div>
+                                            <div class="col-6 form-group content-detail">
+                                                <!-- <label class="form-label content-label" for="startTime">Ngưỡng cao</label> -->
+                                                <input type="text" id="warningMax" class="form-control content-input w-100" placeholder="Ngưỡng cao">
+                                            </div>
                                         </div>
-                                        <div class="form-group content-detail col-6">
-                                            <label class="form-label content-label" for="startTime">Ngày kết thúc:</label>
-                                            <input type="date" id="endDate" class="form-control content-input w-100">
-                                        </div>
+                                    </div>
+                                    <div class="form-group content-detail">
+                                        <label class="form-label content-label" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                                                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                                                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                                            </svg>
+                                            Lưu ý: khi nhận được 7 tin nhắn cảnh báo hãy tương tác lại 1 lần.
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="filter-kttv" class="form-group content-detail">
-                        <div class="card mw-100 mh-100 m-0 mt-2 p-3">
-                            <label class="form-label content-label" for="txtScheduleName">Yếu tố:</label>
-                            <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
-                            <select name="" class="form-control content-input" id="KTTV_Report">
-                            </select>
-                            <!-- <div id="KTTV_Report" style="overflow-y: auto; height: 160px;">
-
-                            </div> -->
-                        </div>
-                        <!-- <div class="card mw-100 mh-100 m-0 mt-2 p-3">
-                            <label class="form-label content-label" for="txtScheduleName">Yếu tố đã chọn:</label> -->
-                            <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
-                            <!-- <select name="" class="form-control content-input" id="KTTV_Report">
-                            </select> -->
-                            <!-- <div id="KTTV_Report" style="overflow-y: auto; height: 160px;">
-
-                            </div>
-                        </div> -->
-                    </div>
-                    <div id="filter-condition" class="form-group content-detail">
-                        <label class="form-label content-label" for="txtScheduleName">Báo cáo:</label>
-                        <!-- <input type="text" id="txtScheduleName" class="form-control content-input" placeholder="Nhập tên lịch..."> -->
-                        <select name="" class="form-control content-input" id="nameReport">
-                            <option value="RPT_BAO_CAO_GIO">Báo cáo điện năng theo giờ</option>
-                            <option value="RPT_BAO_CAO_NGAY">Báo cáo điện năng theo ngày</option>
-                            <option value="RPT_BAO_CAO">Báo cáo điện năng</option>
-                        </select>
-                    </div>
                     <div>
-                        <button id="submitExport" class="btn btn-warning" style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
-                            Xuất dữ liệu báo cáo (excel)
+                        <button id="submitAlert" class="btn btn-warning" style="margin-top: 20px; background-color: #2c697b;border: solid 1px #2c697b; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
+                            Nhận cảnh báo
                         </button>
                     </div>
                 </div>
@@ -3900,6 +3889,8 @@
             // Gọi hàm GetUser từ script chính
             DataUser = JSON.parse(localStorage.getItem("userInfo"));
             var UserID = localStorage.getItem("userID");
+            console.log(DataUser);
+            
             async function handleUser() {
                 if (UserID) {
                     try {
@@ -4059,6 +4050,7 @@
                     $('.warranty_scansQRcode').addClass("d-none");
                     $('.warranty_lot').addClass("d-none");
                     $('.warranty_scanQRcode').addClass("d-none");
+                    checkTabHistory = 1;
 
                     getInputValue(window.workstationID);
                     document.getElementById("pickApp").classList.add("hidden");
@@ -4306,6 +4298,9 @@
             });
             $("#BackExportCondition").click(function () {
                 $('#export-condition-popup').hide();
+            });
+            $("#BackAlertKTTV").click(function () {
+                $('#alert-kttv-popup').hide();
             });
             $("#download-QRcode").click(function () {
                 const img = $('#hidden-image')[0];
@@ -6809,14 +6804,32 @@
             // Code Bảo hành:
 
             // Hàm thêm sửa xoá dữ liệu
-            function add(table, data) {
+            async function add(table, data, URL, check) {
                 // const d = {Uid: "vannt", Sid:'3d798037-9bd9-4195-8673-a4794547d2fd', tablename:table, jd:JSON.stringify(data), ex:''};
-                const d = { Uid: "admin", Sid: 'cb880c13-5465-4a1d-a598-28e06be43982', tablename: table, jd: JSON.stringify(data), ex: '' };
+                let user_id_getDm = 'admin';
+                let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
+                let url = 'https://central.homeos.vn/service_XD/service.svc';
+                if(check == "NotCentral"){
+                    url = URL;
+                    let dataUser;
+                    if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
+                        dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    } else {
+                        dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+                    }
+                    
+                    user_id_getDm = dataUser[0].StateName;
+                    Sid_getDM = dataUser[0].StateId;
+                }
+                
+                const d = { Uid: user_id_getDm, Sid: Sid_getDM, tablename: table, jd: JSON.stringify(data), ex: '' };
 
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         // url: "https://DEV.HOMEOS.vn/service/service.svc/ExecuteData?callback=?",
-                        url: "https://central.homeos.vn/service_XD/service.svc/ExecuteData?callback=?",
+                        url: url+"/ExecuteData?callback=?",
                         type: "GET",
                         dataType: "jsonp",
                         data: d,
@@ -7066,14 +7079,14 @@
                 let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
                 if(check == "NotCentral"){
                     let dataUser;
-                    if(url == "https://cctl-dongthap.homeos.vn/service/service.svc" || url == "https://pctthn.homeos.vn/service/service.svc"){
+                    if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
                         dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
-                    } else if(url == "https://thanthongnhat.homeos.vn/service/service.svc"){
+                    } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
                         dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
                     } else {
                         dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
                     }
-                     
+                    
                     user_id_getDm = dataUser[0].StateName;
                     Sid_getDM = dataUser[0].StateId;
                 }
@@ -8053,12 +8066,23 @@
                 $("#filter-condition").removeClass("d-none");
                 $("#export-condition-popup").show();
             });
+
             $("#export-kttv").click(function () {
                 checkReport = 'KTTV';
-                getDevicefilter();
+                getDevicefilter("KTTV");
                 $("#filter-kttv").removeClass("d-none");
                 $("#filter-condition").addClass("d-none");
                 $("#export-condition-popup").show();
+            });
+
+            $("#settingAlert").click(function () {
+                // if(DataUser){
+                    getDevicefilter();
+                    $("#alert-kttv-popup").show(); 
+                // } else {
+                //     toastr.error("Vui lòng liên kết tài khoản Zalo để sử dụng chức năng này.");
+                // }
+                
             });
 
 
@@ -8978,11 +9002,23 @@
             //     }
             // }
 
-            const getDevicefilter = async function () {
-                if(checkReport == 'KTTV'){
+            const getDevicefilter = async function (checkReporttext) {
+                if(checkReporttext == 'KTTV'){
                     const data = JSON.parse(localStorage.getItem("itemHistory"));
                     const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
                     const selectElement = $('#KTTV_Report');
+                    selectElement.empty();
+
+                    for (let i = 0; i < dataDevice.data.length; i++) {
+                        const option = $('<option></option>'); // tạo option bằng jQuery
+                        option.val(processCode(dataDevice.data[i].TRAN_NO));
+                        option.text(dataDevice.data[i].DESCRIPTION);
+                        selectElement.append(option); // dùng jQuery append
+                    }
+                } else {
+                    const data = JSON.parse(localStorage.getItem("itemHistory"));
+                    const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
+                    const selectElement = $('#device_ID_alert');
                     selectElement.empty();
 
                     for (let i = 0; i < dataDevice.data.length; i++) {
@@ -9644,6 +9680,64 @@
                 return energy;
             }
             // ------------------------------------------------------
+            // cảnh báo
+            $("#submitAlert").click(async function (){
+
+                const deviceId = document.getElementById('device_ID_alert').value.trim();
+                const timeAlert = document.getElementById('timeAlert').value.trim();
+                const warningMin = document.getElementById('warningMin').value.trim();
+                const warningMax = document.getElementById('warningMax').value.trim();
+
+                // Kiểm tra dữ liệu đầu vào
+                if (!deviceId) {
+                    alert('Vui lòng chọn yếu tố cần thông báo.');
+                    return;
+                }
+
+                if (!timeAlert) {
+                    alert('Vui lòng chọn tần suất cảnh báo.');
+                    return;
+                }
+
+                if (!warningMin || isNaN(warningMin)) {
+                    alert('Vui lòng nhập ngưỡng thấp hợp lệ.');
+                    return;
+                }
+
+                if (!warningMax || isNaN(warningMax)) {
+                    alert('Vui lòng nhập ngưỡng cao hợp lệ.');
+                    return;
+                }
+
+                if (parseFloat(warningMin) >= parseFloat(warningMax)) {
+                    alert('Ngưỡng thấp phải nhỏ hơn ngưỡng cao.');
+                    return;
+                }
+
+                // ✅ Nếu tất cả đều hợp lệ, tiến hành xử lý tiếp
+                const alertData = {
+                    deviceId,
+                    timeAlert,
+                    warningMin: parseFloat(warningMin),
+                    warningMax: parseFloat(warningMax)
+                };
+
+                console.log('Dữ liệu hợp lệ:', alertData);
+                const willInsertData = {
+                    USER_ID: "6722547918621605824",
+                    WORKSTATION_ID: localStorage.getItem("MATRAM"),
+                    DEVICE_ID: deviceId + localStorage.getItem("MATRAM"),
+                    WARNING_THRESHOLD_MIN: parseFloat(warningMin),
+                    WARNING_THRESHOLD_MAX: parseFloat(warningMax),
+                    TIME_ALERT: timeAlert,
+                    ACTIVE: 1,
+                    DATE_CREATE: new Date(),
+                    DATASTATE: "ADD"
+                };
+                await add('ZALO_SETTING_ALERT', willInsertData, localStorage.getItem("URL"), "NotCentral")
+            })
+
+
             // code gauge nhiệt độ
             var xmlns = "http://www.w3.org/2000/svg",
                 xlinkns = "http://www.w3.org/1999/xlink",
@@ -9754,7 +9848,6 @@
                 } else {
                     newY = 1 * (minDragY / 50);
                 }
-
 
                 // Cập nhật vị trí của dragger và các phần liên quan
                 gsap.to(dragger, {
