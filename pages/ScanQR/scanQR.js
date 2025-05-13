@@ -363,7 +363,7 @@ async function onScanSuccess(decodedText, decodedResult) {
     } else {
         if (decodedText.length > 6) {
             var resultArray = decodedText.split("$");
-            data = await getNewData(
+            data = await HOMEOSAPP.getNewData(
                 localStorage.getItem("MATRAM"),
                 "WORKSTATION_ID='" + resultArray[1] + "'",
                 resultArray[0]
@@ -376,7 +376,7 @@ async function onScanSuccess(decodedText, decodedResult) {
             document.getElementById("result-form").classList.remove("d-none");
             // document.getElementById("footer-instruct-scanQR").classList.remove("d-none");
         } else if (decodedText.length == 6) {
-            domain = await HOMEOSAPP.getDomain(decodedText, 'domain');
+            domain = await getDomain(decodedText, 'domain');
             const url = "https://" + domain + "/service/service.svc/"
             data = await HOMEOSAPP.getNewData(
                 localStorage.getItem("MATRAM"),
@@ -661,7 +661,7 @@ $("#file-input").change(function (event) {
 
                                 if (decodedText.length > 6) {
                                     var resultArray = decodedText.split("$");
-                                    data = await getNewData(
+                                    data = await HOMEOSAPP.getNewData(
                                         localStorage.getItem("MATRAM"),
                                         "WORKSTATION_ID='" + resultArray[1] + "'",
                                         resultArray[0]
@@ -676,7 +676,7 @@ $("#file-input").change(function (event) {
                                 } else if (decodedText.length == 6) {
                                     domain = await getDomain(decodedText, 'domain');
                                     const url = "https://" + domain + "/service/service.svc/"
-                                    data = await getNewData(
+                                    data = await HOMEOSAPP.getNewData(
                                         localStorage.getItem("MATRAM"),
                                         "WORKSTATION_ID='" + decodedText + "'",
                                         url
