@@ -1026,7 +1026,7 @@ menuItems.forEach((item) => {
 
         if (menuText == "Giải pháp thông minh") {
             HOMEOSAPP.stopInterval();
-            $("#content-block").load("./pages/menu/menu.html");
+            $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
         } else if (menuText == "Quản lý danh mục") {
             document.getElementById("history-setting").classList.remove("d-none");
             document.getElementById("history-homePage").classList.add("d-none");

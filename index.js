@@ -17,7 +17,7 @@ setTimeout(() => {
     console.log(1);
     
     getListDomain()
-    $("#content-block").load("./pages/menu/menu.html");
+    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
 }, 2000);
 
 let observer = new MutationObserver((mutations) => {
