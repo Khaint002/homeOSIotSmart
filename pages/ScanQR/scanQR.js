@@ -822,10 +822,8 @@ function getDataStation(workstationID, domain) {
                         };
                         HOMEOSAPP.itemHistory = item;
                         localStorage.setItem('itemHistory', JSON.stringify(item));
-                        resolve(data);
-                    } else {
-                        reject("Dữ liệu trả về không hợp lệ hoặc trống");
                     }
+                    resolve(data);
                 } catch (err) {
                     reject("Lỗi phân tích dữ liệu JSON: " + err);
                 }
