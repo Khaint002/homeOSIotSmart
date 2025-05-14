@@ -423,20 +423,24 @@ HOMEOSAPP.createChartData = function(data, type, typeData) {
     let labelSuffix = typeData === "NGAY" ? "giờ" : "";
 
     chartConfigs.forEach(cfg => {
-        let ctx = document.getElementById(cfg.id).getContext('2d');
-        let dataSet = [{
-            type: cfg.type,
-            label: cfg.label,
-            data: datasets[cfg.zone],
-            backgroundColor: cfg.color,
-            borderColor: cfg.border,
-            borderWidth: 1,
-            fill: cfg.fill ? 'start' : false,
-            tension: cfg.tension || 0,
-            borderDash: cfg.dashed ? [5, 5] : undefined
-        }];
+        if(cfg.id == "ChartRN72H") {
+                        
+        } else {
+            let ctx = document.getElementById(cfg.id).getContext('2d');
+            let dataSet = [{
+                type: cfg.type,
+                label: cfg.label,
+                data: datasets[cfg.zone],
+                backgroundColor: cfg.color,
+                borderColor: cfg.border,
+                borderWidth: 1,
+                fill: cfg.fill ? 'start' : false,
+                tension: cfg.tension || 0,
+                borderDash: cfg.dashed ? [5, 5] : undefined
+            }];
 
-        charts[cfg.varName] = new Chart(ctx, HOMEOSAPP.createChart("bar", labels[cfg.zone], [], cfg.unit, "", dataSet, labelSuffix, cfg.min, cfg.max));
+            charts[cfg.varName] = new Chart(ctx, HOMEOSAPP.createChart("bar", labels[cfg.zone], [], cfg.unit, "", dataSet, labelSuffix, cfg.min, cfg.max));
+        }
     });
 
     $("#loading-spinner").addClass("d-none");

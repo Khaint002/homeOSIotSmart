@@ -66,7 +66,7 @@ function checkTypeWorkstation() {
                 $(`chart-RN72H`).classList.remove("d-none");
                 $(`box-${type}`).classList.remove("col-6");
                 $(`box-${type}`).classList.add("col-12");
-                WorkstationStatistics(
+                HOMEOSAPP.WorkstationStatistics(
                     localStorage.getItem("URL"),
                         "WORKSTATION_ID='"+localStorage.getItem("MATRAM")+"'", 
                         "NotCentral"
@@ -94,7 +94,7 @@ function checkTypeWorkstation() {
                 $(`chart-${type}`).classList.remove("d-none");
                 $(`chart-RN72H`).classList.remove("d-none");
                 if(type == 'RN'){
-                    WorkstationStatistics(
+                    HOMEOSAPP.WorkstationStatistics(
                         localStorage.getItem("URL"),
                         "WORKSTATION_ID='"+localStorage.getItem("MATRAM")+"'", 
                         "NotCentral"
@@ -116,61 +116,38 @@ function checkTypeWorkstation() {
     }
 }
 
-async function WorkstationStatistics(url, c, check, code) {
-    let user_id_getDm = 'admin';
-    let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
-    if(check == "NotCentral"){
-        let dataUser;
-        if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
-            dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
-        } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
-            dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
-        } else {
-            dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
-        }
-        
-        user_id_getDm = dataUser[0].StateName;
-        Sid_getDM = dataUser[0].StateId;
-    }
-    const maTram = localStorage.getItem("MATRAM");
-    const d = {
-        // Uid: 'vannt',
-        // Sid: 'b99213e4-a8a5-45f4-bb5c-cf03ae90d8d7',
-        Uid: user_id_getDm,
-        Sid: Sid_getDM,
-        c: c
-    };
-    
-    // const Url = 'https://DEV.HOMEOS.vn/service/service.svc/';
+function renderChartRN72H(data) {
+    const cfg = chartConfigs.find(c => c.id === "ChartRN72H");
+    const labels = [];
+    const dataset = [];
 
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: url+"/WorkstationStatistics?callback=?",
-            type: "GET",
-            dataType: "jsonp",
-            data: d,
-            contentType: "application/json; charset=utf-8",
-            success: function (msg) {
-                try {
-                    let state = JSON.parse(msg);
-                    const result = state.DATA.find(obj => obj.hasOwnProperty("DN"+maTram+"3"));
-                    const dataArray = result["DN"+maTram+"3"];
-                    resolve(dataArray);  // Trả về dữ liệu khi thành công
-                } catch (error) {
-                    reject(error);  // Bắt lỗi nếu JSON parse thất bại
-                }
-            },
-            complete: function (data) {
-                // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
-            },
-            error: function (e, t, x) {
-                HomeOS.Service.SetActionControl(true);
-                HomeOS.Service.ShowLabel('Lỗi dữ liệu');
-                reject(e);  // Trả về lỗi nếu thất bại
-            }
-        });
+    data.forEach(item => {
+        labels.push(item.ZONE_NAME.slice(0, 5) + ' ' + item.ZONE_NAME.slice(11, 16) ); // thời gian
+        let value = cfg.divideBy10 ? item.ZONE_VALUE : item.ZONE_VALUE;
+        value = roundToTwoDecimals(value).toFixed(2);
+        dataset.push(value);
     });
+    
+    const ctx = document.getElementById(cfg.id).getContext('2d');
+    const dataSet = [{
+        type: cfg.type,
+        label: cfg.label,
+        data: dataset,
+        backgroundColor: cfg.color,
+        borderColor: cfg.border,
+        borderWidth: 1,
+        fill: cfg.fill ? 'start' : false,
+        tension: cfg.tension || 0,
+        borderDash: cfg.dashed ? [5, 5] : undefined,
+        pointRadius: 0,
+        pointHoverRadius: 5
+    }];
+
+    if (charts[cfg.varName]) charts[cfg.varName].destroy();
+    charts[cfg.varName] = new Chart(ctx, HOMEOSAPP.createChart("line", labels, [], cfg.unit, "", dataSet, ""));
 }
+
+
 
 async function getDataMonitoring() {
     const data = await HOMEOSAPP.getNewData(
