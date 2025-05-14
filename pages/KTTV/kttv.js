@@ -46,10 +46,10 @@ function checkTypeWorkstation() {
             $(`box-${type}`).classList.add("col-6");
         }
     });
-
     const item = JSON.parse(localStorage.getItem("itemHistory"));
     $("titleRT").textContent = "Nhiệt độ";
     $("titleChartRT").textContent = "biểu đồ nhiệt độ";
+    $(`chart-RN72H`).classList.add("d-none");
 
     switch (item.workstationType) {
         case "NAAM":
@@ -63,9 +63,19 @@ function checkTypeWorkstation() {
             ["RN"].forEach(type => {
                 $(`box-${type}`).classList.remove("d-none");
                 $(`chart-${type}`).classList.remove("d-none");
+                $(`chart-RN72H`).classList.remove("d-none");
                 $(`box-${type}`).classList.remove("col-6");
                 $(`box-${type}`).classList.add("col-12");
-            });
+                WorkstationStatistics(
+                    localStorage.getItem("URL"),
+                        "WORKSTATION_ID='"+localStorage.getItem("MATRAM")+"'", 
+                        "NotCentral"
+                    ).then(data => {
+                        renderChartRN72H(data);
+                    }).catch(error => {
+                        console.error("Lỗi lấy dữ liệu ChartRN72H:", error);
+                    });
+                });
             break;
 
         case "M":
@@ -82,6 +92,19 @@ function checkTypeWorkstation() {
             ["RN", "RT", "SS", "EC"].forEach(type => {
                 $(`box-${type}`).classList.remove("d-none");
                 $(`chart-${type}`).classList.remove("d-none");
+                $(`chart-RN72H`).classList.remove("d-none");
+                if(type == 'RN'){
+                    WorkstationStatistics(
+                        localStorage.getItem("URL"),
+                        "WORKSTATION_ID='"+localStorage.getItem("MATRAM")+"'", 
+                        "NotCentral"
+                    ).then(data => {
+                        renderChartRN72H(data);
+                    }).catch(error => {
+                        console.error("Lỗi lấy dữ liệu ChartRN72H:", error);
+                    });
+                }
+                
             });
 
             // $("box-SS").classList.remove("col-6");
@@ -91,6 +114,62 @@ function checkTypeWorkstation() {
             $("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
             break;
     }
+}
+
+async function WorkstationStatistics(url, c, check, code) {
+    let user_id_getDm = 'admin';
+    let Sid_getDM = 'cb880c13-5465-4a1d-a598-28e06be43982';
+    if(check == "NotCentral"){
+        let dataUser;
+        if(url.toLowerCase() == "https://cctl-dongthap.homeos.vn/service/service.svc" || url.toLowerCase() == "https://pctthn.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("123" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else if(url.toLowerCase() == "https://thanthongnhat.homeos.vn/service/service.svc"){
+            dataUser = await checkRoleUser("admin", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        } else {
+            dataUser = await checkRoleUser("dev", sha1Encode("1" + "@1B2c3D4e5F6g7H8").toString(), url+'/');
+        }
+        
+        user_id_getDm = dataUser[0].StateName;
+        Sid_getDM = dataUser[0].StateId;
+    }
+    const maTram = localStorage.getItem("MATRAM");
+    const d = {
+        // Uid: 'vannt',
+        // Sid: 'b99213e4-a8a5-45f4-bb5c-cf03ae90d8d7',
+        Uid: user_id_getDm,
+        Sid: Sid_getDM,
+        c: c
+    };
+    
+    // const Url = 'https://DEV.HOMEOS.vn/service/service.svc/';
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: url+"/WorkstationStatistics?callback=?",
+            type: "GET",
+            dataType: "jsonp",
+            data: d,
+            contentType: "application/json; charset=utf-8",
+            success: function (msg) {
+                try {
+                    let state = JSON.parse(msg);
+                    const result = state.DATA.find(obj => obj.hasOwnProperty("DN"+maTram+"3"));
+                    const dataArray = result["DN"+maTram+"3"];
+                    resolve(dataArray);  // Trả về dữ liệu khi thành công
+                } catch (error) {
+                    reject(error);  // Bắt lỗi nếu JSON parse thất bại
+                }
+            },
+            complete: function (data) {
+                // Có thể thêm xử lý khi request hoàn thành ở đây nếu cần
+            },
+            error: function (e, t, x) {
+                HomeOS.Service.SetActionControl(true);
+                HomeOS.Service.ShowLabel('Lỗi dữ liệu');
+                reject(e);  // Trả về lỗi nếu thất bại
+            }
+        });
+    });
 }
 
 async function getDataMonitoring() {
@@ -404,7 +483,7 @@ $("#export-kttv").click(function () {
     $("#export-condition-popup").show();
 });
 
-const getDevicefilter = async function () {
+async function getDevicefilter() {
     if(checkReport == 'KTTV'){
         const data = JSON.parse(localStorage.getItem("itemHistory"));
         const dataDevice = await HOMEOSAPP.getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
@@ -481,7 +560,7 @@ function DateFormatServerToLocal(input, format) {
     return format.replace(/dd|mm|yyyy|yy|HH|MM|SS/g, (token) => map[token] || '');
 }
 
-const exportRepost = async function (type, startDate, endDate, reportType, isViewer) {
+async function exportRepost(type, startDate, endDate, reportType, isViewer) {
                 
     if (isViewer)
         this.IsViewer = isViewer;
@@ -599,7 +678,7 @@ const exportRepost = async function (type, startDate, endDate, reportType, isVie
     $.ajax(val);
 }
 
-const reportOptions = [
+var reportOptions = [
     { value: "CHANGE", text: "Tuỳ ý" },
     { value: "MONTH1", text: "Tháng 1" },
     { value: "MONTH2", text: "Tháng 2" },
