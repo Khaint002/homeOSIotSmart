@@ -460,11 +460,23 @@ $("#export-kttv").click(function () {
     $("#export-condition-popup").show();
 });
 
-async function getDevicefilter() {
-    if(checkReport == 'KTTV'){
+const getDevicefilter = async function (checkReporttext) {
+    if(checkReporttext == 'KTTV'){
         const data = JSON.parse(localStorage.getItem("itemHistory"));
-        const dataDevice = await HOMEOSAPP.getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
+        const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
         const selectElement = $('#KTTV_Report');
+        selectElement.empty();
+
+        for (let i = 0; i < dataDevice.data.length; i++) {
+            const option = $('<option></option>'); // tạo option bằng jQuery
+            option.val(processCode(dataDevice.data[i].TRAN_NO));
+            option.text(dataDevice.data[i].DESCRIPTION);
+            selectElement.append(option); // dùng jQuery append
+        }
+    } else {
+        const data = JSON.parse(localStorage.getItem("itemHistory"));
+        const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
+        const selectElement = $('#device_ID_alert');
         selectElement.empty();
 
         for (let i = 0; i < dataDevice.data.length; i++) {
@@ -769,6 +781,16 @@ function formatDate(date) {
     const dd = String(date.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
 }
+
+$("#settingAlert").click(function () {
+    // if(DataUser){
+        getDevicefilter();
+        $("#alert-kttv-popup").show(); 
+    // } else {
+    //     toastr.error("Vui lòng liên kết tài khoản Zalo để sử dụng chức năng này.");
+    // }
+    
+});
 
 var xmlns = "http://www.w3.org/2000/svg",
 xlinkns = "http://www.w3.org/1999/xlink",
