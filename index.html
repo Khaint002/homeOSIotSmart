@@ -9314,8 +9314,14 @@
                 });
 
                 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                // const tiles = L.tileLayer('http://somebits.com:8001/rivers/{z}/{x}/{y}.json', {
                     maxZoom: 19
                 }).addTo(map);
+                // fetch(`http://somebits.com:8001/rivers/${10}/${512}/${314}.json`)
+                // .then(response => response.json())
+                // .then(data => {
+                //     L.geoJSON(data).addTo(map);
+                // });
                 locations.forEach(loc => {
                     let typeName = '';
                     if(loc.type == "N"){
