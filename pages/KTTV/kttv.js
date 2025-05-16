@@ -475,7 +475,7 @@ const getDevicefilter = async function (checkReporttext) {
         }
     } else {
         const data = JSON.parse(localStorage.getItem("itemHistory"));
-        const dataDevice = await getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
+        const dataDevice = await HOMEOSAPP.getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
         const selectElement = $('#device_ID_alert');
         selectElement.empty();
 
