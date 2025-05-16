@@ -17,7 +17,7 @@ setTimeout(() => {
     console.log(1);
     
     historyItems = JSON.parse(localStorage.getItem('dataHistory'));
-    if (historyItems.length != 0) {
+    if (historyItems) {
         
     } else {
         console.log(1);
