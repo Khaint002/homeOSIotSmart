@@ -48,7 +48,9 @@ async function handleUser() {
     } else {
         // localStorage.setItem('RoleUser', 'GUEST');
         document.getElementById("QUYEN").classList.add("d-none");
+        document.getElementById("download-QRcode").classList.add("d-none");
         document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
+
     }
     WarrantyCheckUser(localStorage.getItem("RoleUser"));
 }
