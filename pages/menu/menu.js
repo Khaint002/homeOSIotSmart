@@ -9,7 +9,7 @@ async function handleUser() {
                 $(".userName").text(DataUser.name);
                 document.getElementById("PickApp-button-login").classList.add("d-none");
                 $(".userAvt").attr("src", DataUser.avatar);
-                document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
+                // document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
                 const dataUserResponse = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
                 console.log(dataUserResponse.data);
                 if (dataUserResponse.data.length == 0) {
@@ -49,7 +49,7 @@ async function handleUser() {
         // localStorage.setItem('RoleUser', 'GUEST');
         document.getElementById("QUYEN").classList.add("d-none");
         document.getElementById("download-QRcode").classList.add("d-none");
-        document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
+        // document.getElementById("LogoPickScreen").style.paddingTop = "10vh";
     }
     WarrantyCheckUser(localStorage.getItem("RoleUser"));
 }
@@ -207,7 +207,7 @@ async function handleLogin() {
         $(".userName").text(DataUser.name);
         $(".userAvt").attr("src", DataUser.avatar);
         document.getElementById("PickApp-button-login").classList.add("d-none");
-        document.getElementById("LogoPickScreen").style.paddingTop = '10vh';
+        // document.getElementById("LogoPickScreen").style.paddingTop = '10vh';
 
         const dataUserResponse = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", "WARRANTY_USER", "USER_ID='" + UserID + "'");
         if (dataUserResponse.data.length === 0) {
