@@ -452,8 +452,7 @@ document.getElementById("dateTimeReport").addEventListener("change", function ()
 });
 
 $("#export-kttv").click(function () {
-    checkReport = 'KTTV';
-    getDevicefilter();
+    getDevicefilter('KTTV');
     renderOptions();
     $("#filter-kttv").removeClass("d-none");
     $("#filter-condition").addClass("d-none");
