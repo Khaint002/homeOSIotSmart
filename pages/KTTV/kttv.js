@@ -459,7 +459,7 @@ $("#export-kttv").click(function () {
     $("#export-condition-popup").show();
 });
 
-const getDevicefilter = async function (checkReporttext) {
+async function getDevicefilter(checkReporttext) {
     if(checkReporttext == 'KTTV'){
         const data = JSON.parse(localStorage.getItem("itemHistory"));
         const dataDevice = await HOMEOSAPP.getDM("https://"+data.domain+"/service/service.svc", "DM_WORKSTATION_DEVICE", "WORKSTATION_ID='" + data.CodeWorkStation + "'", "NotCentral");
