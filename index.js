@@ -15,15 +15,13 @@ setTimeout(() => {
     // document.getElementById("pickApp").classList.remove("hidden");
     // document.getElementById("guarantee").classList.remove("hidden");
     console.log(1);
+    
     historyItems = JSON.parse(localStorage.getItem('dataHistory'));
-    if (historyItems) {
-        historyItems = historyItems.filter(item => item.CodeWorkStation !== '091820');
-        const item = JSON.parse(localStorage.getItem('itemHistory'));
-        historyItems.unshift(item);
-        if (historyItems.length > 20) {
-            historyItems.shift();
-        }
+    if (historyItems.length != 0) {
+        
     } else {
+        console.log(1);
+        
         historyItems = [{
             "CodeWorkStation": "024011",
             "NameWorkStation": "Viện sinh thái rừng và môi trường",
@@ -31,8 +29,6 @@ setTimeout(() => {
             "date": "16/05/2025 09:02:01",
             "workstationType": "NAAM"
         }];
-        const item = JSON.parse(localStorage.getItem('itemHistory'));
-        historyItems.push(item);
     }
 
     localStorage.setItem('dataHistory', JSON.stringify(historyItems));
