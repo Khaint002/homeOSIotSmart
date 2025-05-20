@@ -1,4 +1,6 @@
 var historyListDetail = $('#history-detail');
+var historyListCategoryDetail = $('#list-history-detail');
+var historyListCategoryAdd = $('#list-history-add');
 var checkTabHistory;
 var intervalId;
 async function pickApp(type) {
@@ -360,6 +362,10 @@ async function showHistory(type) {
                     option.value = cat;
                     option.text = "Trạm Mưa";
                     break;
+                case "MSL":
+                    option.value = cat;
+                    option.text = "Trạm Mưa Sơn La";
+                    break;
                 case "MS":
                     option.value = cat;
                     option.text = "Trạm Mưa, sóng";
@@ -367,6 +373,14 @@ async function showHistory(type) {
                 case "NNS":
                     option.value = cat;
                     option.text = "Trạm mặn, nhiệt, mực nước";
+                    break;
+                case "TD":
+                    option.value = cat;
+                    option.text = "Hồ chứa";
+                    break;
+                case "NMLLTD":
+                    option.value = cat;
+                    option.text = "Trạm Nước, mưa, lưu lượng, tốc độ";
                     break;
                 case "ALL":
                     option.value = cat;
@@ -430,6 +444,26 @@ function getDisplayValue(item, type) {
             } else {
                 return item.ZONE_VALUE / 10 + ZONE_UNIT_NNS;
             }
+        case "TD":
+            if (ZONE_PROPERTY === "SS") {
+                return (item.ZONE_VALUE / 10000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if (ZONE_PROPERTY_NNS === "EC") {
+                return (item.ZONE_VALUE / 1000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if(ZONE_PROPERTY_NNS === "RN") {
+                return item.ZONE_VALUE + ZONE_UNIT_NNS;
+            } else {
+                return item.ZONE_VALUE / 10 + ZONE_UNIT_NNS;
+            }
+        case "TD":
+            if (ZONE_PROPERTY_NNS === "SS") {
+                return (item.ZONE_VALUE / 10000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if (ZONE_PROPERTY_NNS === "EC") {
+                return (item.ZONE_VALUE / 1000).toFixed(2) + ZONE_UNIT_NNS;
+            } else if(ZONE_PROPERTY_NNS === "RN") {
+                return item.ZONE_VALUE + ZONE_UNIT_NNS;
+            } else {
+                return item.ZONE_VALUE / 10 + ZONE_UNIT_NNS;
+            }
         default:
             return "-";
     }
@@ -475,10 +509,15 @@ function addMarkers(locations, mapContainerId) {
     if (map) {
         map.remove(); // Xóa bản đồ cũ
     }
+    //[20.304373, 100.256392], [24.353953, 108.614381]
     const bounds = L.latLngBounds(
-        L.latLng(8.2, 102.1),  // Góc dưới trái
-        L.latLng(23.4, 110.0)  // Góc trên phải
+        L.latLng(20.304373, 100.256392),  // Góc dưới trái
+        L.latLng(24.353953, 108.614381)  // Góc trên phải
     );
+    // const bounds = L.latLngBounds(
+    //     L.latLng(8.2, 102.1),  // Góc dưới trái
+    //     L.latLng(23.4, 110.0)  // Góc trên phải
+    // );
     map = L.map(mapContainerId, {
         maxBounds: bounds,       // Giới hạn vùng
         maxBoundsViscosity: 1.0,
@@ -558,12 +597,16 @@ function getFieldsByType(type) {
             return ['RD', 'RT', 'RH', 'RP'];
         case "N":
             return ['RN'];
+        case "MSL":
         case "M":
-            return ['RD'];
         case "MS":
             return ['RD'];
         case "NNS":
             return ['RT', 'RN', 'SS', 'EC'];
+        case "TD":
+            return ['RN', 'TN', 'QV', 'QR'];
+        case "NMLLTD":
+            return ['RN', 'RD', 'QN', 'VN'];
         default:
             return [];
     }
@@ -577,7 +620,12 @@ var defaultValues = {
     RP: '0hPa',  // Áp suất
     RN: '0mm',   // Mưa
     SS: '0w',    // Ánh sáng/Năng lượng
-    EC: '0mS/cm' // Độ dẫn điện
+    EC: '0mS/cm', // Độ dẫn điện
+    TN: 'tr.m³',
+    QV: 'm³/s', 
+    QR: 'm³/s', 
+    QN: 'm³/s', 
+    VN: 'm/s', 
 };
 
 function generatePopupHTML(name, code, type, item) {
@@ -595,6 +643,11 @@ function generatePopupHTML(name, code, type, item) {
             case 'RN': label = 'Mực nước'; break;
             case 'SS': label = 'Độ mặn'; break;
             case 'EC': label = 'Độ dẫn điện'; break;
+            case 'TN': label = 'Dung tích'; break;
+            case 'QV': label = 'Lưu lượng đến'; break;
+            case 'QR': label = 'Lưu lượng xả'; break;
+            case 'QN': label = 'Lưu lượng nước'; break;
+            case 'VN': label = 'Tốc độ dòng chảy'; break;
         }
 
         dynamicRows += `
@@ -662,6 +715,22 @@ function generatePopupValueHTML(loc) {
                 <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT)} °C</b></td></tr>
                 <tr><td><b>Độ mặn: ${loc.SS ?? 0} ppt</b></td></tr>
                 <tr><td><b>Độ dẫn điện: ${loc.EC ?? 0} μs/cm</b></td></tr>
+            `;
+            break;
+        case "TD":
+            extraContent = `
+                <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+                <tr><td><b>Dung tích: ${loc.TN ?? 0} tr.m³</b></td></tr>
+                <tr><td><b>Lưu lượng đến: ${loc.QV ?? 0} m³/s</b></td></tr>
+                <tr><td><b>Lưu lượng xả: ${loc.QR ?? 0} m³/s</b></td></tr>
+            `;
+            break;
+        case "NMLLTD":
+            extraContent = `
+                <tr><td>Mực nước: ${loc.RN ?? 0} cm</td></tr>
+                <tr><td><b>Lượng mưa: ${loc.RD ?? 0} tr.m³</b></td></tr>
+                <tr><td><b>Lưu lượng nước: ${loc.QN ?? 0} m³/s</b></td></tr>
+                <tr><td><b>Tốc độ dòng chảy: ${loc.VN ?? 0} m³/s</b></td></tr>
             `;
             break;
         default:
@@ -743,6 +812,7 @@ function updatePopupData(code, newZoneData) {
             $(".marker-label-"+code).text(newZoneData.RN)
             mergedData.RN = parseValue(newZoneData.RN); // Lượng mưa
             break;
+        case "MSL":
         case "M":
         case "MS":
             if(newZoneData.RD){
@@ -758,6 +828,18 @@ function updatePopupData(code, newZoneData) {
             mergedData.RN = parseValue(newZoneData.RN);
             mergedData.SS = parseValue(newZoneData.SS);
             mergedData.EC = parseValue(newZoneData.EC);
+            break;
+        case "TD":
+            mergedData.RN = parseValue(newZoneData.RN);
+            mergedData.TN = parseValue(newZoneData.TN);
+            mergedData.QV = parseValue(newZoneData.QV);
+            mergedData.QR = parseValue(newZoneData.QR);
+            break;
+        case "NMLLTD":
+            mergedData.RN = parseValue(newZoneData.RN);
+            mergedData.RD = parseValue(newZoneData.RD);
+            mergedData.QN = parseValue(newZoneData.QN);
+            mergedData.VN = parseValue(newZoneData.VN);
             break;
         default:
             console.warn(`Không biết cách update cho type: ${oldData.type}`);
@@ -814,6 +896,11 @@ function processAndUpdate(data) {
         if (item.RN != null) formattedData.RN = (item.RN) + "cm"; // Mực nước
         if (item.SS != null) formattedData.SS = (item.SS / 10000).toFixed(2) + "ppt"; // Độ mặn
         if (item.EC != null) formattedData.EC = (item.EC / 1000).toFixed(2) + "μs/cm"; // Độ dẫn điện
+        if (item.TN != null) formattedData.TN = (item.TN).toFixed(2) + "tr.m³"; // dung tích hồ chứa
+        if (item.QV != null) formattedData.QV = (item.QV).toFixed(2) + "m³/s"; // Lưu lượng đến
+        if (item.QR != null) formattedData.QR = (item.QR).toFixed(2) + "m³/s"; // Lưu lượng xả
+        if (item.QN != null) formattedData.QN = (item.QN).toFixed(2) + "m³/s"; // Lưu lượng nước
+        if (item.VN != null) formattedData.VN = (item.VN).toFixed(2) + "m/s"; // tốc độ dòng chảy
 
         formattedData.lastTime = dateTimeRA;
         
@@ -835,7 +922,6 @@ function WarningRain(value) {
     if (value >= 200 && value < 300) energy = "<b><font color='#99004d'>" + value + "mm</font></b>";
     if (value >= 300 && value < 400) energy = "<b><font color='#7b7b7b'>" + value + "mm</font></b>";
     if (value >= 400) energy = "<b><font color='#A00BA0'>" + value + "mm</font></b>";
-    console.log(energy);
     
     return energy;
 }
@@ -1088,6 +1174,179 @@ menuItems.forEach((item) => {
         // Close the sidebar after selection (optional)
         sidebar.removeClass("open");
     });
+});
+// danh mục
+$("#addCategory").click(function () {
+    OpenAddCategory()
+});
+
+function showHistoryCategory(type) {
+    historyItems = JSON.parse(localStorage.getItem('dataHistory'));
+    CategoryItems = JSON.parse(localStorage.getItem('listItemCategory'));
+    if (type) {
+        historyItems = historyItems.filter(item =>
+            item.CodeWorkStation.includes(type) ||
+            item.NameWorkStation.toLowerCase().includes(type)
+        );
+    }
+    if (CategoryItems) {
+        for (let i = 0; i < CategoryItems.length; i++) {
+            historyItems = historyItems.filter(item => item.CodeWorkStation != CategoryItems[i].CodeWorkStation);
+        }
+    }
+    if (historyItems) {
+        historyListCategoryDetail.empty();
+        for (let i = historyItems.length - 1; i >= 0; i--) {
+            addItemHistory(historyItems[i], 'category');
+        }
+    }
+}
+
+function handleItemCategoryClick(item) {
+    const itemHistory = { 'CodeWorkStation': item.CodeWorkStation, 'NameWorkStation': item.NameWorkStation, 'domain': item.domain, 'date': HOMEOSAPP.getCurrentTime(), 'workstationType': item.workstationType }
+    CategoryItems = JSON.parse(localStorage.getItem('listItemCategory'));
+    let filterItem = []
+    if (CategoryItems) {
+        filterItem = CategoryItems.filter(itemdetail => itemdetail.CodeWorkStation === item.CodeWorkStation);
+    }
+    if (filterItem.length > 0) {
+        CategoryItems = CategoryItems.filter(itemdetail => itemdetail.CodeWorkStation !== item.CodeWorkStation);
+        localStorage.setItem('listItemCategory', JSON.stringify(CategoryItems));
+
+        historyListCategoryAdd.empty();
+        for (let i = CategoryItems.length - 1; i >= 0; i--) {
+            addItemHistory(CategoryItems[i], 'add');
+        }
+    } else {
+        if (CategoryItems) {
+            CategoryItems = CategoryItems.filter(itemdetail => itemdetail.CodeWorkStation !== item.CodeWorkStation);
+            CategoryItems.push(itemHistory);
+            if (CategoryItems.length > 20) {
+                CategoryItems.shift();
+            }
+        } else {
+            CategoryItems = [];
+            CategoryItems.push(itemHistory);
+        }
+        localStorage.setItem('listItemCategory', JSON.stringify(CategoryItems));
+
+        if (CategoryItems && CategoryItems.length > 0) {
+            historyListCategoryAdd.empty();
+            for (let i = CategoryItems.length - 1; i >= 0; i--) {
+                addItemHistory(CategoryItems[i], 'add');
+            }
+        }
+    }
+    showHistoryCategory()
+}
+
+$("#saveCategory").click(function () {
+    saveCategory()
+});
+
+function saveCategory() {
+    const inputValue = $('#name-category').val();
+    if (inputValue) {
+        const item = JSON.parse(localStorage.getItem('listItemCategory'));
+        let itemCategory = { 'NameCategory': inputValue, 'itemCategory': item }
+        DataCategory = JSON.parse(localStorage.getItem('dataCategory'));
+        if (DataCategory) {
+            const checkInput = DataCategory.filter(item => item.NameCategory === inputValue);
+            if (checkInput.length > 0) {
+                const confirmEDIT = confirm(`Danh mục "${inputValue}" đã tồn tại, xác nhận có muốn thêm những trạm đã chọn chưa nằm trong danh mục hay không?`);
+                if (confirmEDIT) {
+                    itemCategory.itemCategory.forEach(item2 => {
+                        const exists = checkInput[0].itemCategory.some(item1 => item1.CodeWorkStation === item2.CodeWorkStation);
+                        if (!exists) {
+                            checkInput[0].itemCategory.push(item2);
+                        }
+                    });
+                    DataCategory = DataCategory.filter(item => item.NameCategory !== inputValue);
+                    DataCategory.push(checkInput[0]);
+                    localStorage.setItem('dataCategory', JSON.stringify(DataCategory));
+                    document.getElementById("list-category").classList.remove("d-none");
+                    document.getElementById("save-category").classList.add("d-none");
+                    $('#name-category').val('');
+                    $('#search-category').val('');
+                    localStorage.setItem('listItemCategory', JSON.stringify([]));
+                    historyListCategoryAdd.empty();
+                    showCategory()
+                }
+            } else if (item.length == 0) {
+                toastr.error("Vui lòng chọn trạm để thêm vào danh mục!");
+            } else {
+                if (DataCategory) {
+                    DataCategory.push(itemCategory);
+                    if (DataCategory.length > 20) {
+                        DataCategory.shift();
+                    }
+                } else {
+                    DataCategory = [];
+                    DataCategory.push(itemCategory);
+                }
+                localStorage.setItem('dataCategory', JSON.stringify(DataCategory));
+                document.getElementById("list-category").classList.remove("d-none");
+                document.getElementById("save-category").classList.add("d-none");
+                $('#name-category').val('');
+                $('#search-category').val('');
+                localStorage.setItem('listItemCategory', JSON.stringify([]));
+                historyListCategoryAdd.empty();
+                showCategory()
+            }
+        } else {
+            DataCategory = [];
+            DataCategory.push(itemCategory);
+            localStorage.setItem('dataCategory', JSON.stringify(DataCategory));
+            document.getElementById("list-category").classList.remove("d-none");
+            document.getElementById("save-category").classList.add("d-none");
+            $('#name-category').val('');
+            $('#search-category').val('');
+            localStorage.setItem('listItemCategory', JSON.stringify([]));
+            historyListCategoryAdd.empty();
+            showCategory()
+        }
+
+    } else {
+        toastr.error("Vui lòng nhập tên danh mục!");
+    }
+}
+
+$("#btnAddCategory").click(function () {
+    OpenAddCategory()
+});
+
+function showAddCategoryButton() {
+    const buttonHTML = $(
+        '<div class="col-12" style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">' +
+        '<button id="addCategory" style="width: 200px; height: 200px; border-radius: 50%; border: 1px dashed #fff; background-color: #1E2833; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 14px; text-align: center;">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" style="color: #fff; margin-bottom: 8px;" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">' +
+        '<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>' +
+        '</svg>' +
+        'Tạo mới danh mục trạm.' +
+        '</button>' +
+        '</div>'
+    );
+    document.getElementById("btnAddCategory").classList.add("d-none");
+    buttonHTML.on('click', function () {
+
+        OpenAddCategory();
+    });
+    listCategory.append(buttonHTML);
+}
+
+$('#search-category').on('change', function () {
+    const searchValue = $(this).val().toLowerCase();
+    showHistoryCategory(searchValue)
+});
+
+$("#backCategory").click(function () {
+    $(".history-avt").removeClass("d-none");
+    document.getElementById("category-back").classList.add("d-none");
+    document.getElementById("list-category").classList.remove("d-none");
+    document.getElementById("save-category").classList.add("d-none");
+    document.getElementById("detail-category").classList.add("d-none");
+    showCategory();
+    historyListCategoryAdd.empty();
 });
 
 checkHeight();

@@ -159,11 +159,13 @@ async function pickApp(type) {
 
 // ✅ Các hàm xử lý riêng
 function handleMuaApp() {
-    showElement("LoadScreen", "img-station");
+    // showElement("LoadScreen", "img-station");
+    $('#loading-popup').show();
     hideElement("pickApp");
     $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
     setTimeout(() => {
-        hideElement("LoadScreen", "img-station");
+        // hideElement("LoadScreen", "img-station");
+        $('#loading-popup').hide();
         showElement("history");
         $('#NameHistoryPage').text("Quan trắc:")
         $('#descHistoryPage').text("Lịch sử truy cập")
@@ -171,7 +173,7 @@ function handleMuaApp() {
         $('#footerHistoryPage').text("thêm mới mã trạm hoặc chọn trạm đã lưu");
 
         $('.workstation_access').removeClass("d-none");
-        // $('.workstation_category').removeClass("d-none");
+        $('.workstation_category').removeClass("d-none");
         $('.warranty_scansQRcode').addClass("d-none");
         $('.warranty_lot').addClass("d-none");
         $('.warranty_scanQRcode').addClass("d-none");

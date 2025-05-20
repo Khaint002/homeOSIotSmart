@@ -34,7 +34,7 @@ function saveHistory(code) {
 
 function checkTypeWorkstation() {
     const $ = (id) => document.getElementById(id);
-    const hideElements = ["RT", "RH", "RD", "RP", "RN", "SS", "EC"];
+    const hideElements = ["RT", "RH", "RD", "RP", "RN", "SS", "EC", "TN", "QV", "QR", "QN", "VN"];
 
     // Reset toàn bộ trạng thái hiển thị
     hideElements.forEach(type => {
@@ -77,7 +77,7 @@ function checkTypeWorkstation() {
                     });
                 });
             break;
-
+        case "MSL":
         case "M":
         case "MS":
             ["RD"].forEach(type => {
@@ -112,6 +112,20 @@ function checkTypeWorkstation() {
 
             $("titleRT").textContent = "Nhiệt độ nước";
             $("titleChartRT").textContent = "biểu đồ nhiệt độ nước";
+            break;
+
+        case "TD":
+            ["RN", "TN", "QV", "QR"].forEach(type => {
+                $(`box-${type}`).classList.remove("d-none");
+                $(`chart-${type}`).classList.remove("d-none");
+            });
+            break;
+
+        case "NMLLTD":
+            ["RN", "RD", "QN", "VN"].forEach(type => {
+                $(`box-${type}`).classList.remove("d-none");
+                $(`chart-${type}`).classList.remove("d-none");
+            });
             break;
     }
 }
@@ -189,21 +203,29 @@ function getDayMessage(type) {
             return 'RD-RT-RH-RP';
         case "N":
             return 'RN---';
+        case "MSL":
         case "M":
-            return 'RD---';
         case "MS":
             return 'RD---';
         case "NNS":
             return 'RT-RN-SS-EC';
+        case "TD":
+            return 'RN-TN-QV-QR';
+        case "NMLLTD":
+            return 'RN-RD-QN-VN';
         default:
             return "";
     }
 }
 
 function changeDataHomePage(data) {
-    if (!data || data.length === 0) return;
+    if (!data || data.length === 0) {
+        $('#loading-popup').hide(); 
+        return;
+    }
 
     const matram = localStorage.getItem('MATRAM');
+    const itemw = JSON.parse(localStorage.getItem("itemHistory"));
     const filteredItems = data.filter(item => item.ZONE_ADDRESS === matram);
     console.log(filteredItems);
 
@@ -245,7 +267,11 @@ function changeDataHomePage(data) {
 
             case "RN":
                 checkRD = true;
-                updateText("RN", ZONE_VALUE + " cm");
+                if(itemw.workstationType == 'TD'){
+                    updateText("RN", ZONE_VALUE / 100 + " m");
+                } else {
+                    updateText("RN", ZONE_VALUE + " cm");
+                }
                 break;
 
             case "SS":
@@ -257,9 +283,30 @@ function changeDataHomePage(data) {
                 checkRD = true;
                 updateText("EC", (ZONE_VALUE / 1000).toFixed(2) + " μs/cm");
                 break;
+            case "TN":
+                checkRD = true;
+                updateText("TN", (ZONE_VALUE ).toFixed(2) + " tr.m³");
+                break;
+            case "QV":
+                checkRD = true;
+                updateText("QV", (ZONE_VALUE ).toFixed(2) + " m³/s");
+                break;
+            case "QR":
+                checkRD = true;
+                updateText("QR", (ZONE_VALUE ).toFixed(2) + " m³/s");
+                break;
+            case "QN":
+                checkRD = true;
+                updateText("QN", (ZONE_VALUE /10).toFixed(2) + " m³/s");
+                break;
+            case "VN":
+                checkRD = true;
+                updateText("VN", (ZONE_VALUE /10).toFixed(2) + " m/s");
+                break;
         }
     });
-
+    console.log('chạy');
+    
     if (!checkRT) setRangeValue(0);
     if (!checkRD) handleNoRainVisual();
 
