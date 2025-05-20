@@ -510,14 +510,14 @@ function addMarkers(locations, mapContainerId) {
         map.remove(); // Xóa bản đồ cũ
     }
     //[20.304373, 100.256392], [24.353953, 108.614381]
-    const bounds = L.latLngBounds(
-        L.latLng(20.304373, 100.256392),  // Góc dưới trái
-        L.latLng(24.353953, 108.614381)  // Góc trên phải
-    );
     // const bounds = L.latLngBounds(
-    //     L.latLng(8.2, 102.1),  // Góc dưới trái
-    //     L.latLng(23.4, 110.0)  // Góc trên phải
+    //     L.latLng(20.304373, 100.256392),  // Góc dưới trái
+    //     L.latLng(24.353953, 108.614381)  // Góc trên phải
     // );
+    const bounds = L.latLngBounds(
+        L.latLng(8.2, 102.1),  // Góc dưới trái
+        L.latLng(23.4, 110.0)  // Góc trên phải
+    );
     map = L.map(mapContainerId, {
         maxBounds: bounds,       // Giới hạn vùng
         maxBoundsViscosity: 1.0,
