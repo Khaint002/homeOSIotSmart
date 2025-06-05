@@ -1533,8 +1533,8 @@ h1 {
     }
 
     .marker-pin {
-        width: 28px;
-        height: 28px;
+        width: 40px;
+        height: 22px;
         transition: transform 0.2s;
         position: relative;
         z-index: 1;  /* Place marker-pin below mePin-wrapper */
@@ -1554,7 +1554,7 @@ h1 {
     .mePin-wrapper b {
         position: absolute;
         top: 2px;  /* Adjust to make "R" appear above the mePin */
-        right: 10px;
+        right: 16px;
         /*color: #dc3545;*/
         color: #5984ff;
         font-weight: bold;
@@ -1656,9 +1656,12 @@ h1 {
     z-index: 41;
 }
 #mappingWorkstation {
-    height: 100%; /* hoặc 500px, tùy layout */
+    height: 100vh; /* hoặc 500px, tùy layout */
     width: 100%;
     z-index: 1;
+}
+.leaflet-overlay-pane .leaflet-zoom-animated {
+    top: 22px;
 }
 .leaflet-marker-pane {
     margin-top: 18px !important;

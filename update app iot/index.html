@@ -3473,10 +3473,10 @@
                     <p id="text-content-QRcode" style="color: #fff;"></p>
                 </div>
                 <div id="qrcode"></div>
-                <button id="share-workStation" class="btn btn-warning" style="margin-top: 20px; background-color: #1f87a3;border: solid 1px #1f87a3; width: 50%; height: 40px; color: #fff; padding: 3px 10px; border-radius: 10px;">
+                <button id="share-workStation" class="btn btn-warning" style="margin-top: 20px; background-color: #1f87a3;border: solid 1px #1f87a3; width: 100%; height: 35px; color: #fff; padding: 3px 10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
                         <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
-                    </svg> Chia sẻ trạm
+                    </svg> Chia sẻ trạm cho bạn bè
                 </button>
             </div>
 
@@ -3495,7 +3495,7 @@
                         style="width: 250px;font-size: 20px; color: #fff; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                         -</p>
                 </div>
-                <div class="row" style="overflow-y: auto; height: 90%;">
+                <div class="row">
                     <div class="col-md-12 mb-4"><canvas id="chartVoltage"></canvas></div>
                     <div class="col-md-12 mb-4"><canvas id="chartCurrent"></canvas></div>
                     <div class="col-md-12 mb-4"><canvas id="chartPower"></canvas></div>
@@ -4077,11 +4077,7 @@
                 document.getElementById("LoadScreen").classList.add("d-none");
                 document.getElementById("LogoLoadScreen").classList.add("hidden");
                 document.getElementById("pickApp").classList.remove("hidden");
-                const queryString = window.location.search;
-                const urlParams = new URLSearchParams(queryString);
-                if(urlParams){
-                    window.workstationID = urlParams.get('workstationID');
-                }
+                
                 if(window.workstationID){
                     $('#nameHistory').addClass("d-none");
                     $('#nameHistory').removeClass("d-flex");
@@ -4661,7 +4657,7 @@
                     }
                 });
             }
-            var keyItem;
+
             async function getDataMonitoring() {
                 const data = await getNewData(
                     localStorage.getItem("MATRAM"),
@@ -4676,32 +4672,15 @@
                 if (dataChart != []) {
                     createChartData(dataChart, 'RD', 'NGAY')
                 }
-                const today = new Date();
-                const todayStr = today.toISOString().split('T')[0];
-                data.D = data.D.filter(item => {
-                    if (item.ZONE_PROPERTY === 'RD') {
-                        const itemDateStr = item.DATE_CREATE.split('T')[0];
-                        return itemDateStr === todayStr; // Giữ lại nếu là hôm nay
-                    }
-                    return true; // Giữ lại tất cả item khác RD
-                });
-                if (data.D && data.D.length > 0) {
-                    const lastItem = data.D[data.D.length - 1];
-                    keyItem = lastItem.PR_KEY;
-                }
+
                 changeDataHomePage(data.D);
                 setInterval(async () => {
                     const data = await getNewData(
                         localStorage.getItem("MATRAM"),
                         "WORKSTATION_ID='" + localStorage.getItem("MATRAM") + "'",
-                        localStorage.getItem("URL"),
-                        keyItem
+                        localStorage.getItem("URL")
                     );
-                    if (data.D && data.D.length > 0) {
-                        const lastItem = data.D[data.D.length - 1];
-                        keyItem = lastItem.PR_KEY;
-                        changeDataHomePage(data.D);
-                    }
+                    changeDataHomePage(data.D);
                 }, 10000);
             }
 
@@ -5168,6 +5147,7 @@
                     if (button) button.style.backgroundColor = "#da4a58";
                     return;
                 }
+                console.log(station, data, );
                 
                 let prop = 'RD';
                 if (station.workstationType === "NAAM") prop = ZONE_PROPERTY;
@@ -5200,6 +5180,7 @@
 
             async function startInterval() {
                 if (intervalId) return;
+
                 for (let i = historyItems.length - 1; i >= 0; i--) {
                     const station = historyItems[i];
                     const data = await getNewData(
@@ -5207,25 +5188,10 @@
                         `WORKSTATION_ID='${station.CodeWorkStation}'`,
                         `https://${station.domain}/Service/Service.svc`
                     );
-                    console.log(data);
-                    const today = new Date();
-                    const todayStr = today.toISOString().split('T')[0]; // Ví dụ: "2025-06-04"
-                    data.D = data.D.filter(item => {
-                        if (item.ZONE_PROPERTY === 'RD') {
-                            const itemDateStr = item.DATE_CREATE.split('T')[0];
-                            return itemDateStr === todayStr; // Giữ lại nếu là hôm nay
-                        }
-                        return true; // Giữ lại tất cả item khác RD
-                    });
-                    if (data.D && data.D.length > 0) {
-                        const lastItem = data.D[data.D.length - 1];
-                        historyItems[i].key = lastItem.PR_KEY;
-                    }
                     processAndUpdate(data);
                     await updateWorkstationUI(station, data);
                 }
-                console.log(historyItems);
-                
+
                 intervalId = setInterval(async () => {
                     rotateProperties();
 
@@ -5234,21 +5200,10 @@
                         const data = await getNewData(
                             station.CodeWorkStation,
                             `WORKSTATION_ID='${station.CodeWorkStation}'`,
-                            `https://${station.domain}/Service/Service.svc`,
-                            station.key
+                            `https://${station.domain}/Service/Service.svc`
                         );
-                        if (data.D && data.D.length > 0) {
-                            const lastItem = data.D[data.D.length - 1];
-                            historyItems[i].key = lastItem.PR_KEY;
-                        }
-                        //console.log(data.D);
-                        
-                        if(data.D && data.D.length > 0){
-                            console.log(data.D);
-                            processAndUpdate(data);
-                            await updateWorkstationUI(station, data);
-                        }
-                        
+                        processAndUpdate(data);
+                        await updateWorkstationUI(station, data);
                     }
                 }, 10000);
             }
@@ -5306,8 +5261,8 @@
                 // Làm sạch và hiển thị danh sách
                 historyListDetail.empty();
                 locations = [];
-                // let cWorkStation = ""
                 for (const item of historyItems) {
+                    console.log(item);
                     addItemHistory(item);
                     const dataWorkstation = await getDM(
                         "https://" + item.domain + "/service/service.svc",
@@ -5315,14 +5270,13 @@
                         "WORKSTATION_ID = '" + item.CodeWorkStation + "'",
                         "NotCentral"
                     );
-                    // cWorkStation += "'"+item.CodeWorkStation+"',";
                     addDataLocation(dataWorkstation.data[0], dataWorkstation.dataSet.DM_TOOLTIP_TEMPLATE, item);
                     if (!arrayCategory.includes(item.workstationType)) {
                         arrayCategory.push(item.workstationType);
                     }
+
                     await delay(10); // đợi 100ms trước khi xử lý item tiếp theo
                 }
-                
                 addMarkers(locations, "mappingWorkstation");
                 arrayCategory.push("ALL");
 
@@ -5767,16 +5721,10 @@
             }
             var checkCam = true;
             // call api getnewdata lấy data mới nhất
-            function getNewData(workstation, c, url, key) {
-                let urlK;
-                if(key){
-                    urlK = url + "/GetNewData?w=" + workstation +"&k="+key;
-                } else {
-                    urlK = url + "/GetNewData?w=" + workstation;
-                }
+            function getNewData(workstation, c, url) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
-                        url: urlK,
+                        url: url + "/GetNewData?w=" + workstation,
                         type: "GET",
                         dataType: "jsonp",
                         contentType: "application/json; charset=utf-8",
@@ -8838,7 +8786,7 @@
                             const formattedNow = formatCustomDate(now);
                             const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
                             const formattedOneHourAgo = formatCustomDate(oneHourAgo);
-                            
+
                             const data = await getDataChartCondition(formattedOneHourAgo, formattedNow, i);
                             createChartDataCondition(data);
                         });
@@ -9797,6 +9745,8 @@
                 const fields = getFieldsByType(type);
 
                 let dynamicRows = '';
+                console.log(item);
+                
                 fields.forEach(field => {
                     let label = '';
                     switch (field) {
@@ -10006,7 +9956,7 @@
                         mergedData.QR = parseValue(newZoneData.QR);
                         break;
                     case "NMLLTD":
-                        if(newZoneData.RD){
+                        if(newZoneData.RN){
                             mergedData.lastTimeRD = formatDateTime(newZoneData.lastTimeRD);
                         }
                         if(newZoneData.QN){

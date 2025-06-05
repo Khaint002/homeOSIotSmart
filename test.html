@@ -1,38 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Map Rivers GeoJSON</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        #map { height: 100vh; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Anime.js Drag and Hover Move</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .box {
+      width: 60px;
+      height: 60px;
+      background: #2196f3;
+      border-radius: 8px;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      cursor: grab;
+    }
+
+    .dragging {
+      cursor: grabbing !important;
+    }
+  </style>
 </head>
 <body>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-ajax"></script>
 
-    <script>
-        var map = L.map('map').setView([16, 105], 6);
-        
-        // Base map
-        new L.GeoJSON.AJAX("https://overpass-api.de/api/interpreter?data=[out:json];way[waterway](10,103,23,110);out geom;", {
-            style: {color: 'blue', weight: 2}
-        }).addTo(map);
-        
-        // Load GeoJSON từ file hoặc API
-        fetch('rivers.geojson')
-            .then(response => response.json())
-            .then(data => {
-                L.geoJSON(data, {
-                    style: {
-                        color: 'blue',
-                        weight: 2
-                    }
-                }).addTo(map);
-            });
+  <div class="box"></div>
 
-    </script>
+  <!-- jQuery + Anime.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+  <script>
+    const $box = $('.box');
+
+    // 1. Hover → Di chuyển ngẫu nhiên
+    function getSafeOffset(current, range, limitMin, limitMax, size) {
+      let offset;
+      for (let i = 0; i < 10; i++) {
+        offset = Math.floor(Math.random() * range * 2) - range;
+        const newPos = current + offset;
+        if (newPos >= limitMin && newPos + size <= limitMax) {
+          return offset;
+        }
+      }
+      return 0;
+    }
+
+    $box.on('mouseenter', function () {
+      if (isDragging) return; // Không chạy khi đang kéo
+
+      const box = this;
+      const boxRect = box.getBoundingClientRect();
+      const boxSize = boxRect.width;
+      const currentLeft = box.offsetLeft;
+      const currentTop = box.offsetTop;
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+
+      for (let i = 0; i < 3; i++) {
+        const dx = getSafeOffset(currentLeft, 150, 0, winW, boxSize);
+        const dy = getSafeOffset(currentTop, 150, 0, winH, boxSize);
+
+        anime({
+          targets: box,
+          translateX: `+=${dx}`,
+          translateY: `+=${dy}`,
+          duration: 500 + Math.random() * 500,
+          delay: i * 300,
+          easing: 'easeInOutQuad'
+        });
+      }
+    });
+
+    // 2. Kéo thả
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    $box.on('mousedown', function (e) {
+      isDragging = true;
+      offsetX = e.clientX - this.offsetLeft;
+      offsetY = e.clientY - this.offsetTop;
+      $(this).addClass('dragging');
+    });
+
+    $(document).on('mousemove', function (e) {
+      if (isDragging) {
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+
+        // Giữ trong vùng màn hình
+        x = Math.max(0, Math.min(x, window.innerWidth - $box.width()));
+        y = Math.max(0, Math.min(y, window.innerHeight - $box.height()));
+
+        $box.css({ top: y + 'px', left: x + 'px' });
+      }
+    });
+
+    $(document).on('mouseup', function () {
+      isDragging = false;
+      $box.removeClass('dragging');
+    });
+  </script>
+
 </body>
 </html>

@@ -30,7 +30,7 @@ setTimeout(() => {
             "workstationType": "NAAM"
         }];
     }
-
+    
     localStorage.setItem('dataHistory', JSON.stringify(historyItems));
     getListDomain()
     $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
@@ -231,10 +231,16 @@ HOMEOSAPP.WorkstationStatistics = async function(url, c, check, code) {
     });
 }
 
-HOMEOSAPP.getNewData = function (workstation, c, url) {
+HOMEOSAPP.getNewData = function (workstation, c, url, key) {
     return new Promise((resolve, reject) => {
+        let urlK;
+        if(key){
+            urlK = url + "/GetNewData?w=" + workstation +"&k="+key;
+        } else {
+            urlK = url + "/GetNewData?w=" + workstation;
+        }
         $.ajax({
-            url: url + "/GetNewData?w=" + workstation,
+            url: urlK,
             type: "GET",
             dataType: "jsonp",
             contentType: "application/json; charset=utf-8",
