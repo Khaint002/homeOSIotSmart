@@ -4101,7 +4101,31 @@
                     getInputValue(window.workstationID);
                     document.getElementById("pickApp").classList.add("hidden");
                     document.getElementById("history").classList.add("hidden");
+                } else if(window.cabinetID){
+
+                    $('#nameHistory').removeClass("d-none");
+                    $('#nameHistory').addClass("d-flex");
+                    $('#listTabMap').addClass("d-none");
+                    $('#NameHistoryPage').text("Tủ điều khiển:");
+                    $('#descHistoryPage').text("Lịch sử tủ đã truy cập:");
+                    $('#historySelect').addClass("d-none");
+                    $('#footerHistoryPage').text("chọn tủ đã truy cập hoặc thêm mới");
+
+                    openTabHistory(event, 'tabHistory');
+                    $('.workstation_access').addClass("d-none");
+                    $('.workstation_category').addClass("d-none");
+                    $('.warranty_scansQRcode').addClass("d-none");
+                    $('.warranty_lot').addClass("d-none");
+                    $('.warranty_scanQRcode').addClass("d-none");
+
+                    accessDevice(window.cabinetID, 'DK');
+                    // historyListDetail.empty();
+                    // showAddWorkStationButton();
+                    // checkTabHistory = 2;
+                    // addItemWarranty('condition');
+                    // pickApp('DK');
                 }
+                
             }, 2000);
 
             var maTram = '';
@@ -4164,7 +4188,7 @@
                 $('#qr-popup').hide()
                 document.getElementById("ScanQRWarranty").classList.add("hidden");
                 document.getElementById("condition").classList.remove("hidden");
-                $('#loading-popup').hide()
+                $('#loading-popup').hide();
             }
             function scanAgain() {
                 console.log("scan2");
