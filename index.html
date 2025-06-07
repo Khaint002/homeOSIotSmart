@@ -4213,7 +4213,7 @@
                 const testDataScan = await window.ScanQR();
                 console.log("Giá trị:"+ testDataScan);
                 
-                if(testDataScan != 1){
+                if(testDataScan){
                     onScanSuccess(testDataScan);
                 }
                 
