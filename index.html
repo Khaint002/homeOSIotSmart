@@ -6337,6 +6337,9 @@
                     }).catch(err => {
                         console.error("Lỗi khi dừng camera sau khi quét thành công: ", err);
                     });
+                } else {
+                    $("#qr-popup").show();
+                    document.getElementById("result-form").classList.remove("d-none");
                 }
                 
                 let data;
