@@ -4195,12 +4195,17 @@
                         isValid = false;
                     }
                     if (isValid) {
-                        startQRcode();
+                        testScan();
+                        //startQRcode();
                     }
                 } else {
-                    startQRcode();
+                    testScan();
+                    //startQRcode();
                 }
             })
+            async function testScan() {
+                const testDataScan = await window.ScanQR();
+            }
             $("#PickApp-button-mua").click(function () {
                 $('#nameHistory').addClass("d-none");
                 $('#nameHistory').removeClass("d-flex");
@@ -9849,14 +9854,18 @@
             function generatePopupValueHTML(loc) {
                 let extraContent = '';
                 let lastTimeRain = '';
+                let rainValue = 0;
                 if(loc.lastTimeRD){
                     lastTimeRain = "("+loc.lastTimeRD.split(" ")[1]+")";
                 }
-                
+                const getOldData = getDataByCode(loc.code)
+                if(getOldData.RD){
+                    rainValue = parseValue(getOldData.RD);
+                }
                 switch (loc.type) {
                     case "NAAM":
                         extraContent = `
-                            <tr><td>Lượng mưa (00h): ${loc.RD ?? 0} mm ${lastTimeRain}</td></tr>
+                            <tr><td id="RD-${loc.code}-test">Lượng mưa (00h): ${loc.RD ?? rainValue} mm ${lastTimeRain}</td></tr>
                             <tr><td><b>Nhiệt độ: ${WarningTemperature(loc.RT) ?? 0} °C</b></td></tr>
                             <tr><td><b>Độ ẩm: ${WarningHumidity(loc.RH) ?? 0} %</b></td></tr>
                             <tr><td><b>Áp suất khí quyển: ${loc.RP ?? 0} hPa</b></td></tr>
@@ -9893,7 +9902,7 @@
                     case "NMLLTD":
                         extraContent = `
                             <tr><td>Mực nước: ${loc.RN ?? 0} m</td></tr>
-                            <tr><td><b>Lượng mưa: ${loc.RD ?? 0} mm ${lastTimeRain}</b></td></tr>
+                            <tr><td><b id="RD-${loc.code}-test">Lượng mưa: ${loc.RD ?? rainValue} mm ${lastTimeRain}</b></td></tr>
                             <tr><td><b>Lưu lượng nước: ${loc.QN ?? 0} m³/s</b></td></tr>
                             <tr><td><b>Tốc độ dòng chảy: ${loc.VN ?? 0} m/s</b></td></tr>
                         `;
@@ -10025,7 +10034,7 @@
                 }
                 mergedData.RA = parseValue(newZoneData.RA);
                 mergedData.lastTime = newZoneData.lastTime; // Cập nhật thời gian hiện tại
-
+                saveDataByCode(code, newZoneData);
                 const updatedHTML = generatePopupValueHTML(mergedData);
                 marker.setPopupContent(updatedHTML);
 
@@ -10037,6 +10046,34 @@
             function parseValue(str) {
                 if (typeof str !== "string") return str;
                 return parseFloat(str.replace(/[^\d.-]/g, ''));
+            }
+
+            var store = {}; // hoặc new Map() nếu thích
+
+            function saveDataByCode(code, newData) {
+            if (!store[code]) {
+                // Nếu chưa có dữ liệu, lưu luôn newData
+                store[code] = { ...newData };
+            } else {
+                // Nếu đã có dữ liệu, cập nhật giữ nguyên trường không thay đổi
+                store[code] = updateData(store[code], newData);
+            }
+            }
+
+            // Hàm updateData từ trên, giữ nguyên dữ liệu cũ nếu mới không có
+            function updateData(oldData, newData) {
+            const updatedData = { ...oldData };
+            for (const key in newData) {
+                if (newData[key] !== undefined && newData[key] !== null && newData[key] !== '') {
+                updatedData[key] = newData[key];
+                }
+            }
+            return updatedData;
+            }
+
+            // Hàm lấy dữ liệu theo code
+            function getDataByCode(code) {
+            return store[code] || null;
             }
 
             function processAndUpdate(data) {

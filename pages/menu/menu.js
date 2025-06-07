@@ -162,7 +162,7 @@ function handleMuaApp() {
     // showElement("LoadScreen", "img-station");
     $('#loading-popup').show();
     hideElement("pickApp");
-    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
+    HOMEOSAPP.loadPage("https://home-os-iot-smart.vercel.app/pages/History/history.html");
     setTimeout(() => {
         // hideElement("LoadScreen", "img-station");
         $('#loading-popup').hide();

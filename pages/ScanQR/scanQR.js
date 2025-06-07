@@ -907,7 +907,7 @@ async function CheckWorkStation(workstationID) {
         // document.getElementById("footer-stationName").textContent = data[0].WORKSTATION_ID + " - " + data[0].WORKSTATION_NAME;
         localStorage.setItem("MATRAM", data[0].WORKSTATION_ID);
         toastr.success("Truy cập thành công!");
-        $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
+        HOMEOSAPP.loadPage("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
     }
 }
 
@@ -932,11 +932,12 @@ function scanAgain() {
 $("#result-truycap").click(function () {
     document.getElementById("result-truycap").disabled = true;
     $("#loading-popup").show();
-    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
+    HOMEOSAPP.loadPage("https://home-os-iot-smart.vercel.app/pages/KTTV/kttv.html");
 });
 
 $("#PickApp-button-pick").click(function () {
-    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
+    HOMEOSAPP.goBack();
+    // HOMEOSAPP.loadPage("https://home-os-iot-smart.vercel.app/pages/History/history.html");
 });
 
 $("#tab-scan-qr").click(function (event) {

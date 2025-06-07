@@ -8,6 +8,43 @@ let historyStack = ['pickApp'];
 var UserID = localStorage.getItem("userID");
 var DataUser = JSON.parse(localStorage.getItem("userInfo"));
 let screens = document.querySelectorAll('.app > div[id]');
+localStorage.setItem('historyStack', JSON.stringify([]));
+
+HOMEOSAPP.loadPage = function (url) {
+    let historyStack = JSON.parse(localStorage.getItem('historyStack')) || [];
+    if (!historyStack.includes(url)) {
+        historyStack.push(url);
+    } else {
+        historyStack.splice(historyStack.indexOf(url), 1);
+        historyStack.push(url);
+    }
+    localStorage.setItem('historyStack', JSON.stringify(historyStack));
+
+    if (url.startsWith("http")) {
+        $("#content-block").load(url);
+    } else {
+        $("#"+url).show();
+    }
+    
+}
+
+HOMEOSAPP.goBack = function () {
+    let historyStack = JSON.parse(localStorage.getItem('historyStack')) || [];
+    let preUrl;
+    if (historyStack[historyStack.length - 1].startsWith("http")) {
+        if (historyStack.length > 1) {
+            historyStack.pop();
+            preUrl = historyStack[historyStack.length - 1];
+            localStorage.setItem('historyStack', JSON.stringify(historyStack));
+            $("#content-block").load(preUrl);
+        }
+    } else if(historyStack.length > 1) {
+        preUrl = historyStack[historyStack.length - 1];
+        $("#"+preUrl).hide();
+        historyStack.pop();
+        localStorage.setItem('historyStack', JSON.stringify(historyStack));
+    }
+}
 
 setTimeout(() => {
     document.getElementById("LoadScreen").classList.add("d-none");
@@ -33,7 +70,8 @@ setTimeout(() => {
     
     localStorage.setItem('dataHistory', JSON.stringify(historyItems));
     getListDomain()
-    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
+    HOMEOSAPP.loadPage("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
+    // $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/menu/menu.html");
     
 }, 2000);
 
@@ -51,19 +89,19 @@ let observer = new MutationObserver((mutations) => {
     });
 });
 
-screens.forEach(screen => observer.observe(screen, { attributes: true }));
+// screens.forEach(screen => observer.observe(screen, { attributes: true }));
 
-if (typeof HomeOS !== 'undefined') {
-    HomeOS.goBack = function () {
-        if (historyStack.length <= 1) {
-            return;
-        }
-        let currentScreen = historyStack.pop();
-        document.getElementById(currentScreen).classList.add('hidden');
-        let prevScreen = historyStack[historyStack.length - 1];
-        document.getElementById(prevScreen).classList.remove('hidden');
-    };
-}
+// if (typeof HomeOS !== 'undefined') {
+//     HomeOS.goBack = function () {
+//         if (historyStack.length <= 1) {
+//             return;
+//         }
+//         let currentScreen = historyStack.pop();
+//         document.getElementById(currentScreen).classList.add('hidden');
+//         let prevScreen = historyStack[historyStack.length - 1];
+//         document.getElementById(prevScreen).classList.remove('hidden');
+//     };
+// }
 
 async function getListDomain() {
     const datatest = await HOMEOSAPP.getDM("https://central.homeos.vn/service_XD/service.svc", 'WARRANTY_SERVICE', "1=1");

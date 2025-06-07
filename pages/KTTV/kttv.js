@@ -413,7 +413,7 @@ $(".homepage-Pre-pickApp").click(function () {
 
 $("#share-qrcode-workstation").click(function () {
     // Hiển thị popup với hiệu ứng modal
-    $("#share-popup").show()
+    HOMEOSAPP.loadPage("share-popup")
 
     // Xóa nội dung mã QR cũ
     $('#qrcode').empty();
@@ -444,12 +444,14 @@ $("#share-qrcode-workstation").click(function () {
 });
 
 $("#BackCodeQR").click(function () {
-    $('#share-popup').hide();
+    HOMEOSAPP.goBack();
+    // $('#share-popup').hide();
 });
 
 $(".ScanQRNext").click(function () {
     stopIntervalMonitoring()
-    $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
+    HOMEOSAPP.goBack();
+    // $("#content-block").load("https://home-os-iot-smart.vercel.app/pages/History/history.html");
 });
 
 $("#button-list-ngay").click(function () {
@@ -520,7 +522,7 @@ $("#export-kttv").click(function () {
     renderOptions();
     $("#filter-kttv").removeClass("d-none");
     $("#filter-condition").addClass("d-none");
-    $("#export-condition-popup").show();
+    HOMEOSAPP.loadPage("export-condition-popup");
 });
 
 async function getDevicefilter(checkReporttext) {
@@ -766,7 +768,8 @@ function renderOptions() {
 }
 
 $("#BackExportCondition").click(function () {
-    $('#export-condition-popup').hide();
+    HOMEOSAPP.goBack();
+    // $('#export-condition-popup').hide();
 });
 
 // Hàm xử lý thời gian theo lựa chọn
@@ -848,7 +851,7 @@ function formatDate(date) {
 $("#settingAlert").click(function () {
     // if(DataUser){
         getDevicefilter();
-        $("#alert-kttv-popup").show(); 
+        HOMEOSAPP.loadPage("alert-kttv-popup");
     // } else {
     //     toastr.error("Vui lòng liên kết tài khoản Zalo để sử dụng chức năng này.");
     // }
