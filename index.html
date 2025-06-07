@@ -4195,18 +4195,23 @@
                         isValid = false;
                     }
                     if (isValid) {
-                        testScan();
-                        //startQRcode();
+                        if(window.ScanQR){
+                            ScanQRcodeByZalo();
+                        } else {
+                            startQRcode();
+                        }
                     }
                 } else {
-                    testScan();
-                    //startQRcode();
+                    if(window.ScanQR){
+                        ScanQRcodeByZalo();
+                    } else {
+                        startQRcode();
+                    }
                 }
             })
-            async function testScan() {
+            async function ScanQRcodeByZalo() {
                 const testDataScan = await window.ScanQR();
-                console.log(testDataScan);
-                
+                onScanSuccess(testDataScan);
             }
             $("#PickApp-button-mua").click(function () {
                 $('#nameHistory').addClass("d-none");
@@ -6262,7 +6267,6 @@
                 }).catch(err => {
                     console.error("Lỗi khi khởi động camera: ", err);
                 });
-
             }
 
             // Khi nhấn nút mở popup quét QR
