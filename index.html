@@ -4211,7 +4211,9 @@
             })
             async function ScanQRcodeByZalo() {
                 const testDataScan = await window.ScanQR();
-                if(testDataScan){
+                console.log("Giá trị:"+ testDataScan);
+                
+                if(testDataScan != 1){
                     onScanSuccess(testDataScan);
                 }
                 
