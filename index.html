@@ -4211,7 +4211,10 @@
             })
             async function ScanQRcodeByZalo() {
                 const testDataScan = await window.ScanQR();
-                onScanSuccess(testDataScan);
+                if(testDataScan){
+                    onScanSuccess(testDataScan);
+                }
+                
             }
             $("#PickApp-button-mua").click(function () {
                 $('#nameHistory').addClass("d-none");
