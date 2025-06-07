@@ -4171,7 +4171,11 @@
                 // document.getElementById("footer-instruct-scanQR").classList.add("d-none");
                 document.getElementById("result-form").classList.add("d-none");
                 document.getElementById("file-input").value = '';
-                startQRcode();
+                if(window.ScanQR){
+                    ScanQRcodeByZalo();
+                } else {
+                    startQRcode();
+                }
             }
             $(".start").click(function () {
                 const buttonId = $(this).attr("id"); // Lấy id của nút
@@ -4211,12 +4215,9 @@
             })
             async function ScanQRcodeByZalo() {
                 const testDataScan = await window.ScanQR();
-                console.log("Giá trị:"+ testDataScan);
-                
                 if(testDataScan){
                     onScanSuccess(testDataScan);
                 }
-                
             }
             $("#PickApp-button-mua").click(function () {
                 $('#nameHistory').addClass("d-none");
